@@ -1,0 +1,41 @@
+.courses{
+    nav{
+        display: flex;
+        @media screen and (max-width: 600px){
+            width: 88%;
+            margin-left: auto;
+        }
+        width: 100%;
+        a{
+            width: 25%;
+            text-align: center;
+            color: #000;
+            padding: 30px 0;
+            font-size: 13px;
+            background-color: rgb(240, 238, 238);
+        }
+    }
+    section{
+        &.technology{
+            .container{
+                padding: 0;
+                .row{
+                    .col-3{
+                        .btn_group{
+                            button{
+                                width: 100%;
+                                margin-top: 10px;
+                            }
+                        }
+                    }
+                    .col-9{
+                        overflow-x: auto;
+                    }
+                }
+            }
+        }
+    }
+}
+
+
+

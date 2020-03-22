@@ -1,0 +1,241 @@
+.shoplist{
+    section{
+        padding: 1.5rem 0;
+        &.shopselect{
+            >.container{
+                >.row{
+                    >div{
+                        >div{
+                            display: flex;
+                            >input{
+                                margin-left: auto;
+                                padding: 5px;
+                                background: #cecbcb;
+                                border: none;
+                                width: 40%;
+                            }
+                            >button{
+                                border: none;
+                                padding: 5px 15px;
+                                border-radius: 5px;
+                                background-image: linear-gradient(to bottom, #cccccc, #515151);
+                                color: #ffffff;
+                                font-family: monospace;
+                                font-size: 14px;
+                                margin-left: 10px;
+                                >a{
+                                    color: #ffffff;
+                                }
+                                >div{
+                                    border-radius: 50%;
+                                    background: rgb(216, 140, 140);
+                                    color: #ffffff;
+                                    height: 25px;
+                                    width: 25px;
+                                    border: none;
+
+                                }
+                            }
+
+                        }
+                    }
+                }
+            }
+        }
+        &.shopdetails{
+            >.container{
+                >.row{
+                    >div{
+                        &.select{
+                            &::-webkit-scrollbar{
+                                display: none;
+                            }
+                            overflow: auto;
+                            max-height: 150vh;
+                            >div{
+                                cursor: pointer;
+                                >img{
+                                    width: 100%;
+                                    box-shadow: 2px 3px 10px 1px rgb(156, 152, 152);
+                                }
+                                >p{
+                                    font-family: monospace;
+                                    font-size: 13px;
+                                    font-weight: 500;
+                                    margin-top: 1rem;
+                                }
+                            }
+                        }
+                        &.display{
+                          >div{
+                            padding: 0 2rem;
+                            >img{
+                            width: 100%;
+                            margin-top: 100px;
+                            opacity: 0;
+                            transition: all 2s .25s ease;
+                            &.is-visible{
+                                margin-top: 0;
+                                opacity: 1;
+                            }
+                            }
+                            >p{
+                            &:nth-child(2){
+                                font-size: 18px;
+                                font-weight: 700;
+                            }
+                            &:nth-child(3), &:nth-child(4){
+                                font-family: monospace;
+                                font-size: 13px;
+                                font-weight: 500;
+                            }
+                            &:nth-child(4){
+                                color: #555;
+                                margin-top: 30px;
+                                padding-top: 30px;
+                                border-top: 0.5px solid rgb(185, 180, 180);
+                            }
+                            }
+                            >div{
+                                &.color{
+                                    align-items: center;
+                                    display: flex;
+                                    margin-top: 8%;
+                                    >span{
+                                        font-family: monospace;
+                                        font-size: 13px;
+                                        width: 20%;
+                                    }
+                                    >div{
+                                        width: 3vw;
+                                        height: 5vh;
+                                        margin-left: 4%;
+                                        box-shadow: 2px 1px 4px 0px rgb(138, 138, 138);
+                                        cursor: pointer;
+                                        &:nth-child(2){
+                                            background: pink;
+                                        }
+                                        &:nth-child(3){
+                                            background: rgb(161, 175, 155);
+                                        }
+                                        &:nth-child(4){
+                                            background: rgb(155, 190, 211);
+                                        }
+                                        &:nth-child(5){
+                                            background: rgb(207, 118, 133);
+                                        }
+                                        &.active {
+                                            border: 1px solid rgb(116, 114, 114);
+                                        }
+                                        >span{
+                                            display: none;
+                                        }
+                                    }
+                                }
+                                &.size{
+                                    align-items: center;
+                                    display: flex;
+                                    margin-top: 8%;
+                                    >span{
+                                        font-family: monospace;
+                                        font-size: 13px;
+                                        width: 20%;
+                                    }
+                                    >div{
+                                        text-align: center;
+                                        cursor: pointer;
+                                        width: 3vw;
+                                        height: 5vh;
+                                        margin-left: 4%;
+                                        border: 0.5px solid rgb(173, 171, 171);
+                                        background: #ffffff;
+                                        &.active{
+                                            background: #555;
+                                            color: #ffffff;
+                                        }
+                                    }
+                                }
+                                &.addtocart{
+                                    text-align: right;
+                                    padding: 2rem 0 0 0;
+                                    >button{
+                                        border: none;
+                                        font-family: monospace;
+                                        font-size: 15px;
+                                        color: #ffffff;
+                                        background: gray;
+                                        padding: 3px 15px;
+                                    }
+                                }
+                            }
+                          }  
+                        }
+                    }
+                }
+            }
+        }
+        &.shop_cart{
+            >.container{
+                >.row{
+                    justify-content: center;
+                    >div{
+                        >div{
+                           display: flex;
+                           align-items: center;
+                           padding: 15px 0;
+                           &:not(:nth-last-child(1)){
+                                border-bottom: 0.5px solid rgb(150, 148, 148);
+                           }
+                           &:nth-last-child(1){
+                               >div{
+                                    margin-left: auto;
+                                    text-align: right;
+                                   >p{
+                                    font-family: monospace;
+                                    font-size: 17px;
+                                   }
+                                   >button{
+                                       border: none;
+                                       border-radius: 21px;
+                                       padding: 2px 24px;
+                                       background: rgb(96, 172, 96);
+                                       color: #ffffff;
+                                   }
+                               }
+                           }
+                           >div{
+                                &:nth-child(1){
+                                    width: 40%;
+                                    >img{
+                                        width: 100%;
+                                        cursor: pointer;
+                                    }
+                                }
+                                &:nth-child(2){
+                                    padding: 7px;
+                                    >p{
+                                        &:nth-child(1){
+                                            font-size: 17px;
+                                            font-weight: 800;
+                                        }
+                                        font-family: monospace;
+                                        font-size: 14px;
+                                    }
+                                }
+                                &:nth-child(3){
+                                    margin-left: auto;
+                                    display: flex;
+                                    >p{
+                                        &:nth-child(2){
+                                            margin-left: 20px;
+                                        }
+                                    }
+                                }
+                           } 
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

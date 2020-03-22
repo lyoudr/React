@@ -1,0 +1,39 @@
+input {
+    margin-left: 0;
+    margin-top: 0;
+    font-family: poppins, Arial,sans-serif;
+}
+body{
+    font-family: "Roboto",sans-serif;
+    p {
+        margin: 0;
+    }
+}
+.main{
+    float: right;
+    @media screen and (max-width: 600px){
+        width: 100%;
+    }
+    @media screen and (min-width: 600px){
+        width:  75%;
+    }
+}
+/* width */
+::-webkit-scrollbar {
+    width: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}

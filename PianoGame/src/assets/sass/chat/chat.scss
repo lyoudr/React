@@ -1,0 +1,38 @@
+.chat{
+    @media screen and (max-width: 600px){
+        width: 88%;
+        float: right;
+    }
+    section{
+        &.chatarea{
+            padding: 2rem;
+            >div{
+                >div{
+                    >.picture{
+                        >input{
+                            display: none;
+                        }
+                        >img{
+                            width: 30%;
+                            border-radius: 50%;
+                        }
+                    }
+                    >.personaldata{
+                        >form{
+                            >.checkbox{
+                                >div{
+                                    >div{
+                                        display: inline-block;
+                                        &:nth-child(2){
+                                            margin-left: 4%;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

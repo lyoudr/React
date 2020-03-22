@@ -1,0 +1,14 @@
+.shownavbtn{
+    opacity: 1;
+    display: block;
+    position: fixed;
+    top: 3%;
+    left: 3%;
+    font-size: 23px;
+    cursor: pointer;
+    transition : all 1s .25s ease;
+    z-index: 1;
+    @media screen and (min-width: 600px){
+        display: none;
+    }
+}

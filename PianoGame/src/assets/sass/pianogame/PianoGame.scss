@@ -1,0 +1,161 @@
+* {
+    box-sizing: border-box;
+  }
+  .pianogame{
+    header{
+        left: 10%;
+    }
+    h1{
+        color:black;
+        font-size:40px;
+        font-style: italic;
+        font-weight: 400;   
+    }
+    h2 {
+        color:black;
+        font-size: 40px;
+        font-weight: 400;
+        cursor: pointer;
+    }
+    input{
+      width:15%;
+      margin-left: 0;
+      margin-top: 0; 
+      padding:5px;
+      height:50px;
+    }
+    .nowplaying {
+        text-align: center;
+        font-size: 120px;
+        line-height: 1;
+        color: black;
+        text-shadow: 0 0 5rem #028ae9;
+        transition: all .07s ease;
+        min-height: 120px;
+    }
+    .keys {
+        width: 100%;
+        max-width: 880px;
+        position: relative;
+        margin: 40px auto 0;
+        cursor: pointer;
+    }
+    .key {
+        position: relative;
+        border: 4px solid black;
+        border-radius: .5rem;
+        transition: all .07s ease;
+        display: block;
+        box-sizing: border-box;
+        z-index: 2;
+    }
+    .key:not(.sharp) {
+        float: left;
+        width: 10%;
+        height: 100%;
+        background: rgba(255, 255, 255, .8);    
+    }
+    .key.sharp {
+        position: absolute;
+        width: 6%;
+        height: 60%;
+        background: #000;
+        color: #eee;
+        top: 0;
+        z-index: 3;
+    }
+    .key[data-key="c#/4"] {
+        left: 7%;
+    }
+    .key[data-key="d#/4"] {
+        left: 17%;
+    }
+    .key[data-key="f#/4"]  {
+        left: 37%;
+    }
+    .key[data-key="g#/4"] {
+        left: 47%;
+    }
+    .key[data-key="a#/4"] {
+        left: 57%;    
+    }
+    .key[data-key="c#/5"] {
+        left: 77%;    
+    }
+    .key[data-key="d#/5"] {
+        left: 87%;    
+    }
+    .playing {
+        transform: scale(.95);
+        border-color: #028ae9;
+        box-shadow: 0 0 1rem #028ae9;
+    }
+    .hints {
+        display: block;
+        width: 100%;
+        opacity: 0;
+        position: absolute;
+        bottom: 7px;
+        transition: opacity .3s ease-out;
+        font-size: 20px;
+    }
+      .keys:hover .hints {
+          opacity: 1;
+      }
+      .sheet{
+          display: flex;
+      }
+    .button {
+        background-color: #4CAF50; /* Green */
+        height: 40px;
+        border: none;
+        color: white;
+        padding: 5 10px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 14px;
+        margin-left: 4%;
+        margin-top: 3%;
+        -webkit-transition-duration: 0.4s; /* Safari */
+        transition-duration: 0.4s;
+        cursor: pointer;
+    }
+    .button5 {
+        background-color: white;
+        color: black;
+        border: 2px solid #555555;
+    }
+    .button5:hover {
+        background-color: #555555;
+        color: white;
+    }
+    .line{
+        position: static;
+        border-left: 2px solid black;
+        height: 80px;
+        margin-left: 10%;
+        margin-top: 24%;
+    }
+    /* For mobile phones: */
+    [class*="col-"] {
+      width: 100%;
+    }
+    [class*="keys"]{
+        height: 150px;
+    }
+    [id*="main"]{
+        height:220px;
+    }
+    [id*="sheet"]{
+        height: 300px;
+        background-size:320px 120px;
+    }
+    [class*="img"]{
+        width:10px; 
+        position:relative; 
+        left:20%;
+    }
+  }
+  
+  
