@@ -11,7 +11,7 @@ const AuthService = {
                 'Content-Type': 'application/json'
             })
         }
-        return fetch(`${process.env.REACT_APP_HOSTURL}:8085/loginpage`, reqBody)
+        return fetch(`${process.env.REACT_APP_HOSTURL}:8085/api/loginpage`, reqBody)
             .then((res) => {
                 return res.json();
             })

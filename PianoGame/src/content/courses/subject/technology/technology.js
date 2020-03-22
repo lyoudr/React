@@ -30,7 +30,7 @@ class Map extends React.Component {
     }
     analyzeRoute(){
         let data = JSON.stringify(this.state.selectedpoint);
-        HttpRequest.shortestPath(`${process.env.REACT_APP_HOSTURL}:8085/shortestpath`, data)
+        HttpRequest.shortestPath(`${process.env.REACT_APP_HOSTURL}:8085/api/shortestpath`, data)
             .then(res => {
                 this.showshortestPath(res.path);
             })
