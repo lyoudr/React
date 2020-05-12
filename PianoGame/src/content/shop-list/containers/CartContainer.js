@@ -4,7 +4,7 @@ import CartCollections from '../comp/CartCollection';
 
 const mapStateToProps = state => { 
     return({
-        cartcollection : state.cart
+      cartcollection : state.cart
     })
 }
 

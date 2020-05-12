@@ -16,8 +16,6 @@ class Item extends React.Component {
                 </div>
             </React.Fragment>
         )
-        
-        
     }
 }
 
