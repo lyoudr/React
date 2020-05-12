@@ -51,7 +51,7 @@ const ChatRoom = () => {
                 <div className="container">
                     <div className="row">
                         <aside className="col-4 friend">
-                            <img src={}/>
+                            
                         </aside>
                         <div className="col-8 chat_area">
                             <div className="message_area">

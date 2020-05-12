@@ -1,46 +1,35 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {ChatList} from './chatlist';
 import { HttpRequest } from '../../services/http-service/httpService';
 import '../../assets/sass/chat/chat.scss';
 
-/* Form */
-class PersonalPicture extends React.Component {
-  constructor(props){
-    super(props)
-    this.state = {
-      chatlist : ChatList, 
-      imgsrc: null,
-      imgurl: null
-    }
-    this.UploadRef = React.createRef();
-    this.selectImg = this.selectImg.bind(this);
-    this.uploadImg = this.uploadImg.bind(this);
+/* PersonalPicture Hook */
+const PersonalPicture = ({setImg}) => {
+  // Declare a new state variable
+  const [chatlist, setChatlist] = useState(ChatList);
+  const [imgurl, setImgUrl] = useState(null);
+  // Create uploadRef
+  const uploadRef = React.createRef();
+  const selectImg = () => {
+    uploadRef.current.click();
   }
-  selectImg(){
-    this.UploadRef.current.click();
-  }
-  uploadImg() {
-    //append image to <img/>
-    let Img = this.UploadRef.current.files[0];
+  const uploadImg = () => {
+    // append image to <img/>
+    let Img = uploadRef.current.files[0];
     let ImgURL = URL.createObjectURL(Img);
-    this.setState({
-      imgurl: ImgURL,
-      imgsrc: Img
-    }); 
+    setImgUrl(ImgURL);
+    setImg(Img);
   }
-  render(){
-    const chatimg = this.state.chatlist[0].src
-    return(
-      <div className="col-12 text-center picture" onClick={this.selectImg}>
-        {this.state.imgurl ? 
-          (<img src={this.state.imgurl} alt="..." className="img-fluid"/>) :
-          (<img src={chatimg} alt="..." className="img-fluid"/>)
-        }
-        <input onChange={this.uploadImg} ref={this.UploadRef} type="file"/>
-      </div>
-    )
-  }
-}
+  return(
+    <div className="col-12 text-center picture" onClick={selectImg}>
+      {imgurl ? 
+        (<img src={imgurl} alt="..." className="img-fluid"/>) :
+        (<img src={chatlist[0].src} alt="..." className="img-fluid"/>)
+      }
+      <input onChange={uploadImg} ref={uploadRef} type="file"/>
+    </div>
+  )
+};
 
 class PersonalInfo extends React.Component{
   constructor(props){
@@ -134,6 +123,7 @@ class PersonalInfo extends React.Component{
   }
 }
 
+/* Form */
 class Chat extends React.Component {
   constructor(props){
     super(props)
@@ -144,6 +134,7 @@ class Chat extends React.Component {
     this.compRef = React.createRef();
     this.personalInfoRef = React.createRef();
     this.personalPhotoRef = React.createRef();
+    this.setImg = this.setImg.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.postData = this.postData.bind(this);
   }
@@ -154,13 +145,14 @@ class Chat extends React.Component {
       this.compRef.current.classList.remove('fullComp');
     }
   }
-  
+  setImg(Img){
+    this.setState({image: Img});
+  }
   handleSubmit(){
     const personalInfo = this.personalInfoRef.current.state.form;
-    const personalPhoto = this.personalPhotoRef.current.state.imgsrc;
+    //const personalPhoto = this.personalPhotoRef;
     this.setState({
       personalinfo : personalInfo,
-      image : personalPhoto
     }, () => {
       this.postData(this.state.image, 'uploadImg', '/uploadimage');
       this.postData(this.state.personalinfo, 'savePersonal', '/persondata');
@@ -183,7 +175,7 @@ class Chat extends React.Component {
         <section className="chatarea">
           <div className="container">
             <div className="row justify-content-center">
-              <PersonalPicture ref={this.personalPhotoRef}/>
+              <PersonalPicture ref={this.personalPhotoRef} setImg={this.setImg}/>
             </div>
             <div className="row justify-content-center">
               <div className="col-12 ptinfo">
