@@ -4,7 +4,6 @@ const app = express();
 // Login JWT Token
 const cors = require('cors');
 
-
 const path = require('path');
 const formidable = require('formidable');
 const fs = require('fs');
@@ -17,7 +16,7 @@ const countfood = require('./foodset');
 // 2. Graph(Bellman-Ford)
 const countpath = require('./pathgraph');
 
-
+// Static files
 app.use(express.static(publicPath));
 
 // parse application/json

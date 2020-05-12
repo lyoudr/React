@@ -17,6 +17,7 @@ var socket = new WebSocketServer({
 });
 let connectionlists = [];
 socket.on('request', function(request) {
+  console.log('request.origin is =>', request.origin);
   var connection = request.accept('echo-protocol', request.origin);
   connectionlists.push(connection);
   //On message

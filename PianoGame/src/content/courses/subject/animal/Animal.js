@@ -53,7 +53,6 @@ class GrowthCurve extends React.Component {
         super(props)
         this.state = {growthlists : GrowthList}
     }
-
     render(){
         const options = {
 			animationEnabled: true,

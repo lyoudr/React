@@ -13,8 +13,8 @@ class ShopList extends React.Component{
     constructor(props){
         super(props)
         this.searchRef = React.createRef();
-        this.searchItem = this.searchItem.bind(this);
         this.compRef = React.createRef();
+        this.searchItem = this.searchItem.bind(this);
     }
     componentDidUpdate(){
         if(this.props.fullComp == true){

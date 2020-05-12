@@ -3,32 +3,32 @@ import Cookie from 'js-cookie';
 import sendsvg from '../../assets/svg/send.svg'; 
 import '../../assets/sass/chat/chatroom.scss';
 
+
 const ChatRoom = () => {
     const messageRef = React.createRef();
-
+    
     const [message, setMessage] = useState([]);
     const [oriClass, setClass] = useState('');
     const [socket, setSocket] = useState(new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080`, 'echo-protocol'));
+    
     useEffect(() => {
         if(document.getElementById(`message${message.length - 1}`)){
             setTimeout(() =>  
                 document.getElementById(`message${message.length - 1}`).classList.add('show')
             );
         }
-        // Connection openen
+        // Connection open
         socket.onopen = () => {
-            console.log('connect ot websocket');
+            console.log('connect on websocket');
             return () => {
                 socket.close();
                 console.log('close websocket!');
             }
         }
-
         // Error occured
         socket.onerror = (error) => {
             console.log(`Web Socket error => ${error}`);
         }
-
         // Listen for messages
         socket.onmessage = (event) => {
             let receivedMsg = JSON.parse(event.data);
@@ -39,6 +39,7 @@ const ChatRoom = () => {
     });
     
     const sendMessage = () => {
+        console.log('cookie.get(userId) is =>', Cookie.get('userId'));
         socket.send(JSON.stringify({
             nameId : Cookie.get('userId'), 
             message: messageRef.current.value
@@ -46,13 +47,13 @@ const ChatRoom = () => {
     }
     return(
         <main className="chatroom">
-            <aside className="friend">
-                
-            </aside>
             <section className="chat">
                 <div className="container">
                     <div className="row">
-                        <div className="col-12 chat_area">
+                        <aside className="col-4 friend">
+                            <img src={}/>
+                        </aside>
+                        <div className="col-8 chat_area">
                             <div className="message_area">
                                 {message.map(((eachmsg, index) => 
                                     <div className={
