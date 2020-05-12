@@ -177,14 +177,14 @@ class Chat extends React.Component {
       // Post images to backend
       let formData = new FormData();
       formData.append('photo', data);
-      HttpRequest.uploadImg(`${process.env.REACT_APP_HOSTURL}:8085/api/uploadimage`, formData)
+      HttpRequest.uploadImg(`${process.env.REACT_APP_HOSTURL}/uploadimage`, formData)
         .then(data => {
           console.log('returned response is =>',data);
           this.props.history.push('/chatroom');
         });
     } else if(type == 'form'){
       // Post personal data to backend
-      HttpRequest.savePersonal(`${process.env.REACT_APP_HOSTURL}:8085/api/persondata`, data)
+      HttpRequest.savePersonal(`${process.env.REACT_APP_HOSTURL}/persondata`, data)
         .then(data => {
           console.log('returned response is =>',data);
           this.props.history.push('/chatroom');

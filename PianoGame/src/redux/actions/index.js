@@ -77,7 +77,7 @@ export function fetchPosts(searchText){
       },
       body: JSON.stringify({searchText: searchText})
     }
-    return fetch(`${process.env.REACT_APP_HOSTURL}:8085/api/shoplists`, reqBody)
+    return fetch(`${process.env.REACT_APP_HOSTURL}/shoplists`, reqBody)
       .then(
         res => res.json(),
         error => console.log('An error occurred.', error)

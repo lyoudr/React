@@ -67,3 +67,11 @@ This section has moved here: https://facebook.github.io/create-react-app/docs/de
 
 This section has moved here: https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify
 
+### local api url
+npm start or npm run build:local 
+http://127.0.0.1:8085/
+
+### AWS webserver url
+npm run build:prod
+http://ec2-52-197-236-30.ap-northeast-1.compute.amazonaws.com:8085/api
+

@@ -1,4 +1,4 @@
-import React ,{ Suspense, lazy } from 'react';
+import React ,{ Suspense, lazy} from 'react';
 import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthService from './services/auth-service/AuthService';
 import ShowNav from './shared/ShowNav';
@@ -57,7 +57,6 @@ class App extends React.Component {
     constructor(){
         super()
     }
-    
     render(){
         return(
             <Suspense  fallback={<div> Loading ...</div>}>
@@ -72,7 +71,7 @@ class App extends React.Component {
                     <SecretRoute path = "/shoplist" component = {ShopList}/>
                     <SecretRoute path = "/search-restaurant" component = {SearchRestaurant}/>
                 </Switch>
-            </Suspense>    
+            </Suspense>   
         )
     }
 }

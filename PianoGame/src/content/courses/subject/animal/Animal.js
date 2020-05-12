@@ -265,7 +265,7 @@ class DropArea extends React.Component {
         }
         this.setState({loading : true});
         console.log('this.state.foodspecies is =>', this.state.foodspecies);
-        HttpRequest.requesDishes(`${process.env.REACT_APP_HOSTURL}:8085/api/food`, this.state.foodspecies)
+        HttpRequest.requesDishes(`${process.env.REACT_APP_HOSTURL}/food`, this.state.foodspecies)
             .then(data => { 
                 console.log('returned data is =>', data);
                 if(data){
