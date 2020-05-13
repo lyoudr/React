@@ -57,6 +57,14 @@
   },
   "devDependencies": {
     "babel-preset-flow": "^6.23.0",
+    "eslint-plugin-react-hooks": "^4.0.1",
     "flow-bin": "^0.104.0"
+  },
+  "plugins":[
+    "react-hooks"
+  ],
+  "rules": {
+    "react-hooks/rules-of-hooks": "error", 
+    "react-hooks/exhaustive-deps": "warn"
   }
 }

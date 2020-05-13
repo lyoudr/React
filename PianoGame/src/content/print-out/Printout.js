@@ -63,21 +63,21 @@ class UpLoad extends React.Component {
             <div className="row justify-content-center mb-5 upload">
                 <div className="col-md-8 text-center">
                     <form>
-                        <div class="form-group">
-                            <label for="exampleFormControlInput1">Name</label>
-                            <input ref={this.nameInput} type="text" class="form-control"/>
+                        <div className="form-group">
+                            <label htmlFor="exampleFormControlInput1">Name</label>
+                            <input ref={this.nameInput} type="text" className="form-control"/>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlYoutube">Youtube Link</label>
-                            <input ref={this.youtubeInput} type="text" class="form-control"/>
+                        <div className="form-group">
+                            <label htmlFor="exampleFormControlYoutube">Youtube Link</label>
+                            <input ref={this.youtubeInput} type="text" className="form-control"/>
                         </div>
-                        <div class="form-group">
-                            <label for="exampleFormControlTextarea1">Describe your pecies</label>
-                            <textarea class="form-control" rows="5"></textarea>
+                        <div className="form-group">
+                            <label htmlFor="exampleFormControlTextarea1">Describe your pecies</label>
+                            <textarea className="form-control" rows="5"></textarea>
                         </div>
                     </form>
                     <input type="file" ref={this.setTextInputRef} onChange={this.handleFile} style={{display:'none'}}/>
-                    <button type="button" class="btn btn-dark" onClick = {this.clickTextInput}>Upload</button>
+                    <button type="button" className="btn btn-dark" onClick = {this.clickTextInput}>Upload</button>
                 </div>
             </div>
         )

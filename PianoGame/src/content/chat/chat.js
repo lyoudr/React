@@ -1,18 +1,23 @@
 import React, {useState} from 'react';
 import {ChatList} from './chatlist';
 import { HttpRequest } from '../../services/http-service/httpService';
+import useTheme from '../../shared/hooks/useTheme';
 import '../../assets/sass/chat/chat.scss';
 
 /* PersonalPicture Hook */
 const PersonalPicture = ({setImg}) => {
   // Declare a new state variable
-  const [chatlist, setChatlist] = useState(ChatList);
   const [imgurl, setImgUrl] = useState(null);
+  const chatlist = ChatList;
+  // Use custom Hook "useTheme" to set theme
+  const theme = useTheme();
   // Create uploadRef
   const uploadRef = React.createRef();
+
   const selectImg = () => {
     uploadRef.current.click();
   }
+
   const uploadImg = () => {
     // append image to <img/>
     let Img = uploadRef.current.files[0];
@@ -20,8 +25,9 @@ const PersonalPicture = ({setImg}) => {
     setImgUrl(ImgURL);
     setImg(Img);
   }
+
   return(
-    <div className="col-12 text-center picture" onClick={selectImg}>
+    <div className={`col-12 text-center picture ${theme}`} onClick={selectImg}>
       {imgurl ? 
         (<img src={imgurl} alt="..." className="img-fluid"/>) :
         (<img src={chatlist[0].src} alt="..." className="img-fluid"/>)
@@ -76,7 +82,7 @@ class PersonalInfo extends React.Component{
               onChange={this.handleInputChange}/>
           </div>
         </div>
-        <div class="form-group row">
+        <div className="form-group row">
           <label className="col-sm-2 col-3 col-form-label text-center">Country</label>
           <div className="col-sm-9 col-9">
             <select className="form-control" name="country" value={this.state.form.country} onChange={this.handleInputChange}>
@@ -139,7 +145,7 @@ class Chat extends React.Component {
     this.postData = this.postData.bind(this);
   }
   componentDidUpdate(){
-    if(this.props.fullComp == true){
+    if(this.props.fullComp === true){
       this.compRef.current.classList.add('fullComp');
     } else {
       this.compRef.current.classList.remove('fullComp');
@@ -175,7 +181,7 @@ class Chat extends React.Component {
         <section className="chatarea">
           <div className="container">
             <div className="row justify-content-center">
-              <PersonalPicture ref={this.personalPhotoRef} setImg={this.setImg}/>
+              <PersonalPicture setImg={this.setImg}/>
             </div>
             <div className="row justify-content-center">
               <div className="col-12 ptinfo">

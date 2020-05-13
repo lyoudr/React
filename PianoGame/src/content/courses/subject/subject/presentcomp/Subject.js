@@ -111,12 +111,12 @@ class EachNotes extends React.Component{
   addnewMemorandum(){
     let name = this.props.name;
     let note = {
-                'title' : this.titleRef.current.value, 
-                'content' : this.noteRef.current.value,
-                'date' : Date.now(), 
-                'id' : `${name}_${this.props.notes.length}`,
-                'textNote' : []
-              }
+      'title' : this.titleRef.current.value, 
+      'content' : this.noteRef.current.value,
+      'date' : Date.now(), 
+      'id' : `${name}_${this.props.notes.length}`,
+      'textNote' : []
+    }
     this.props.addnewMemorandum(name, note)
   }
 
@@ -305,7 +305,7 @@ class Subjects extends React.Component {
     constructor(props){
         super(props);
         this.state = {
-            data : props.data,
+          data : props.data,
         }
     }
     componentDidMount(){

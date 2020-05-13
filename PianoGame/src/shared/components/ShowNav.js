@@ -1,5 +1,5 @@
 import React from 'react';
-import '../assets/sass/shared/shownav.scss';
+import '../../assets/sass/shared/shownav.scss';
 
 class ShowNav extends React.Component{
     constructor(props){

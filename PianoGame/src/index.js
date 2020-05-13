@@ -1,10 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.scss';
-import * as serviceWorker from './serviceWorker';
 import App from './App';
+import Loading from './shared/components/Loading';
+import { Suspense } from 'react';
+import * as serviceWorker from './serviceWorker';
 import '../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './assets/sass/slick/slick.scss';
+import './index.scss';
+
 
 // Redux Thunk
 import thunkMiddleware from 'redux-thunk';
@@ -17,11 +20,11 @@ import { BrowserRouter } from 'react-router-dom';
 // Single Store
 const loggerMiddleware = createLogger();
 const store = createStore(
-    rootReducer,
-    applyMiddleware(
-        thunkMiddleware,
-        loggerMiddleware
-    )
+  rootReducer,
+  applyMiddleware(
+    thunkMiddleware,
+    loggerMiddleware
+  )
 )
 
 //store.dispatch(fetchPosts('reactjs')).then(() => console.log(store.getState()))
@@ -30,12 +33,14 @@ const store = createStore(
 //It serves as the container for every other route component.
 //
 ReactDOM.render(
+  <Suspense fallback={<Loading />}>
     <Provider store={store}>
-        <BrowserRouter>
-            <App />
-        </BrowserRouter>
-    </Provider>,    
-    document.getElementById('main')
+      <BrowserRouter>
+        <App />
+      </BrowserRouter>
+    </Provider>
+  </Suspense>,
+  document.getElementById('main')
 );
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
