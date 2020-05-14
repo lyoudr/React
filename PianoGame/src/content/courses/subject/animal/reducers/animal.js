@@ -49,29 +49,19 @@ const AnimalData = {
 }
 
 export const animal = (state = AnimalData, action) => {
-  console.log('state is =>', state);
   switch(action.type) {
-    case 'SHOW_CATDETAIL':
+    case 'SWITCH_CATDETAIL':
       const showcats = state.cats.map((cat, index) => {
         if(index === action.id){
-          cat.show = true;
+          cat.show = action.show;
         };
         return cat;
       });
       return Object.assign({}, state, {cats: showcats});
-    case 'NOTSHOW_CATDETAIL':
-      const notshowcats = state.cats.map((cat, index) => {
-        if(index === action.id){
-          cat.show = false;
-        };
-        return cat;
-      });
-      return Object.assign({}, state, {cats: notshowcats});
     default: 
       return state;
   }
 } 
-
 
 /*Notes => Why Redux doesn't re-render component? */
 // should put "state" to return statement to notify "mapStateToProps" to tell component to re-render

@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import Animal from '../presentcomp/Animal';
-import {showCatDetail, notshowCatDetail} from '../../../../../redux/actions/index';
+import {switchCatDetail} from '../../../../../redux/actions/index';
 
 const mapStateToProps = state => {
   return ({
@@ -9,8 +9,7 @@ const mapStateToProps = state => {
 };
 
 const mapDispatchToProps = dispatch => ({
-  showCatDetail: (id) => dispatch(showCatDetail(id)),
-  notshowCatDetail : (id) => dispatch(notshowCatDetail(id))
+  switchCatDetail: (id, show) => dispatch(switchCatDetail(id, show)),
 });
 
 export default connect(

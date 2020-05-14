@@ -335,11 +335,7 @@ export default class Animal extends React.Component {
     }
   }
   handleShow(index, show) {
-    if(show){ 
-      this.props.showCatDetail(index);
-    } else if(!show){
-      this.props.notshowCatDetail(index);
-    }
+    this.props.switchCatDetail(index, show)
   }
   selectCat(name){
     this.setState({selected_cat: name});
