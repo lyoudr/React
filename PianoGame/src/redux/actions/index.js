@@ -23,6 +23,16 @@ export const addNotetoText = (id, text, note) => ({
   note
 });
 
+/* Animal */
+export const showCatDetail = (id) => ({
+  type : 'SHOW_CATDETAIL',
+  id
+});
+export const notshowCatDetail = (id) => ({
+  type : 'NOTSHOW_CATDETAIL',
+  id
+});
+
 /* ShopList */
 export const showShopDetail = id => ({
   type : 'SHOW_SHOPDETAIL',

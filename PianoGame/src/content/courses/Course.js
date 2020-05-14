@@ -2,7 +2,7 @@ import { Route, Link, Switch } from 'react-router-dom';
 import React, {unstable_Profiler as Profiler} from 'react';
 import { BusinessContainer, EconomicsContainer } from './subject/subject/containers/subcontainer';
 import Technology from './subject/technology/technology';
-import { Animal } from './subject/animal/Animal';
+import Animal from './subject/animal/containers/animalContainer';
 import '../../assets/sass/global/global.scss';
 import '../../assets/sass/courses/courses.scss';
 

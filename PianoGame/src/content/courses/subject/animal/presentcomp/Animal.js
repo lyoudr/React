@@ -1,11 +1,11 @@
 import React from 'react';
 // Http Service
-import { HttpRequest } from '../../../../services/http-service/httpService';
-import { Cats, List, catsGrowthData, FoodList, DishesList } from '../Subjectlist';
-import CanvasJSReact from '../../../../assets/canvas/canvasjs.react';
+import { HttpRequest } from '../../../../../services/http-service/httpService';
+import { List, catsGrowthData, FoodList, DishesList } from '../../Subjectlist';
+import CanvasJSReact from '../../../../../assets/canvas/canvasjs.react';
 import { IconContext } from 'react-icons';
 import { FaAngleUp, FaAngleDown, FaSpinner } from 'react-icons/fa';
-import '../../../../assets/sass/courses/subject/subject.scss';
+import '../../../../../assets/sass/courses/subject/subject.scss';
 import jQuery from 'jquery';
 const CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
@@ -53,7 +53,6 @@ class GrowthCurve extends React.Component {
     super(props)
   }
   render() { 
-    console.log('this.props is =>', this.props);
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -288,20 +287,18 @@ const LeftArrow = (props) => {
   );
 }
 
-export class Animal extends React.Component {
+export default class Animal extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      cats: Cats,
+      cats: props.cats,
       selected_cat : "Kitty",
-      showModal: false,
-      catnum: 0
     }
     this.handleShow = this.handleShow.bind(this);
-    this.handleHide = this.handleHide.bind(this);
     this.selectCat = this.selectCat.bind(this);
   }
   componentDidMount() {
+    console.log('this.props is =>', this.props);
     // Detect request animation frame
     var scroll = window.requestAnimationFrame ||
       // IE Fallback
@@ -337,20 +334,19 @@ export class Animal extends React.Component {
       );
     }
   }
-  handleShow(index, event) {
-    console.log('index is =>', index);
-    this.setState({ catnum: index })
-    this.setState({ showModal: true })
-  }
-  handleHide() {
-    this.setState({ showModal: false })
+  handleShow(index, show) {
+    if(show){ 
+      this.props.showCatDetail(index);
+    } else if(!show){
+      this.props.notshowCatDetail(index);
+    }
   }
   selectCat(name){
     this.setState({selected_cat: name});
   }
   render() {
-    let catnum = this.state.catnum;
-    let cats = this.state.cats;
+    const cats = this.state.cats;
+    console.log('cats is =>', cats);
     return (
       <React.Fragment>
         <section className="pats">
@@ -358,38 +354,41 @@ export class Animal extends React.Component {
             <div className="row justify-content-center">
               <div className="col-12">
                 <div className="d-flex flex-wrap">
-                  {this.state.cats.map((eachitem, index) => {
+                  {cats.map((eachitem, index) => {
                     return (
                       <div onClick={this.selectCat.bind(this, eachitem.name)} key={eachitem.name + eachitem.index} className="patscard show-on-scroll">
                         <img className="card-img-top" src={eachitem.imgsrc} alt="Card image cap" />
                         <div className="card-body">
                           <h5 className="card-title">{eachitem.name}</h5>
                           <p className="card-text">{eachitem.describe}</p>
-                          <button onClick={(e) => this.handleShow(index, e)} className="btn btn-primary">Guide</button>
+                          <button onClick={() => this.handleShow(index, true)} className="btn btn-primary">Guide</button>
                         </div>
                       </div>
                     )
                   })}
                 </div>
                 <div id="modal-root">
-                  {this.state.showModal ? (
-                    <div className="modal">
-                      <div className="row align-items-end">
-                        <div className="col">
-                          <p onClick={this.handleHide}>X</p>
+                  {cats.map((cat, index) => {
+                    console.log('cat.show is =>', cat.show);
+                    return(cat.show === true 
+                      ? <div className="modal">
+                          <div className="row align-items-end">
+                            <div className="col">
+                              <p onClick={this.handleShow.bind(this, index, false)}>X</p>
+                            </div>
+                          </div>
+                          <div className="row justify-content-center">
+                            <div className="col-12 col-md-8 text-center">
+                              <h1 className="display-4">{cat.title}</h1>
+                              <blockquote className="blockquote text-center">
+                                <p className="mb-0">{cat.guide}</p>
+                                <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                              </blockquote>
+                            </div>
+                          </div>
                         </div>
-                      </div>
-                      <div className="row justify-content-center">
-                        <div className="col-12 col-md-8 text-center">
-                          <h1 className="display-4">{cats[catnum].title}</h1>
-                          <blockquote className="blockquote text-center">
-                            <p className="mb-0">{cats[catnum].guide}</p>
-                            <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                          </blockquote>
-                        </div>
-                      </div>
-                    </div>
-                  ) : (<div></div>)}
+                      : <div></div>)}
+                  )}
                 </div>
               </div>
             </div>

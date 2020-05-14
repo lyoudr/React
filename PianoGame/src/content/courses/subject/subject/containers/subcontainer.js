@@ -8,7 +8,7 @@ const mapStateToProps = state => ({
 
 const mapDispatchToProps = dispatch => ({
     showSubject: name => {
-        dispatch(showSubject(name))
+        dispatch(showSubject(name));
     },
     showDetail : id => {
         dispatch(showDetail(id));
