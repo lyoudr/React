@@ -28,7 +28,6 @@ class ShopList extends React.Component {
     this.props.dispatch(fetchPosts(searchText));
   }
   render() {
-    console.log('this.props.location.pathname is =>', this.props.location.pathname);
     return (
       <div ref={this.compRef} className="shoplist main">
         <section className="shopselect">

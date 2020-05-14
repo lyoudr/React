@@ -76,7 +76,6 @@ class ShopList extends React.Component {
   chooseSize(size, index) {
     this.setState({ size: size });
     this.sizes.forEach((eachsize, sizeindex) => {
-      console.log('eachsize is =>', eachsize);
       if (sizeindex == index) {
         if (!eachsize.classList.contains('active')) {
           eachsize.classList.add('active');

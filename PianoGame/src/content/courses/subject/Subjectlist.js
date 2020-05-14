@@ -1,11 +1,3 @@
-import meat from '../../../assets/images/meat.jpg';
-import egg from '../../../assets/images/egg.jpg';
-import vagetable from '../../../assets/images/vegetable.jpg'
-import fish from '../../../assets/images/fish.jpg';
-import cheese from '../../../assets/images/cheese.jpg';
-import milk from '../../../assets/images/milk.jpg';
-import mushroom from '../../../assets/images/mushroom.jpg';
-
 // Dish Images
 import bakedsalmon from '../../../assets/images/bakedsalmon.jpg';
 import buffalo from '../../../assets/images/Buffalo.jpg';
@@ -316,44 +308,6 @@ export const catsGrowthData = {
     ]
   },
 }
-
-export const FoodList = [
-  {
-    'type': 'meat',
-    'src': meat,
-    'order': 'First'
-  },
-  {
-    'type': 'egg',
-    'src': egg,
-    'order': 'Second'
-  },
-  {
-    'type': 'vagetable',
-    'src': vagetable,
-    'order': 'Third'
-  },
-  {
-    'type': 'fish',
-    'src': fish,
-    'order': 'Fourth'
-  },
-  {
-    'type': 'cheese',
-    'src': cheese,
-    'order': 'Fifth'
-  },
-  {
-    'type': 'milk',
-    'src': milk,
-    'order': 'Sixth'
-  },
-  {
-    'type': 'mushroom',
-    'src': mushroom,
-    'order': 'Seventh'
-  },
-];
 
 export const DishesList = [
   {

@@ -365,7 +365,6 @@ class PianoGame extends React.Component {
 
   }
   componentWillUnmount() {
-    console.log('destory piano');
     window.removeEventListener('keydown', this.keydown);
     window.removeEventListener('keyup', this.keyup);
   }

@@ -11,13 +11,10 @@ const AddNotetoTextFunc = React.forwardRef((props, ref) => {
 
   const [childnotes, setNotes] = useState([]);
   useEffect(() => {
-    console.log("props.notes is =>", props.notes);
-    console.log('props.elemId is =>', typeof props.elemId);
     if (props.notes && props.elemId) {
       let foundnote = props.notes.find(item => {
         return item.id == props.elemId;
       });
-      console.log('childnotes is =>', foundnote);
       setNotes(foundnote.textNote);
     }
   });
@@ -169,7 +166,6 @@ class EachNotes extends React.Component {
           </div>
           <div ref={this.makenoteRef_listdetail} className="col-6 list_detail">
             {this.state.showmemorandum && notes && notes.map((note, index) => {
-              console.log('note is =>', note);
               if (note.textNote[0]) {
                 let newnote1 = note.content.split(Object.keys(note.textNote[0]))[0];
                 let newnote2 = Object.keys(note.textNote[0]);

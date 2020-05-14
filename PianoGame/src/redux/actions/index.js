@@ -30,6 +30,12 @@ export const switchCatDetail = (id, show) => ({
   show
 });
 
+/* Food */
+export const selectFood = (value) => ({
+  type : 'SELECT_FOOD',
+  value
+});
+
 /* ShopList */
 export const showShopDetail = id => ({
   type : 'SHOW_SHOPDETAIL',
@@ -75,7 +81,6 @@ function receivePosts(searchText, json){
 // Thunk action creator
 export function fetchPosts(searchText){
   return function (dispatch){
-    console.log('searchText is =>', searchText);
     dispatch(requestPosts(searchText))
     const reqBody = {
       method: 'POST',
@@ -90,12 +95,10 @@ export function fetchPosts(searchText){
         error => console.log('An error occurred.', error)
       )
       .then(json => {
-        console.log('received data is =>', json);
         dispatch(receivePosts(searchText, json));
         return searchText;
       })
       .then(searchText => {
-        console.log("res is =>", searchText);
         dispatch(addnewShopdetail(searchText))
       })
   }
@@ -104,9 +107,7 @@ export function fetchPosts(searchText){
 export function addnewShopdetail(searchText) {
   return(dispatch, getState) => {
     const state = getState();
-    console.log('getState is =>', getState());
     const searchResult = state.postsBysearchText[`${searchText}`].items;
-    console.log('searchResult is =>', searchResult);
     return (dispatch(newShopDetail(searchResult)))
   }
 }

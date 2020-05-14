@@ -11,7 +11,6 @@ const ChatRoom = () => {
   const [socket, setSocket] = useState(new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080`, 'echo-protocol'));
 
   useEffect(() => {
-    console.log('init');
     if (document.getElementById(`message${message.length - 1}`)) {
       setTimeout(() =>
         document.getElementById(`message${message.length - 1}`).classList.add('show')
@@ -39,7 +38,6 @@ const ChatRoom = () => {
   });
 
   const sendMessage = () => {
-    console.log('cookie.get(userId) is =>', Cookie.get('userId'));
     socket.send(JSON.stringify({
       nameId: Cookie.get('userId'),
       message: messageRef.current.value

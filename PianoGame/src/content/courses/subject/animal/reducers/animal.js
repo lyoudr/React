@@ -3,6 +3,15 @@ import cat1 from '../../../../../assets/images/cat_1.jpg';
 import cat2 from '../../../../../assets/images/cat_2.jpg';
 import cat3 from '../../../../../assets/images/cat_3.jpg';
 
+// FoodLists
+import meat from '../../../../../assets/images/meat.jpg';
+import egg from '../../../../../assets/images/egg.jpg';
+import vagetable from '../../../../../assets/images/vegetable.jpg'
+import fish from '../../../../../assets/images/fish.jpg';
+import cheese from '../../../../../assets/images/cheese.jpg';
+import milk from '../../../../../assets/images/milk.jpg';
+import mushroom from '../../../../../assets/images/mushroom.jpg';
+
 const AnimalData = {
   cats : [
     {
@@ -45,7 +54,46 @@ const AnimalData = {
       "show": false,
       "guide": "The Abyssinian is a slender, fisne-boned, medium-sized cat. The head is moderately wedge shaped, with a slight break at the muzzle, and nose and chin ideally forming a straight vertical line when viewed in profile. They have alert, relatively large pointed ears."
     },
-  ]
+  ],
+  foodlists: [
+    {
+      'type': 'meat',
+      'src': meat,
+      'order': 'First',
+      'show': true
+    },
+    {
+      'type': 'egg',
+      'src': egg,
+      'order': 'Second'
+    },
+    {
+      'type': 'vagetable',
+      'src': vagetable,
+      'order': 'Third'
+    },
+    {
+      'type': 'fish',
+      'src': fish,
+      'order': 'Fourth'
+    },
+    {
+      'type': 'cheese',
+      'src': cheese,
+      'order': 'Fifth'
+    },
+    {
+      'type': 'milk',
+      'src': milk,
+      'order': 'Sixth'
+    },
+    {
+      'type': 'mushroom',
+      'src': mushroom,
+      'order': 'Seventh'
+    },
+  ],
+  currentIndex : 0
 }
 
 export const animal = (state = AnimalData, action) => {
@@ -58,6 +106,24 @@ export const animal = (state = AnimalData, action) => {
         return cat;
       });
       return Object.assign({}, state, {cats: showcats});
+    case 'SELECT_FOOD' :
+      let newIndex;
+      newIndex = state.currentIndex + action.value;
+      if(newIndex > 6){newIndex = 0};
+      if(newIndex < 0){newIndex = 6};
+      return Object.assign({}, state, {
+        foodlists: state.foodlists.map((food, index) => {
+          const handleFood = (isShow) => {
+            let cloned_food = food;
+            cloned_food.show = isShow;
+            return Object.assign({}, food, cloned_food);
+          }
+          if(index === state.currentIndex) { handleFood(false); }
+          if(index === newIndex){ handleFood(true) };
+          return food;
+        }),
+        currentIndex: newIndex
+      });
     default: 
       return state;
   }

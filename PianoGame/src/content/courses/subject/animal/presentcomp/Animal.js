@@ -1,7 +1,7 @@
 import React from 'react';
 // Http Service
 import { HttpRequest } from '../../../../../services/http-service/httpService';
-import { List, catsGrowthData, FoodList, DishesList } from '../../Subjectlist';
+import { List, catsGrowthData, DishesList } from '../../Subjectlist';
 import CanvasJSReact from '../../../../../assets/canvas/canvasjs.react';
 import { IconContext } from 'react-icons';
 import { FaAngleUp, FaAngleDown, FaSpinner } from 'react-icons/fa';
@@ -52,7 +52,7 @@ class GrowthCurve extends React.Component {
   constructor(props) {
     super(props)
   }
-  render() { 
+  render() {
     return (
       <div className="container">
         <div className="row justify-content-center">
@@ -61,7 +61,7 @@ class GrowthCurve extends React.Component {
             <div>
               {this.props.render(this.props.options)}
             </div>
-            <table class="table table-hover">
+            <table className="table table-hover">
               <thead>
                 <tr>
                   <th scope="col">#</th>
@@ -92,7 +92,7 @@ class Food extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      foodlists: FoodList,
+      foodlists: props.foodlists,
       currentIndex: 0,
       dishes: [],
       disheslists: DishesList
@@ -103,24 +103,10 @@ class Food extends React.Component {
     this.drag = this.drag.bind(this);
   }
   goToPrevSlide = () => {
-    if (this.state.currentIndex === 0) {
-      return this.setState({
-        currentIndex: this.state.foodlists.length - 1,
-      })
-    }
-    this.setState(prevState => ({
-      currentIndex: prevState.currentIndex - 1,
-    }));
+    this.props.selectFood(-1);
   }
   goToNextSlide = () => {
-    if (this.state.currentIndex === this.state.foodlists.length - 1) {
-      return this.setState({
-        currentIndex: 0,
-      })
-    }
-    this.setState(prevState => ({
-      currentIndex: prevState.currentIndex + 1,
-    }));
+    this.props.selectFood(1);
   }
   drag(event) {
     event.dataTransfer.setData("text", event.target.id);
@@ -140,20 +126,18 @@ class Food extends React.Component {
             <div className="d-flex flex-row">
               <div className="selectfood">
                 <LeftArrow goToPrevSlide={this.goToPrevSlide} />
-                {this.state.foodlists.map((image, index) => {
-                  if (this.state.currentIndex == index) {
-                    return (
-                      <div className={(this.state.currentIndex == index ? 'foodactive' : 'foodinactive')} key={index}>
-                        <img id={image.type} src={image.src}
-                          draggable="true"
-                          onDragStart={this.drag.bind(this)}
-                        />
-                      </div>
-                    )
-                  } else {
-                    return (null)
-                  }
-                })}
+                {this.props.foodlists.map((food, index) =>{
+                  return(
+                  food.show 
+                  ? <div className={food.show ? 'foodactive': 'foodinactive'} key={index}>
+                      <img id={food.type} src={food.src}
+                        draggable="true"
+                        onDragStart={this.drag.bind(this)}
+                      />
+                    </div>
+                  : null
+                  )}
+                )}
                 <RightArrow goToNextSlide={this.goToNextSlide} />
               </div>
               <DropArea onDishes={this.onDishes} />
@@ -229,10 +213,8 @@ class DropArea extends React.Component {
       droparea.removeChild(droparea.firstChild);
     }
     this.setState({ loading: true });
-    console.log('this.state.foodspecies is =>', this.state.foodspecies);
     HttpRequest.requesDishes(`${process.env.REACT_APP_HOSTURL}/food`, this.state.foodspecies)
       .then(data => {
-        console.log('returned data is =>', data);
         if (data) {
           this.props.onDishes(data.dishes);
         }
@@ -240,7 +222,6 @@ class DropArea extends React.Component {
     this.setState({ loading: false });
   }
   render() {
-    console.log("re-rendered");
     const loading = this.state.loading;
     //const returneddishes = this.state.dishes;
     const settings = {
@@ -261,7 +242,7 @@ class DropArea extends React.Component {
               null
             )}
         </div>
-        <button type="button" class="btn btn-secondary" onClick={this.submit}>Submit</button>
+        <button type="button" className="btn btn-secondary" onClick={this.submit}>Submit</button>
       </div>
     )
   }
@@ -292,13 +273,12 @@ export default class Animal extends React.Component {
     super(props)
     this.state = {
       cats: props.cats,
-      selected_cat : "Kitty",
+      selected_cat: "Kitty",
     }
     this.handleShow = this.handleShow.bind(this);
     this.selectCat = this.selectCat.bind(this);
   }
   componentDidMount() {
-    console.log('this.props is =>', this.props);
     // Detect request animation frame
     var scroll = window.requestAnimationFrame ||
       // IE Fallback
@@ -337,12 +317,11 @@ export default class Animal extends React.Component {
   handleShow(index, show) {
     this.props.switchCatDetail(index, show)
   }
-  selectCat(name){
-    this.setState({selected_cat: name});
+  selectCat(name) {
+    this.setState({ selected_cat: name });
   }
   render() {
     const cats = this.state.cats;
-    console.log('cats is =>', cats);
     return (
       <React.Fragment>
         <section className="pats">
@@ -364,55 +343,52 @@ export default class Animal extends React.Component {
                   })}
                 </div>
                 <div id="modal-root">
-                  {cats.map((cat, index) => {
-                    console.log('cat.show is =>', cat.show);
-                    return(cat.show === true 
-                      ? <div className="modal">
-                          <div className="row align-items-end">
-                            <div className="col">
-                              <p onClick={this.handleShow.bind(this, index, false)}>X</p>
-                            </div>
-                          </div>
-                          <div className="row justify-content-center">
-                            <div className="col-12 col-md-8 text-center">
-                              <h1 className="display-4">{cat.title}</h1>
-                              <blockquote className="blockquote text-center">
-                                <p className="mb-0">{cat.guide}</p>
-                                <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                              </blockquote>
-                            </div>
+                  {cats.map((cat, index) => cat.show === true
+                    ? <div className="modal" key={cat}>
+                        <div className="row align-items-end">
+                          <div className="col">
+                            <p onClick={this.handleShow.bind(this, index, false)}>X</p>
                           </div>
                         </div>
-                      : <div></div>)}
-                  )}
+                        <div className="row justify-content-center">
+                          <div className="col-12 col-md-8 text-center">
+                            <h1 className="display-4">{cat.title}</h1>
+                            <blockquote className="blockquote text-center">
+                              <p className="mb-0">{cat.guide}</p>
+                              <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
+                            </blockquote>
+                          </div>
+                        </div>
+                      </div>
+                    : <div></div>)}
                 </div>
               </div>
             </div>
           </div>
         </section>
         <section className="growth">
-          {this.state.cats.map((cat, index) => 
+          {this.state.cats.map((cat, index) =>
             this.state.selected_cat === cat.name && cats_components[cat.name]
           )}
         </section>
         <section className="food">
-          <Food />
+          <Food {...this.props}/>
         </section>
       </React.Fragment>
     )
   }
 }
 /* Cat Higher Order Component */
-const withDifferentCat  =  (WrappedComponent, data) => {
+const withDifferentCat = (WrappedComponent, data) => {
   class WithDifferentCat extends React.Component {
-    render(){
-      return(
-        <WrappedComponent 
+    render() {
+      return (
+        <WrappedComponent
           options={data.options} growthlists={data.growthlists}
-          render={growth_data =>(
+          render={growth_data => (
             <CanvasJSChart options={growth_data}
-              onRef={ref => this.chart = ref}/>
-        )}/>
+              onRef={ref => this.chart = ref} />
+          )} />
       )
     }
   }
@@ -423,9 +399,9 @@ const Cathy = withDifferentCat(GrowthCurve, catsGrowthData.Cathy);
 const KiKi = withDifferentCat(GrowthCurve, catsGrowthData.KiKi);
 const WiWi = withDifferentCat(GrowthCurve, catsGrowthData.WiWi);
 const cats_components = {
-  "Kitty" : <Kitty/>,
-  "Cathy" : <Cathy/>,
-  "KiKi" : <KiKi/>,
-  "WiWi" : <WiWi/>
+  "Kitty": <Kitty />,
+  "Cathy": <Cathy />,
+  "KiKi": <KiKi />,
+  "WiWi": <WiWi />
 }
 

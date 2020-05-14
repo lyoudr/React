@@ -70,7 +70,6 @@ export const memorandum = (state = EachSubjectData.businessData['統計'], actio
         }
       });
     case 'ADD_NOTETOTEXT':
-      console.log('action.text is =>', action.text);
       let subject = action.id.split('_')[0];
       EachSubjectData.businessData[subject].forEach(item => {
         if (item.id === action.id) {

@@ -4,7 +4,6 @@ import "../../../assets/sass/shoplist/shoplist.scss";
 const CartCollections = (props) => {
   const [totalcount, setTotalCount] = useState(0);
   useEffect(() => {
-    console.log('init');
     let total = 0;
     props.cartcollection.forEach((item) => {
       total = total + Number(item.detail.price.split('$')[0]);
