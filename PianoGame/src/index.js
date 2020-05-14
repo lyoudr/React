@@ -15,7 +15,7 @@ import { createLogger } from 'redux-logger';
 import { createStore, applyMiddleware } from 'redux';
 import rootReducer from './redux/reducers';
 import { Provider } from 'react-redux';
-import { BrowserRouter } from 'react-router-dom';
+import { HashRouter } from 'react-router-dom';
 
 // Single Store
 const loggerMiddleware = createLogger();
@@ -25,7 +25,7 @@ const store = createStore(
     thunkMiddleware,
     loggerMiddleware
   )
-)
+);
 
 //store.dispatch(fetchPosts('reactjs')).then(() => console.log(store.getState()))
 
@@ -35,9 +35,9 @@ const store = createStore(
 ReactDOM.render(
   <Suspense fallback={<Loading />}>
     <Provider store={store}>
-      <BrowserRouter>
+      <HashRouter>
         <App />
-      </BrowserRouter>
+      </HashRouter>
     </Provider>
   </Suspense>,
   document.getElementById('main')

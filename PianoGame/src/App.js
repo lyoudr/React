@@ -3,6 +3,7 @@ import { Route, Switch, Redirect } from 'react-router-dom';
 import AuthService from './services/auth-service/AuthService';
 import ShowNav from './shared/components/ShowNav';
 import ErrorBoundary from './services/errorboundary-service/ErrorBoundary';
+import Cookie from 'js-cookie';
 import './index.scss';
 
 // Route-based code splitting => Lazy Loading
@@ -12,7 +13,6 @@ const Chat = lazy(() => import('./content/chat/chat'));
 const PianoGame = lazy(() => import('./content/piano-game/PianoGame'));
 const PrintOut = lazy(() => import('./content/print-out/Printout'));
 const Courses = lazy(() => import('./content/courses/Course'));
-const ChatRoom = lazy(() => import('./content/chat/chatroom'));
 const ShopList = lazy(() => import('./content/shop-list/shoplist'));
 const SearchRestaurant = lazy(() => import('./content/search-restaurant/search_restaurant'));
 
@@ -32,7 +32,7 @@ class SecretRoute extends React.Component {
     const Component = this.props.component;
     return (
       <Route render={(props) => (
-        AuthService.isAuthenticated === true
+        AuthService.isAuthenticated === true || Cookie.get('userId')
           ?
           <React.Fragment>
             <Nav
@@ -43,8 +43,8 @@ class SecretRoute extends React.Component {
             <Component {...props} />
           </React.Fragment>
           : <Redirect to={{
-            pathname: '/login',
-            state: { from: props.location }
+              pathname: '/login',
+              state: { from: props.location }
           }} />
       )} />
     )
@@ -60,12 +60,10 @@ class App extends React.Component {
       <ErrorBoundary>
         <Switch>
           <Route path="/login" component={Login} />
-          <SecretRoute exact path="/chat" component={Chat} />
-          <SecretRoute path='/chat/chatroom' component={ChatRoom} />
+          <SecretRoute path="/chat" component={Chat} />
           <SecretRoute path="/pianogame" component={PianoGame} />
           <SecretRoute path="/printout" component={PrintOut} />
           <SecretRoute path="/courses" component={Courses} />
-          <SecretRoute path="/chatroom" component={ChatRoom} />
           <SecretRoute path="/shoplist" component={ShopList} />
           <SecretRoute path="/search-restaurant" component={SearchRestaurant} />
         </Switch>

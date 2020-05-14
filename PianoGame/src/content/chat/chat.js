@@ -1,8 +1,10 @@
-import React, {useState} from 'react';
+import React, {useState, lazy} from 'react';
 import {ChatList} from './chatlist';
 import { HttpRequest } from '../../services/http-service/httpService';
 import useTheme from '../../shared/hooks/useTheme';
 import '../../assets/sass/chat/chat.scss';
+import { Switch, Route, Link } from 'react-router-dom';
+const ChatRoom = lazy(() => import('./chatroom'));
 
 /* PersonalPicture Hook */
 const PersonalPicture = ({setImg}) => {
@@ -164,17 +166,14 @@ class Chat extends React.Component {
       this.postData(this.state.personalinfo, 'savePersonal', '/persondata');
     });
   }
-
   postData(data ,type, url){
     let formData = new FormData();
     formData.append('photo', data);
     HttpRequest[`${type}`](`${process.env.REACT_APP_HOSTURL}${url}`, type === 'uploadImg' ? formData : data)
       .then(data => {
-        console.log('returned response is =>',data);
-        this.props.history.push('/chatroom');
+        this.props.history.push('/chat/chatroom');
       });
   }
-
   render(){
     return(
       <div ref={this.compRef} className ="chat main">
@@ -197,6 +196,9 @@ class Chat extends React.Component {
             </div>
           </div>
         </section>
+        <Switch>
+          <Route path='/chat/chatroom' component={ChatRoom} />
+        </Switch>
       </div>
     )
   }
