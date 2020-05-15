@@ -59,7 +59,6 @@ export const newShopDetail = shoplists => ({
 /* fetch the posts */
 // By using specific middleware "Redux Thunk middleware", an action creator can return a funciton instead of an action object.
 // This way, the action creator becomes a "thunk".
-
 export const REQUEST_POSTS = 'REQUEST_POSTS';
 function requestPosts(searchText){
   return {
@@ -67,7 +66,6 @@ function requestPosts(searchText){
     searchText
   }
 }
-
 export const RECEIVE_POSTS = 'RECEIVE_POSTS';
 function receivePosts(searchText, json){
   return{
@@ -77,7 +75,6 @@ function receivePosts(searchText, json){
     receivedAt: Date.now()
   }
 }
-
 // Thunk action creator
 export function fetchPosts(searchText){
   return function (dispatch){
@@ -103,7 +100,6 @@ export function fetchPosts(searchText){
       })
   }
 }
-
 export function addnewShopdetail(searchText) {
   return(dispatch, getState) => {
     const state = getState();
@@ -122,5 +118,61 @@ export const deleteItem = (itemId) => ({
 export const showSopDetailaction = (id) => {
   return function (dispatch){
     dispatch(showShopDetail(id));
+  }
+}
+
+/* Another Fetch */
+// Request contacts
+function requestContacts(personId) {
+  return {
+    type : 'REQUEST_CONTACTS',
+    personId
+  }
+}
+// Receive contacts
+function receiveContacts(personId, json){
+  console.log('json is =>', json);
+  return{
+    type : 'RECEIVE_CONTACTS',
+    personId,
+    contacts: json,
+    receivedAt : Date.now()
+  }
+}
+// Fetch Posts
+function fetchContactsPosts(personId){
+  return (dispatch, getState) => {
+    dispatch(requestContacts(personId))
+      const url = new URL(`${process.env.REACT_APP_HOSTURL}/chat`);
+      const params = {personId : personId};
+      Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+      return fetch(url)
+        .then(res => res.json())
+        .then(json => {
+          console.log('json is =>', json);
+          dispatch(receiveContacts(personId, json));
+          return Promise.resolve(getState());
+        })
+  }
+}
+// Should Fetch Posts 
+function shouldFetchPosts(state, personId){
+  const contactInfo = state.postsByPersonId[personId];
+  if(!contactInfo){
+    return true;
+  }else if(contactInfo.isFetching){
+    return false;
+  }else{
+    return contactInfo.didInvalidate;
+  }
+}
+// Fetch Posts If Needed
+export function fetchPostsIfNeeded(personId){
+  return (dispatch, getState) =>{
+    if(shouldFetchPosts(getState(), personId)){
+      return dispatch(fetchContactsPosts(personId));
+    } else {
+      return Promise.resolve(getState());
+    }
   }
 }

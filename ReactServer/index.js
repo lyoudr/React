@@ -25,7 +25,7 @@ app.use(bodyParser.json());
 // CORS
 app.use(cors());
 
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
 });
 
@@ -87,6 +87,10 @@ app.post('/persondata', (req, res) => {
     res.end();
 });
 
+app.get('/chat', (req, res) => {
+    console.log('req is =>', req.query.personId);
+    res.json([{'name': 'John'}, {'name': 'Judy'},{'name': 'Mark'}]);
+});
 
 // Post path to count shortest path
 app.post('/shortestpath', (req, res) => {
@@ -104,55 +108,55 @@ app.post('/shoplists', (req, res) => {
     res.json({'status': '200', 'data': [
         {
             id : 'tshirt_1',
-            imgsrc : '../../assets/images/T_shirt_1.jpg',
+            imgsrc : '../../../assets/images/T_shirt_1.jpg',
             itemname: 'T_shirt_1',
             isDetail : false,
             detail : {
-                img : '../../assets/images/T_shirt_1.jpg',
+                img : '../../../assets/images/T_shirt_1.jpg',
                 explain : 'A T-shirt is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally it has short sleeves and a round neckline, known as a crew neck, which lacks a collar. T-shirts are generally made of a stretchy, light and inexpensive fabric and are easy to clean.',
                 price : '300$'
             }
         },
         {
             id : 'tshirt_2',
-            imgsrc : '../../assets/images/T_shirt_2.jpg',
+            imgsrc : '../../../assets/images/T_shirt_2.jpg',
             itemname: 'T_shirt_2',
             isDetail : false,
             detail : {
-              img : '../../assets/images/T_shirt_2.jpg',
+              img : '../../../assets/images/T_shirt_2.jpg',
               explain : 'Typically made of cotton textile in a stockinette or jersey knit, it has a distinctively pliable texture compared to shirts made of woven cloth. Some modern versions have a body made from a continuously knitted tube, produced on a circular knitting machine, such that the torso has no side seams. The manufacture of T-shirts has become highly automated and may include cutting fabric with a laser or a water jet.',
               price : '200$'
             }
         },
         {
             id : 'tshirt_3',
-            imgsrc : '../../assets/images/T_shirt_3.jpg',
+            imgsrc : '../../../assets/images/T_shirt_3.jpg',
             itemname: 'T_shirt_3',
             isDetail : false,
             detail : {
-              img : '../../assets/images/T_shirt_3.jpg',
+              img : '../../../assets/images/T_shirt_3.jpg',
               explain : 'A V-neck T-shirt has a V-shaped neckline, as opposed to the round neckline of the more common crew neck shirt (also called a U-neck). V-necks were introduced so that the neckline of the shirt does not show when worn beneath an outer shirt, as would that of a crew neck shirt.',
               price : '100$'
             }
         },
         {
             id : 'tshirt_4',
-            imgsrc : '../../assets/images/T_shirt_4.jpg',
+            imgsrc : '../../../assets/images/T_shirt_4.jpg',
             itemname: 'T_shirt_4',
             isDetail : false,
             detail : {
-              img : '../../assets/images/T_shirt_4.jpg',
+              img : '../../../assets/images/T_shirt_4.jpg',
               explain : 'The T-shirt evolved from undergarments used in the 19th century. First, the one-piece union suit underwear was cut into separate top and bottom garments, with the top long enough to tuck under the waistband of the bottoms. With and without buttons, they were adopted by miners and stevedores during the late 19th century as a convenient covering for hot environments.',
               price : '400$'
             }
         },
         {
             id : 'tshirt_5',
-            imgsrc : '../../assets/images/T_shirt_5.jpg',
+            imgsrc : '../../../assets/images/T_shirt_5.jpg',
             itemname: 'T_shirt_5',
             isDetail : false,
             detail : {
-              img : '../../assets/images/T_shirt_5.jpg',
+              img : '../../../assets/images/T_shirt_5.jpg',
               explain : 'Current versions are available in many different designs and fabrics, and styles include crew-neck and V-neck shirts. T-shirts are among the most worn garments of clothing used today. T-shirts are especially popular with branding for companies or merchandise, as they are inexpensive to make and purchase.',
               price : '500$'
             }

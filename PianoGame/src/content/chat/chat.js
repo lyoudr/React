@@ -4,7 +4,7 @@ import { HttpRequest } from '../../services/http-service/httpService';
 import useTheme from '../../shared/hooks/useTheme';
 import '../../assets/sass/chat/chat.scss';
 import { Switch, Route, Link } from 'react-router-dom';
-const ChatRoom = lazy(() => import('./chatroom'));
+import ChatRoom from './container/chatrommcontainer';
 
 /* PersonalPicture Hook */
 const PersonalPicture = ({ setImg }) => {

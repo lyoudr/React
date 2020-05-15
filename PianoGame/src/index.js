@@ -22,8 +22,8 @@ const loggerMiddleware = createLogger();
 const store = createStore(
   rootReducer,
   applyMiddleware(
-    thunkMiddleware,
-    loggerMiddleware
+    thunkMiddleware, // let us dispatch() functions, Asyncronous middleware like redux-thunk wraps the stores dispatch() method and allows you to dispatch something other than actions,
+    loggerMiddleware // neat middleware that logs actions
   )
 );
 
