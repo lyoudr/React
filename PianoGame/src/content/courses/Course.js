@@ -3,6 +3,10 @@ import React, { unstable_Profiler as Profiler } from 'react';
 import { BusinessContainer, EconomicsContainer } from './subject/subject/containers/subcontainer';
 import Technology from './subject/technology/technology';
 import Animal from './subject/animal/containers/animalContainer';
+import bookmark from '../../assets/icon/icons8-bookmark.svg';
+import calendar from '../../assets/icon/icons8-calendar.svg';
+import about from '../../assets/icon/icons8-about.svg';
+import plus from '../../assets/icon/icons8-plus.svg';
 import '../../assets/sass/global/global.scss';
 import '../../assets/sass/courses/courses.scss';
 
@@ -20,10 +24,22 @@ const Courses = ({ match }) => {
     <Profiler id="course" onRender={estimatePerformance}>
       <div className="courses main">
         <nav>
-          <Link to='/courses/technology'>Technology</Link>
-          <Link to='/courses/business'>Business</Link>
-          <Link to='/courses/economics'>Economics</Link>
-          <Link to='/courses/animal'>Animal</Link>
+          <Link to='/courses/technology'>
+            <span className="subject">Technology</span>
+            <img className='icon' src={bookmark}/>
+          </Link>
+          <Link to='/courses/business'>
+            <span className="subject">Business</span>
+            <img className='icon' src={calendar}/>
+          </Link>
+          <Link to='/courses/economics'>
+            <span className="subject">Economics</span>
+            <img className='icon' src={about}/>
+          </Link>
+          <Link to='/courses/animal'>
+            <span className="subject">Animal</span>
+            <img className='icon' src={plus}/>
+          </Link>
         </nav>
         <Switch>
           <Route exact path='/courses/technology' component={Technology} />

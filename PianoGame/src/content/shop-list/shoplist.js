@@ -8,13 +8,20 @@ import '../../assets/sass/shoplist/shoplist.scss';
 // Lazy load cartcollections
 const CartCollections = lazy(() => import('./containers/CartContainer'));
 
-class ShopList extends React.Component {
+class ShopList extends React.PureComponent {
   constructor(props) {
     super(props)
     this.searchRef = React.createRef();
     this.compRef = React.createRef();
     this.searchItem = this.searchItem.bind(this);
   }
+  /* Avoid Reconciliation => Optimizing Performance */
+  // shouldComponentUpdate(nextProps, nextState){
+  //   if(this.props.cart !== nextProps.cart || this.props.postsBysearchText !== nextProps.postsBysearchText){
+  //     return true; // if return true, react will re-render component and update DOM.
+  //   }
+  //   return false; // if return false, react won't re-render component and update DOM.
+  // }
   componentDidUpdate() {
     if (this.props.fullComp == true) {
       this.compRef.current.classList.add('fullComp');
@@ -28,6 +35,7 @@ class ShopList extends React.Component {
     this.props.dispatch(fetchPosts(searchText));
   }
   render() {
+    console.log('render');
     return (
       <div ref={this.compRef} className="shoplist main">
         <section className="shopselect">

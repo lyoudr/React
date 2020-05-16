@@ -1,6 +1,7 @@
 import React from 'react';
 import { HttpRequest } from '../../../../services/http-service/httpService';
-
+import search from '../../../../assets/icon/icons8-search-w.svg';
+import instagram from '../../../../assets/icon/icons8-instagram-old-w.svg';
 
 class Map extends React.Component {
   constructor(props) {
@@ -104,8 +105,14 @@ class Map extends React.Component {
             )}
           </div>
           <div className="btn_group">
-            <button onClick={this.analyzeRoute} type="button" className="btn btn-secondary">Analyze</button>
-            <button onClick={this.resetRoute} type="button" className="btn btn-secondary">Reset</button>
+            <button onClick={this.analyzeRoute} type="button" className="btn btn-secondary">
+              <span className="title">Analyze</span>
+              <img className="icon" src={search}></img>
+            </button>
+            <button onClick={this.resetRoute} type="button" className="btn btn-secondary">
+              <span className="title">Reset</span>
+              <img className="icon" src={instagram}></img>
+            </button>
           </div>
         </div>
         <div className="col-9 text-center">

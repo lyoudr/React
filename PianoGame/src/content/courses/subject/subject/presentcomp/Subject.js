@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { EachSubjectData } from '../../Subjectlist';
-
+import defaultImg from '../../../../../assets/images/subject_default.jpeg';
 import '../../../../../assets/sass/courses/subject/subject.scss';
 import jQuery from 'jquery';
 
@@ -13,7 +13,7 @@ const AddNotetoTextFunc = React.forwardRef((props, ref) => {
   useEffect(() => {
     if (props.notes && props.elemId) {
       let foundnote = props.notes.find(item => {
-        return item.id == props.elemId;
+        return item.id === props.elemId;
       });
       setNotes(foundnote.textNote);
     }
@@ -45,7 +45,7 @@ const AddNotetoTextFunc = React.forwardRef((props, ref) => {
       <div className="eachnote">
         {childnotes.length && childnotes.map(note =>
           <React.Fragment>
-            <div>
+            <div key={note}>
               <p>{Object.keys(note)[0]}</p>
               <p>{note[Object.keys(note)[0]]}</p>
             </div>
@@ -158,7 +158,7 @@ class EachNotes extends React.Component {
             </div>
             <div>
               {notes && notes.map((note, index) =>
-                <div onClick={this.showmemorandumFunc.bind(this, `${name}_${index}`)}>
+                <div key={note} onClick={this.showmemorandumFunc.bind(this, `${name}_${index}`)}>
                   <p>{note.title}</p>
                 </div>
               )}
@@ -171,7 +171,7 @@ class EachNotes extends React.Component {
                 let newnote2 = Object.keys(note.textNote[0]);
                 let newnote3 = note.content.split(Object.keys(note.textNote[0]))[1];
                 return note.showdetail ?
-                  <p ref={elem => this.detailRef = elem} key={index}>
+                  <p ref={elem => this.detailRef = elem} key={`${note}-${index}`}>
                     {newnote1}
                     <span
                       style={{ textDecoration: 'underline' }}
@@ -245,9 +245,9 @@ class EachSubject extends React.Component {
           <div className="container">
             <div className="row">
               <div className="col-12">
-                <ul>
+                <ul className="subjects">
                   {this.state.data.map((eachitem) => (
-                    <li onClick={() => this.chooseItem(eachitem)} key={eachitem.name}>
+                    <li className="subject" onClick={() => this.chooseItem(eachitem)} key={eachitem.name}>
                       <span>{eachitem.name}</span>
                     </li>
                   ))}
@@ -286,11 +286,11 @@ class SubjectDetail extends React.Component {
     const subdetail = this.props.subdetail;
     return (
       <React.Fragment>
-        <div className="col-6 picture">
-          <img src={subdetail.img} alt='img' className='inline-photo show-on-scroll' />
+        <div className="col-12 col-md-6 picture">
+          <img src={subdetail.img? subdetail.img : defaultImg} alt='img' className='inline-photo show-on-scroll' />
         </div>
-        <div className="col-6 describe">
-          <p>{subdetail.application}</p>
+        <div className="col-12 col-md-6 describe">
+          <p className="content">{subdetail.application}</p>
         </div>
       </React.Fragment>
     )

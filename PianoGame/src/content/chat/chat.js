@@ -29,7 +29,7 @@ const PersonalPicture = ({ setImg }) => {
   }
 
   return (
-    <div className={`col-12 text-center picture ${theme}`} onClick={selectImg}>
+    <div className={`col-5 col-md-3 text-center picture ${theme}`} onClick={selectImg}>
       {imgurl ?
         (<img src={imgurl} alt="..." className="img-fluid" />) :
         (<img src={chatlist[0].src} alt="..." className="img-fluid" />)
@@ -96,31 +96,31 @@ class PersonalInfo extends React.Component {
         </div>
         <div className="form-group row justify-content-start checkbox">
           <label className="col-sm-2 col-3 col-form-label text-center">Gender</label>
-          <div className="col-sm-9 col-9">
+          <div className="col-sm-9 col-9 gender_choice">
             <div>
               <input type="checkbox" name="gender" checked={this.state.form.gender === 'girl'} value="girl" onChange={this.handleInputChange} />
-              <label>Girl</label>
+              <label className="sex">Girl</label>
             </div>
             <div>
               <input type="checkbox" name="gender" checked={this.state.form.gender === 'boy'} value="boy" onChange={this.handleInputChange} />
-              <label>Boy</label>
+              <label className="sex">Boy</label>
             </div>
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-sm-2 col-3 sol-form-label text-center">Job</label>
+          <label className="col-sm-2 col-3 col-form-label text-center">Job</label>
           <div className="col-sm-9 col-9">
             <input className="form-control" name="job" type="text" onChange={this.handleInputChange} />
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-sm-2 col-3 sol-form-label text-center">Hobby</label>
+          <label className="col-sm-2 col-3 col-form-label text-center">Hobby</label>
           <div className="col-sm-9 col-9">
             <input className="form-control" name="hobby" type="text" onChange={this.handleInputChange} />
           </div>
         </div>
         <div className="form-group row">
-          <label className="col-sm-2 col-3 sol-form-label text-center">Guide</label>
+          <label className="col-sm-2 col-3 col-form-label text-center">Guide</label>
           <div className="col-sm-9 col-9">
             <textarea className="form-control" name="guide" rows="5" onChange={this.handleInputChange} />
           </div>
@@ -182,8 +182,9 @@ class Chat extends React.Component {
               <PersonalPicture setImg={this.setImg} />
             </div>
             <div className="row justify-content-center">
-              <div className="col-12 ptinfo">
-                <form>
+              <div className="col-12">
+                <p className="notify">Please upload your profile, and enter your basic info. After you filling out the form, please click "Submit" to enter to chat room.</p>
+                <form className="personalInfo">
                   <PersonalInfo ref={this.personalInfoRef} />
                 </form>
               </div>

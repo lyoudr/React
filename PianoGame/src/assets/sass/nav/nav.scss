@@ -2,7 +2,7 @@ aside{
     z-index: 2;
     width : 25%;
     float : left;
-    padding: 3em 3em 40px 3em;
+    padding: 0.8rem;
     position : fixed;
     bottom: 0;
     top: 0;
@@ -31,8 +31,10 @@ aside{
         }
         >div{
             >li{
+                text-align: center;
                 >a{
                     color: rgb(66, 65, 65);
+                    font-size: 18px;
                     text-decoration: none;
                     padding : 10px 0;
                     transition: all .3s ease;

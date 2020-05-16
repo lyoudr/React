@@ -15,11 +15,35 @@
     position: fixed;
     height: 50%;
     width: 50%;
-    top: 25%;
-    left: 25%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    @media screen and (max-width: 600px){
+        width: 60%;
+        left: calc((100vw - 60%)/2);
+    }
+    top: calc((100vh - 50%)/2);
+    left: calc((100vw - 50%)/2);
+    display: block;
+    padding: 0.5rem 1rem;
+    box-shadow: 0px 0px 6px -2px #555;
+    .title{
+        text-align: center;
+        .close{
+            float: right;
+            cursor: pointer;
+            font-size: 20px;
+        }
+    }
+    .content{
+        margin-top: 25px;
+        font-size: 16px;
+        letter-spacing: 1px;
+        color: rgb(141, 140, 140);
+        text-indent: 2rem;
+    }
+    footer{
+        position: absolute;
+        bottom: 0.5rem;
+        right: 1rem;
+    }
 }
 
 section{
@@ -28,9 +52,25 @@ section{
             >.row{
                 >div{
                     >ul{
+                        margin: 0;
+                        padding: 0;
+                        display: flex;
+                        @media screen and (min-width: 200px) {
+                            justify-content: space-between;
+                        }
+                        @media screen and (min-width: 600px){
+                            justify-content: center;
+                        }
                         >li{
                             list-style: none;
                             cursor: pointer;
+                            width: 20%;
+                            font-size: 18px;
+                            text-align: center;
+                            color: #555;
+                            padding: 5px;
+                            border-bottom: 1px solid #e0e0e0;
+                            margin: 0 10px;
                         }
                     }
                 }
@@ -61,7 +101,15 @@ section{
                     }
                 }
                 >.describe{
-
+                    padding: 2rem;
+                    height: fit-content;
+                    .content{
+                        font-size: 15px;
+                        color: #555;
+                        text-indent: 1.5rem;
+                        line-height: 2;
+                        letter-spacing: 0.5px;
+                    }
                 }
             }
         }
@@ -207,16 +255,16 @@ section{
 section {
     padding: 2rem 0.5rem;
     &.pats{
-        @media screen and (max-width: 600px){
-            width: 88%;
-            float: right;
-        }
+        width: 100%;
         >.container{
             >.row{
                 >div{
                     >div{
                         >.patscard{
-                            max-width: 45%;
+                            width: 45%;
+                            @media screen and (max-width: 600px){
+                                width: 100%;
+                            }
                             margin : 30px 5px;
                             margin-top: 100px;
                             opacity: 0;

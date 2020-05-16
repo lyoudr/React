@@ -1,38 +1,46 @@
 .chat{
-    @media screen and (max-width: 600px){
-        width: 88%;
-        float: right;
-    }
-    section{
-        &.chatarea{
-            padding: 2rem;
-            >div{
-                >div{
-                    >.picture{
-                        >input{
-                            display: none;
-                        }
-                        >img{
-                            width: 30%;
-                            border-radius: 50%;
-                        }
-                    }
-                    >.personaldata{
-                        >form{
-                            >.checkbox{
-                                >div{
-                                    >div{
-                                        display: inline-block;
-                                        &:nth-child(2){
-                                            margin-left: 4%;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+  font-family: sans-serif;
+  color: #555;
+  @media screen and (max-width: 600px){
+      width: 100%;
+      float: right;
+  }
+  section{
+    &.chatarea{
+      padding: 1rem;
+      .picture{
+        padding: 1rem;
+        >input{
+            display: none;
         }
+        >img{
+            cursor: pointer;
+            border-radius: 50%;
+        }
+      }
+      .notify{
+        font-size: 16px;
+        margin: 0 auto 1rem auto;
+        width: 95%;
+      }
+      .personalInfo{
+        .checkbox{
+          .gender_choice{
+            display: flex;
+            align-items: center;
+            .sex{
+              margin-left: 10px;
+              font-size: 18px;
+            }
+            >div{
+              display: inline-block;
+              &:nth-child(2){
+                margin-left: 4%;
+              }
+            }
+          }
+        }
+      }
     }
+  }
 }

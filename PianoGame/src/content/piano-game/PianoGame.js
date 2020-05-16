@@ -71,14 +71,15 @@ class RateArea extends React.Component {
   }
   render() {
     return (
-      <header className="col-12 col-s-12" style={{ textAlign: 'center' }}>
-        <h1 style={{ textAlign: 'center' }}>Use your keyboard. Hover for hints.</h1>
-        <h2>Show Piano</h2>
-        <h3 id="MusicRateArea" style={{ display: 'flex' }}>
-          <p style={{ marginTop: '3%', fontSize: '34px' }}> Music Rate:</p>
+      <header className="col-12 col-s-12">
+        <p className="title">Use your keyboard.</p> 
+        <p className="title">Hover for hints.</p>
+        <p className="title">Show Piano</p>
+        <div id="MusicRateArea" className="musicrate_area">
+          <p className="music_rate"> Music Rate</p>
           <input value={this.state.rateValue} onChange={this.updaterateValue.bind(this)} type="text" placeholder="60 ~ 190" />
-          <button className="button button5" onClick={() => { this.props.handleMusicRate(this.state.rateValue) }}>Enter</button>
-        </h3>
+          <button className="rate_btn" onClick={() => { this.props.handleMusicRate(this.state.rateValue) }}>Enter</button>
+        </div>
       </header>
     )
   }

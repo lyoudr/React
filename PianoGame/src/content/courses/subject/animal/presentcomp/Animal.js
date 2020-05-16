@@ -126,17 +126,18 @@ class Food extends React.Component {
             <div className="d-flex flex-row">
               <div className="selectfood">
                 <LeftArrow goToPrevSlide={this.goToPrevSlide} />
-                {this.props.foodlists.map((food, index) =>{
-                  return(
-                  food.show 
-                  ? <div className={food.show ? 'foodactive': 'foodinactive'} key={index}>
-                      <img id={food.type} src={food.src}
-                        draggable="true"
-                        onDragStart={this.drag.bind(this)}
-                      />
-                    </div>
-                  : null
-                  )}
+                {this.props.foodlists.map((food, index) => {
+                  return (
+                    food.show
+                      ? <div className={food.show ? 'foodactive' : 'foodinactive'} key={`${food}-${index}`}>
+                        <img id={food.type} src={food.src}
+                          draggable="true"
+                          onDragStart={this.drag.bind(this)}
+                        />
+                      </div>
+                      : null
+                  )
+                }
                 )}
                 <RightArrow goToNextSlide={this.goToNextSlide} />
               </div>
@@ -148,7 +149,7 @@ class Food extends React.Component {
                 <React.Fragment>
                   {this.state.dishes.map((eachitem, index) => {
                     return (
-                      <div data-index={index} key={index}>
+                      <div data-index={index} key={`${eachitem}-${index}`}>
                         <h5>{disheslists[`${eachitem.match(/\d+/)[0]}`].name}</h5>
                         <div className="text-center">
                           <img src={disheslists[`${eachitem.match(/\d+/)[0]}`].src} />
@@ -342,26 +343,21 @@ export default class Animal extends React.Component {
                     )
                   })}
                 </div>
-                <div id="modal-root">
                   {cats.map((cat, index) => cat.show === true
-                    ? <div className="modal" key={cat}>
-                        <div className="row align-items-end">
-                          <div className="col">
-                            <p onClick={this.handleShow.bind(this, index, false)}>X</p>
-                          </div>
+                    ?
+                      <>
+                        <div className={`dimScreen active`}>
+                        </div> 
+                        <div className="modal" key={cat}>
+                          <p className="title">
+                            {cat.title}
+                            <span className="close" onClick={this.handleShow.bind(this, index, false)}>X</span>
+                          </p>
+                          <p className="content">{cat.guide}</p>
+                          <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
                         </div>
-                        <div className="row justify-content-center">
-                          <div className="col-12 col-md-8 text-center">
-                            <h1 className="display-4">{cat.title}</h1>
-                            <blockquote className="blockquote text-center">
-                              <p className="mb-0">{cat.guide}</p>
-                              <footer className="blockquote-footer">Someone famous in <cite title="Source Title">Source Title</cite></footer>
-                            </blockquote>
-                          </div>
-                        </div>
-                      </div>
+                      </>
                     : <div></div>)}
-                </div>
               </div>
             </div>
           </div>
@@ -372,7 +368,7 @@ export default class Animal extends React.Component {
           )}
         </section>
         <section className="food">
-          <Food {...this.props}/>
+          <Food {...this.props} />
         </section>
       </React.Fragment>
     )

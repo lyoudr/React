@@ -3,20 +3,47 @@
   }
   .pianogame{
     header{
-        left: 10%;
+        .title {
+            color:black;
+            font-size:26px;
+            font-style: italic;
+            font-weight: 400; 
+            margin: 0;
+            text-align: center;  
+        }
+        .musicrate_area{
+            color:black;
+            font-size:20px;
+            font-style: italic;
+            font-weight: 400; 
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            .music_rate{
+                margin: 0;
+            }
+            >input{
+                height:30px;
+                margin-left:10px;
+                outline: 0;
+                border-width: 0 0 1px;
+                border-color: #555;
+                &:focus{
+                    border-color: blue;
+                }
+            }
+            .rate_btn{
+                margin-left:10px;
+                border: none;
+                background-color: rgb(149, 163, 149);
+                color: #fff;
+                border-radius: 4px;
+                font-size: 16px;
+            }
+        }
     }
-    h1{
-        color:black;
-        font-size:40px;
-        font-style: italic;
-        font-weight: 400;   
-    }
-    h2 {
-        color:black;
-        font-size: 40px;
-        font-weight: 400;
-        cursor: pointer;
-    }
+    
     input{
       width:15%;
       margin-left: 0;

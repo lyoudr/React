@@ -104,7 +104,7 @@ class Search_Restaurant extends React.Component{
           {this.state.rankResType.map((type, index) => {
             return(
               <div 
-                key = {index} 
+                key = {type} 
                 className={type.className} 
                 onClick={this.rankRestaurant.bind(this, `${type.type}`)}
               >
@@ -119,7 +119,7 @@ class Search_Restaurant extends React.Component{
               {this.state.restaurant_lists.map((restaurant, index) => {
                 return(
                   <div
-                    key = {index}
+                    key = {restaurant}
                     onClick = {this.chooseRestaurant.bind(this, restaurant)} 
                     id = {restaurant.isChoosed ? 'choosedRes': null} 
                     className={restaurant.isChoosed ? 'active': ''}

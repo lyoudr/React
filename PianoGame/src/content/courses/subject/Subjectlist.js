@@ -18,7 +18,7 @@ export const EachSubjectData = {
     },
     {
       "name": "Math",
-      "application": "Calculate and 統計 for 經濟",
+      "application": "Calculate and Statistic for 經濟",
       "url": '/math'
     },
     {
@@ -29,43 +29,43 @@ export const EachSubjectData = {
   ],
   businessData: [
     {
-      "name": "統計",
-      "application": "可用於商業統計",
+      "name": "Statistic",
+      "application": "A statistic (singular) or sample statistic is any quantity computed from values in a sample, often the mean. Technically speaking, a statistic can be calculated by applying any mathematical function to the values found in a sample of data.",
       "url": '/statistics',
       'img': business1,
       'notes': [
-        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: '統計_0' },
-        { 'title': 'Node JS', 'content': 'It is very interesting', 'date': '2019.11.20', id: '統計_1' },
-        { 'title': 'Angular', 'content': 'It is very interesting', 'date': '2019.11.05', id: '統計_2' }
+        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'Statistic_0' },
+        { 'title': 'Node JS', 'content': 'It is very interesting', 'date': '2019.11.20', id: 'Statistic_1' },
+        { 'title': 'Angular', 'content': 'It is very interesting', 'date': '2019.11.05', id: 'Statistic_2' }
       ]
     },
     {
-      "name": "commercial",
-      "application": "用於廣告",
-      "url": '/commercial',
+      "name": "Commercial",
+      "application": "Commercial may refer to Advertising, paid messages in newspapers, magazines, flyers, billboards, and paid announcements over radio and television",
+      "url": '/Commercial',
       'img': business2,
       'notes': [
-        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'commercial_0' },
-        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'commercial_1' },
-        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'commercial_2' }
+        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'Commercial_0' },
+        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'Commercial_1' },
+        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'Commercial_2' }
       ]
     },
     {
-      "name": "股票",
-      "application": "用於交易",
+      "name": "Stock",
+      "application": "Stock (also capital stock) of a corporation, is all of the shares into which ownership of the corporation is divided.",
       "url": '/stock',
       'img': business3,
       'notes': [
-        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: '股票_0' },
-        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: '股票_1' },
-        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: '股票_2' }
+        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'Stock_0' },
+        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'Stock_1' },
+        { 'title': 'I write JavaScript today', 'content': 'It is very interesting', 'date': '2019.12.03', id: 'Stock_2' }
       ]
     }
   ],
   economicsData: [
     {
       "name": "Fishery",
-      "application": "Fishing",
+      "application": "Fishing is the activity of trying to catch fish. Fish are normally caught in the wild. Techniques for catching fish include hand gathering, spearing, netting, angling and trapping. “Fishing” may include catching aquatic animals other than fish, such as molluscs, cephalopods, crustaceans, and echinoderms.",
       "url": '/fish',
       'img': business1,
       'notes': [
@@ -76,7 +76,7 @@ export const EachSubjectData = {
     },
     {
       "name": "Geology",
-      "application": "Calculate the height of ground",
+      "application": "Geology describes the structure of the Earth on and beneath its surface, and the processes that have shaped that structure. It also provides tools to determine the relative and absolute ages of rocks found in a given location, and also to describe the histories of those rocks.[3] By combining these tools, geologists are able to chronicle the geological history of the Earth as a whole, and also to demonstrate the age of the Earth.",
       "url": '/geology',
       'img': business2,
       'notes': [
@@ -87,7 +87,7 @@ export const EachSubjectData = {
     },
     {
       "name": "legal",
-      "application": "To be a lawer",
+      "application": "Law is commonly understood as a system of rules that are created and enforced through social or governmental institutions to regulate conduct,[2] although its precise definition is a matter of longstanding debate. It has been variously described as a science and the art of justice.",
       "url": '/legal',
       'img': business3,
       'notes': [

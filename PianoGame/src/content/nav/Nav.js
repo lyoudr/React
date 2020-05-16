@@ -47,7 +47,7 @@ class Nav extends React.Component {
       { link: '/chat', name: 'Chat' },
       { link: '/courses', name: 'Courses' },
       { link: '/shoplist', name: 'ShopList' },
-      { link: '/search-restaurant', name: 'SearchRestaurant' },
+      { link: '/search-restaurant', name: 'Restaurant' },
     ]
     return (
       <React.Fragment>

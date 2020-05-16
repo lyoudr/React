@@ -19,7 +19,7 @@ class Cart extends React.Component {
           this.props.color,
           this.props.size)}>
           Add To Cart
-                </button>
+        </button>
       </div>
     )
   }

@@ -60,7 +60,7 @@ const ChatRoom = (props) => {
             <div className="col-8 chat_area">
               <div className="message_area">
                 {message.map(((eachmsg, index) =>
-                  <div className={
+                  <div key={eachmsg} className={
                     eachmsg.nameId === Cookie.get('userId') ?
                       `message right ${oriClass}` :
                       `message lef ${oriClass}`}
