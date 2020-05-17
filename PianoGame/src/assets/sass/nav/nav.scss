@@ -22,6 +22,20 @@ aside{
     &.hide{
         margin-left: -2000px;
     }
+    &.friend{
+        transition : all .5s ease;
+        @media screen and (max-width: 600px){
+            margin-bottom: -100%;
+            margin-left: 0;
+        }
+        &.show{
+            margin-bottom: 0;
+        }
+        &.hide{
+            margin-bottom: -100%;
+            margin-left: 0;
+        }
+    }
     >div{
         &.closeSide{
             float: right;

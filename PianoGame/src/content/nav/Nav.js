@@ -2,8 +2,10 @@ import React from 'react';
 import QueueAnim from '../../../node_modules/rc-queue-anim';
 import { Link } from 'react-router-dom';
 import { emit_color, ThemeChoice } from '../../shared/hooks/ThemeChoice';
+import { Subject } from 'rxjs';
 import '../../assets/sass/nav/nav.scss';
 
+export const isNavOpen = new Subject();
 
 class Nav extends React.Component {
   constructor(props) {
@@ -38,6 +40,7 @@ class Nav extends React.Component {
       this.navref.current.classList.add('hide');
       this.navref.current.classList.remove('show');
       this.dimscreenRef.current.classList.remove('active');
+      isNavOpen.next('hide');
     }
   }
   openSideBar() {
@@ -45,6 +48,7 @@ class Nav extends React.Component {
       this.navref.current.classList.remove('hide');
       this.navref.current.classList.add('show');
       this.dimscreenRef.current.classList.add('active');
+      isNavOpen.next('show');
     }
   }
   render() {
