@@ -89,7 +89,11 @@ app.post('/persondata', (req, res) => {
 
 app.get('/chat', (req, res) => {
     console.log('req is =>', req.query.personId);
-    res.json([{'name': 'John'}, {'name': 'Judy'},{'name': 'Mark'}]);
+    res.json([
+        {'name': 'John', 'message': []}, 
+        {'name': 'Judy', 'message': []},
+        {'name': 'Mark', 'message': []}
+    ]);
 });
 
 // Post path to count shortest path
