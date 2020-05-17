@@ -35,7 +35,6 @@ class ShopList extends React.PureComponent {
     this.props.dispatch(fetchPosts(searchText));
   }
   render() {
-    console.log('render');
     return (
       <div ref={this.compRef} className="shoplist main">
         <section className="shopselect">

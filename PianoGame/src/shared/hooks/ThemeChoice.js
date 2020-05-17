@@ -1,24 +1,25 @@
 import React from 'react';
 import { useState, useEffect } from "react";
 import { Subject } from 'rxjs';
+import '../../assets/sass/shared/hooks/themechoice.scss';
 
-export const emit_color = new Subject('red');
+export const emit_color = new Subject(true);
 
 export const ThemeChoice = () => {
-  const [color, setTheme] = useState('red');
-  const colors = ['Red', 'Blue', 'Purple'];
-  const chooseTheme = (color) => {
-    setTheme(color);
+  const [colorState, setTheme] = useState("darkoff");
+  function toggle(e) {
+    e.stopPropagation();
+    setTheme(colorState === "darkoff" ? "darkon" : "darkoff");
   }
   useEffect(() => {
-    emit_color.next(color);
-  }, [color]);
+    emit_color.next(colorState);
+  }, [colorState]);
   return (
-    <div>
-      {colors.map((color) =>
-        <a key={color} onClick={() => chooseTheme(color)}>
-          {color}
-        </a>)}
+    <div className="switch_theme">
+      <label className={`switch ${colorState === 'darkoff'? 'off': 'on'}`} >
+        <input type="checkbox" onClick={toggle} />
+        <span className="slider round"></span>
+      </label>
     </div>
   )
 };

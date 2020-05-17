@@ -1,5 +1,5 @@
-import { Route, Link, Switch} from 'react-router-dom';
-import React, { unstable_Profiler as Profiler } from 'react';
+import { Route, Link, Switch } from 'react-router-dom';
+import React, { unstable_Profiler as Profiler, useEffect, useState } from 'react';
 import { BusinessContainer, EconomicsContainer } from './subject/subject/containers/subcontainer';
 import Technology from './subject/technology/technology';
 import Animal from './subject/animal/containers/animalContainer';
@@ -26,19 +26,19 @@ const Courses = ({ match }) => {
         <nav>
           <Link to='/courses'>
             <span className="subject">Technology</span>
-            <img className='icon' src={bookmark}/>
+            <img className='icon' src={bookmark} />
           </Link>
           <Link to='/courses/business'>
             <span className="subject">Business</span>
-            <img className='icon' src={calendar}/>
+            <img className='icon' src={calendar} />
           </Link>
           <Link to='/courses/economics'>
             <span className="subject">Economics</span>
-            <img className='icon' src={about}/>
+            <img className='icon' src={about} />
           </Link>
           <Link to='/courses/animal'>
             <span className="subject">Animal</span>
-            <img className='icon' src={plus}/>
+            <img className='icon' src={plus} />
           </Link>
         </nav>
         <Switch>

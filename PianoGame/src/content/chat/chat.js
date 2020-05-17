@@ -1,18 +1,16 @@
 import React, { useState, lazy } from 'react';
 import { ChatList } from './chatlist';
 import { HttpRequest } from '../../services/http-service/httpService';
-import useTheme from '../../shared/hooks/useTheme';
 import '../../assets/sass/chat/chat.scss';
-import { Switch, Route, Link } from 'react-router-dom';
+import { Switch, Route } from 'react-router-dom';
 import ChatRoom from './container/chatrommcontainer';
+import '../../assets/sass/global/global.scss';
 
 /* PersonalPicture Hook */
 const PersonalPicture = ({ setImg }) => {
   // Declare a new state variable
   const [imgurl, setImgUrl] = useState(null);
   const chatlist = ChatList;
-  // Use custom Hook "useTheme" to set theme
-  const theme = useTheme();
   // Create uploadRef
   const uploadRef = React.createRef();
 
@@ -29,7 +27,7 @@ const PersonalPicture = ({ setImg }) => {
   }
 
   return (
-    <div className={`col-5 col-md-3 text-center picture ${theme}`} onClick={selectImg}>
+    <div className="col-5 col-md-3 text-center picture" onClick={selectImg}>
       {imgurl ?
         (<img src={imgurl} alt="..." className="img-fluid" />) :
         (<img src={chatlist[0].src} alt="..." className="img-fluid" />)

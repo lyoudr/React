@@ -9,8 +9,8 @@ class Item extends React.Component {
     return (
       <React.Fragment>
         <div onClick={this.props.onClick}>
-          <img src={this.props.imgsrc} />
           <p>{this.props.itemname}</p>
+          <img src={this.props.imgsrc} />
         </div>
       </React.Fragment>
     )
