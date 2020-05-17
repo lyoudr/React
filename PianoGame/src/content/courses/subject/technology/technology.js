@@ -96,8 +96,8 @@ class Map extends React.Component {
             {this.state.locationlists.map((eachitem) => (
               <button key={eachitem} type="button"
                 className={this.state.selectedpoint.includes(`point${eachitem}`) ?
-                  'list-group-item list-group-item-action active' :
-                  'list-group-item list-group-item-action'}
+                  'list-group-item list-group-item-action active d-flex justify-content-center' :
+                  'list-group-item list-group-item-action d-flex justify-content-center'}
               >
                 {eachitem}
               </button>

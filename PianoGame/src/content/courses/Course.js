@@ -1,4 +1,4 @@
-import { Route, Link, Switch } from 'react-router-dom';
+import { Route, Link, Switch} from 'react-router-dom';
 import React, { unstable_Profiler as Profiler } from 'react';
 import { BusinessContainer, EconomicsContainer } from './subject/subject/containers/subcontainer';
 import Technology from './subject/technology/technology';
@@ -24,7 +24,7 @@ const Courses = ({ match }) => {
     <Profiler id="course" onRender={estimatePerformance}>
       <div className="courses main">
         <nav>
-          <Link to='/courses/technology'>
+          <Link to='/courses'>
             <span className="subject">Technology</span>
             <img className='icon' src={bookmark}/>
           </Link>
@@ -42,10 +42,10 @@ const Courses = ({ match }) => {
           </Link>
         </nav>
         <Switch>
-          <Route exact path='/courses/technology' component={Technology} />
-          <Route exact path='/courses/business' component={BusinessContainer} />
-          <Route exact path='/courses/economics' component={EconomicsContainer} />
-          <Route exact path='/courses/animal' component={Animal} />
+          <Route exact path='/courses/' component={Technology} />
+          <Route path='/courses/business' component={BusinessContainer} />
+          <Route path='/courses/economics' component={EconomicsContainer} />
+          <Route path='/courses/animal' component={Animal} />
         </Switch>
       </div>
     </Profiler>
