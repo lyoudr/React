@@ -17,7 +17,7 @@ const countfood = require('./foodset');
 const countpath = require('./pathgraph');
 
 // Static files
-app.use(express.static(publicPath));
+/*app.use(express.static(publicPath));*/
 
 // parse application/json
 app.use(bodyParser.json());
@@ -25,9 +25,9 @@ app.use(bodyParser.json());
 // CORS
 app.use(cors());
 
-app.get('/', (req, res) => {
+/*app.get('/', (req, res) => {
     res.sendFile(path.join(publicPath, 'index.html'));
-});
+});*/
 
 
 // Catch-all => /* 代表其他路由，例如: /login、/pianogame、/courses，當輸入這些 url 時，server 會 send index.html，並且下載所有 JS 檔案(包含 React 的 routing)，React 的 Routing 才會開始作用
@@ -47,6 +47,7 @@ In case the issue is still fuzzy, here’s another example. Say you are really p
 // 1. User Login
 app.post('/loginpage', (req, res) => {
     console.log('login info is =>', req.body);
+    console.log('login req is =>', req.protocol + '://' + req.get('host') + req.originalUrl);
     const userInfo = req.body;
     res.json({
         'status': '200', 
@@ -168,6 +169,6 @@ app.post('/shoplists', (req, res) => {
     ]});
 });
 
-app.listen(8085, () => {
-    console.log('server listen on port 8085!');
+app.listen(3000, () => {
+    console.log('server listen on port 3000!');
 });

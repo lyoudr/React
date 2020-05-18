@@ -60,11 +60,11 @@
     "eslint-plugin-react-hooks": "^4.0.1",
     "flow-bin": "^0.104.0"
   },
-  "plugins":[
+  "plugins": [
     "react-hooks"
   ],
   "rules": {
-    "react-hooks/rules-of-hooks": "error", 
+    "react-hooks/rules-of-hooks": "error",
     "react-hooks/exhaustive-deps": "warn"
   }
 }
