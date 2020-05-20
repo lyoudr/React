@@ -4,6 +4,7 @@ import { HttpRequest } from '../../services/http-service/httpService';
 import '../../assets/sass/chat/chat.scss';
 import { Switch, Route } from 'react-router-dom';
 import ChatRoom from './container/chatrommcontainer';
+import Cookie from 'js-cookie';
 import '../../assets/sass/global/global.scss';
 
 /* PersonalPicture Hook */
@@ -155,7 +156,9 @@ class Chat extends React.Component {
   }
   handleSubmit() {
     const personalInfo = this.personalInfoRef.current.state.form;
-    //const personalPhoto = this.personalPhotoRef;
+    personalInfo.userId = Cookie.get('userId');
+    console.log('personalInfo is =>', personalInfo);
+    console.log('Cookie.get("userId") is =>', Cookie.get('userId'));
     this.setState({
       personalinfo: personalInfo,
     }, () => {

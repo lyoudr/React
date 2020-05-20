@@ -92,6 +92,7 @@ export function fetchPosts(searchText){
         error => console.log('An error occurred.', error)
       )
       .then(json => {
+        console.log('json is =>', json);
         dispatch(receivePosts(searchText, json));
         return searchText;
       })

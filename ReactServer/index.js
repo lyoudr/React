@@ -1,34 +1,39 @@
 const express = require('express');
 const app = express();
 
-// Login JWT Token
 const cors = require('cors');
-
 const path = require('path');
 const formidable = require('formidable');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const publicPath = path.join(__dirname, '../PianoGame/build');
 
+/* Mysql DataBase */
+const mysql = require('mysql');
+const mysql_con = mysql.createConnection({
+  host: "localhost",
+  user: "ann",
+  password: "Awdxa48624",
+  database: "mydb"
+});
+
 /* Alogrithm */
-//1. Set
+// 1. Set
 const countfood = require('./foodset');
 // 2. Graph(Bellman-Ford)
 const countpath = require('./pathgraph');
 
 // Static files
-/*app.use(express.static(publicPath));*/
-
+app.use(express.static(publicPath));
 // parse application/json
 app.use(bodyParser.json());
-
 // CORS
 app.use(cors());
 
-/*app.get('/', (req, res) => {
-    res.sendFile(path.join(publicPath, 'index.html'));
-});*/
 
+app.get('/', (req, res) => {
+  res.sendFile(path.join(publicPath, 'index.html'));
+});
 
 // Catch-all => /* 代表其他路由，例如: /login、/pianogame、/courses，當輸入這些 url 時，server 會 send index.html，並且下載所有 JS 檔案(包含 React 的 routing)，React 的 Routing 才會開始作用
 // Explan =>  https://tylermcginnis.com/react-router-cannot-get-url-refresh/
@@ -46,129 +51,124 @@ In case the issue is still fuzzy, here’s another example. Say you are really p
 /*Login*/
 // 1. User Login
 app.post('/loginpage', (req, res) => {
-    console.log('login info is =>', req.body);
-    console.log('login req is =>', req.protocol + '://' + req.get('host') + req.originalUrl);
-    const userInfo = req.body;
-    res.json({
-        'status': '200', 
-        'response': 'ok',
-        'userId': userInfo.userId
-    });
-    res.end();
+  console.log('login info is =>', req.body);
+  console.log('login req is =>', req.protocol + '://' + req.get('host') + req.originalUrl);
+  const userInfo = req.body;
+  res.json({
+    'status': '200',
+    'response': 'ok',
+    'userId': userInfo.userId
+  });
+  res.end();
 });
 
 
 // getDishes
-app.post('/food',(req, res) =>{
-    console.log('req.body is =>', req.body);
-    let returneddishes = countfood.countDishes(req.body);
-    console.log('returneddishes is =>', returneddishes);
-    res.json({'status':'200', 'message': 'ok', 'dishes': returneddishes});
-    res.end();
+app.post('/food', (req, res) => {
+  console.log('req.body is =>', req.body);
+  let returneddishes = countfood.countDishes(req.body);
+  console.log('returneddishes is =>', returneddishes);
+  res.json({ 'status': '200', 'message': 'ok', 'dishes': returneddishes });
+  res.end();
 });
 
 /* Chat */
 // 1. Post personal image to backend
-app.post('/uploadimage' ,(req, res) => {
-    let form = new formidable.IncomingForm();
-    form.parse(req, (err, fields, files) => {
-        var oldpath = files.photo.path;
-        var newpath = 'C:\Users\ann.ko\Desktop\pictures' + files.photo.name;
-        fs.rename(oldpath, newpath, (err) => {
-            if (err) throw err;
-            res.json({'status':'200', 'message': 'ok'});
-            res.end();
-        });
+app.post('/uploadimage', (req, res) => {
+  let form = new formidable.IncomingForm();
+  form.parse(req, (err, fields, files) => {
+    var oldpath = files.photo.path;
+    var newpath = 'C:\Users\ann.ko\Desktop\pictures' + files.photo.name;
+    fs.rename(oldpath, newpath, (err) => {
+      if (err) throw err;
+      res.json({ 'status': '200', 'message': 'ok' });
+      res.end();
     });
+  });
 });
 
-// 2. Save personal data to backend
+// 2. Save personal data to Mysql DataBase
 app.post('/persondata', (req, res) => {
-    res.json({'status':'200', 'message': 'ok'});
-    res.end();
+  const userInfo = req.body;
+  mysql_con.query(`SELECT * FROM userchat WHERE userId='${userInfo.userId}'`, function (err, result) {
+    if (err) throw err;
+    if(!result.length){
+      const insert_info = `INSERT INTO userchat VALUES ('${userInfo.userId}', '${userInfo.name}', '${userInfo.job}', '${userInfo.hobby}', '${userInfo.guide}', '${userInfo.gender}', '${userInfo.country}', default)`;
+      mysql_con.query(insert_info, (err, result) => {
+        if (err) throw err;
+        if(result.affectedRows === 1){
+          res.json({ 'status': '200', 'message': 'ok' });
+          res.end();
+        }
+      });
+    } else {
+      const update_info = `UPDATE userchat SET name='${userInfo.name}', job='${userInfo.job}', hobby='${userInfo.hobby}', guide='${userInfo.guide}', gender='${userInfo.gender}', country='${userInfo.country}' WHERE userId='${userInfo.userId}'`
+      mysql_con.query(update_info, (err, result) => {
+        if(err) throw err;
+        if(result.affectedRows === 1){
+          res.json({ 'status': '200', 'message': 'ok' });
+          res.end();
+        }
+      });
+    }
+  });
 });
 
 app.get('/chat', (req, res) => {
-    console.log('req is =>', req.query.personId);
-    res.json([
-        {'name': 'John', 'message': []}, 
-        {'name': 'Judy', 'message': []},
-        {'name': 'Mark', 'message': []}
-    ]);
+  console.log('req is =>', req.query.personId);
+  res.json([
+    { 'name': 'John', 'message': [] },
+    { 'name': 'Judy', 'message': [] },
+    { 'name': 'Mark', 'message': [] }
+  ]);
 });
 
-// Post path to count shortest path
+/* Courses */
+// 1. Post path to count shortest path
 app.post('/shortestpath', (req, res) => {
-    let splitedbody1 = req.body[0].split("");
-    let splitedbody2 = req.body[1].split("");
-    let start = splitedbody1[splitedbody1.length - 1];
-    let end = splitedbody2[splitedbody2.length - 1];
-    const path = countpath.countPath(start, end);
-    res.json({'status':'200', 'message': 'ok', 'path': path});
-});
-// Get shop list
-app.post('/shoplists', (req, res) => {
-    let searchText = req.body;
-    console.log('searchText is =>', searchText);
-    res.json({'status': '200', 'data': [
-        {
-            id : 'tshirt_1',
-            imgsrc : '../../../assets/images/T_shirt_1.jpg',
-            itemname: 'T_shirt_1',
-            isDetail : false,
-            detail : {
-                img : '../../../assets/images/T_shirt_1.jpg',
-                explain : 'A T-shirt is a style of fabric shirt named after the T shape of its body and sleeves. Traditionally it has short sleeves and a round neckline, known as a crew neck, which lacks a collar. T-shirts are generally made of a stretchy, light and inexpensive fabric and are easy to clean.',
-                price : '300$'
-            }
-        },
-        {
-            id : 'tshirt_2',
-            imgsrc : '../../../assets/images/T_shirt_2.jpg',
-            itemname: 'T_shirt_2',
-            isDetail : false,
-            detail : {
-              img : '../../../assets/images/T_shirt_2.jpg',
-              explain : 'Typically made of cotton textile in a stockinette or jersey knit, it has a distinctively pliable texture compared to shirts made of woven cloth. Some modern versions have a body made from a continuously knitted tube, produced on a circular knitting machine, such that the torso has no side seams. The manufacture of T-shirts has become highly automated and may include cutting fabric with a laser or a water jet.',
-              price : '200$'
-            }
-        },
-        {
-            id : 'tshirt_3',
-            imgsrc : '../../../assets/images/T_shirt_3.jpg',
-            itemname: 'T_shirt_3',
-            isDetail : false,
-            detail : {
-              img : '../../../assets/images/T_shirt_3.jpg',
-              explain : 'A V-neck T-shirt has a V-shaped neckline, as opposed to the round neckline of the more common crew neck shirt (also called a U-neck). V-necks were introduced so that the neckline of the shirt does not show when worn beneath an outer shirt, as would that of a crew neck shirt.',
-              price : '100$'
-            }
-        },
-        {
-            id : 'tshirt_4',
-            imgsrc : '../../../assets/images/T_shirt_4.jpg',
-            itemname: 'T_shirt_4',
-            isDetail : false,
-            detail : {
-              img : '../../../assets/images/T_shirt_4.jpg',
-              explain : 'The T-shirt evolved from undergarments used in the 19th century. First, the one-piece union suit underwear was cut into separate top and bottom garments, with the top long enough to tuck under the waistband of the bottoms. With and without buttons, they were adopted by miners and stevedores during the late 19th century as a convenient covering for hot environments.',
-              price : '400$'
-            }
-        },
-        {
-            id : 'tshirt_5',
-            imgsrc : '../../../assets/images/T_shirt_5.jpg',
-            itemname: 'T_shirt_5',
-            isDetail : false,
-            detail : {
-              img : '../../../assets/images/T_shirt_5.jpg',
-              explain : 'Current versions are available in many different designs and fabrics, and styles include crew-neck and V-neck shirts. T-shirts are among the most worn garments of clothing used today. T-shirts are especially popular with branding for companies or merchandise, as they are inexpensive to make and purchase.',
-              price : '500$'
-            }
-        }
-    ]});
+  let splitedbody1 = req.body[0].split("");
+  let splitedbody2 = req.body[1].split("");
+  let start = splitedbody1[splitedbody1.length - 1];
+  let end = splitedbody2[splitedbody2.length - 1];
+  const path = countpath.countPath(start, end);
+  res.json({ 'status': '200', 'message': 'ok', 'path': path });
 });
 
-app.listen(3000, () => {
-    console.log('server listen on port 3000!');
+/* ShopList */
+// 1. Get shop list
+app.post('/shoplists', (req, res) => {
+  const searchText = req.body.searchText;
+  mysql_con.query(`SELECT * FROM shoplist WHERE itemname LIKE '%${searchText}%'`, function (err, results) {
+    if (err) throw err;
+    console.log('results is =>', results);
+    const modified_result = results.map(result => {
+      result.isDetail = Boolean(result.isDetail);
+      result.detail = JSON.parse(result.detail);
+      return result;
+    });
+    res.json({ data: modified_result });
+  });
 });
+// 2. Get shop items according to Price
+app.post('/shop_price', (req, res) => {
+  const min_price = Number(req.body.price.slice(0, 3));
+  const max_price = Number(req.body.price.slice(6, 10));
+  const query_con = `SELECT * FROM shoplist WHERE price BETWEEN ${min_price} AND ${max_price} ORDER BY price`;
+  mysql_con.query(query_con, function (err, results) {
+    if (err) throw err;
+    const modified_result = results.map(result => {
+      result.isDetail = Boolean(result.isDetail);
+      result.detail = Boolean(result.detail);
+      return result;
+    });
+    res.json(modified_result);
+    res.end();
+  });
+});
+
+app.listen(8085, () => {
+  console.log('server listen on port 3000!');
+});
+
+
+
