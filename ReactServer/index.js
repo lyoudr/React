@@ -116,11 +116,22 @@ app.post('/persondata', (req, res) => {
 
 app.get('/chat', (req, res) => {
   console.log('req is =>', req.query.personId);
-  res.json([
-    { 'name': 'John', 'message': [] },
-    { 'name': 'Judy', 'message': [] },
-    { 'name': 'Mark', 'message': [] }
-  ]);
+  let friends = ['John', 'Judy', 'Mark'];
+  let query_message = [];
+  friends.forEach((friend, index) => {
+    mysql_con.query(`SELECT message, who_send, time FROM chatwith_${friend}`, (err, result) => {
+      let each_messages = {};
+      each_messages.name = friend;
+      each_messages['message'] = result;
+      console.log('each_message is =>', each_messages);
+      query_message.push(each_messages);
+      if(index === friends.length - 1){
+        console.log('query_message is =>', query_message);
+        res.json(query_message);
+        res.end();
+      }
+    });
+  });
 });
 
 /* Courses */

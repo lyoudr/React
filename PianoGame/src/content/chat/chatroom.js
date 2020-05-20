@@ -13,9 +13,12 @@ class ChatRoom extends React.Component {
       oriClass : '',
       contacts : [],
       isContactsOpen : '',
-      socket : new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080/${Cookie.get('userId')}`, 'echo-protocol')
+      socket : new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080/${Cookie.get('userId')}`, 'echo-protocol'),
+      selected_contact : null
     }
     this.messageRef = React.createRef();
+    this.connectwebSocket = this.connectwebSocket.bind(this);
+    this.fetchContacts = this.fetchContacts.bind(this);
   }
 
   componentDidMount(){
@@ -27,17 +30,33 @@ class ChatRoom extends React.Component {
       this.setState({isContactsOpen: isOpen});
     });
     
-    // Fetch contacts
-    this.props.dispatch(fetchPostsIfNeeded('ann')).then(res => 
-      this.setState({contacts: res.postsByPersonId.ann.contacts})
-    );
-
     if (document.getElementById(`message${this.state.message.length - 1}`)) {
       setTimeout(() =>
         document.getElementById(`message${this.state.message.length - 1}`).classList.add('show')
       );
     }
-    
+
+    this.fetchContacts();
+
+    this.connectwebSocket();
+  }
+
+  componentWillUnmount(){
+    document.getElementsByClassName('chatarea')[0].style.display = "block";
+  }
+  
+  fetchContacts(){
+    // Fetch contacts
+    this.props.dispatch(fetchPostsIfNeeded('ann')).then(res => 
+      this.setState({contacts: res.postsByPersonId.ann.contacts}, () => 
+        this.setState({
+          message: this.state.contacts[0].message,
+          selected_contact: this.state.contacts[0].name
+        })
+    ));
+  }
+
+  connectwebSocket(){
     // Connection open
     this.state.socket.onopen = () => {
       console.log('connect on websocket');
@@ -52,9 +71,7 @@ class ChatRoom extends React.Component {
     }
     // Listen for messages
     this.state.socket.onmessage = (event) => {
-      let receivedMsg = JSON.parse(event.data);
-      let newtime = new Date().toUTCString();
-      receivedMsg.time = newtime;
+      const receivedMsg = JSON.parse(event.data);
       console.log('receivedMsg is =>', receivedMsg);
       this.setState(prevState => ({
         message: [...prevState.message, receivedMsg]
@@ -62,26 +79,34 @@ class ChatRoom extends React.Component {
     }
   }
 
-  componentWillUnmount(){
-    document.getElementsByClassName('chatarea')[0].style.display = "block";
-  }
-
   sendMessage(){
+    const currentTime = new Date();
     this.state.socket.send(JSON.stringify({
-      nameId: Cookie.get('userId'),
+      who_send: Cookie.get('userId'),
       message: this.messageRef.current.value,
-      person: 'John'
-    }))
+      time: currentTime.toISOString().replace(/T/, ' ').replace(/\..+/,''),
+      person: this.state.selected_contact
+    }));
+  }
+  
+  selectContact(name, index){
+    this.setState({
+      message: this.state.contacts[index].message,
+      selected_contact: name
+    });
   }
 
   render(){
+    console.log('this.state.message is =>', this.state.message);
     return (
       <main className="chatroom">
         <section className="chat">
           <aside className={`friend ${this.state.isContactsOpen}`}>
             <a className="each_contact title">Contacts</a>
-            {this.state.contacts.map(contact => 
-              <a className="each_contact" key={contact}>{contact.name}</a>
+            {this.state.contacts.map((contact, index) => 
+              <a onClick={this.selectContact.bind(this, contact.name, index)} className="each_contact" key={contact.name}>
+                {contact.name}
+              </a>
             )}
           </aside>
           <div className="container">
@@ -89,13 +114,13 @@ class ChatRoom extends React.Component {
               <div className="col-12 chat_area">
                 <div className="message_area">
                   {this.state.message.map(((eachmsg, index) =>
-                    <div key={eachmsg} className={
-                      eachmsg.nameId === Cookie.get('userId') ?
+                    <div key={`${eachmsg}_${index}`} className={
+                      eachmsg.who_send === Cookie.get('userId') ?
                         `message right ${this.state.oriClass}` :
                         `message lef ${this.state.oriClass}`}
                       id={`message${index}`}
                     >
-                      <p className="name">{eachmsg.nameId}</p>
+                      <p className="name">{eachmsg.who_send}</p>
                       <p className="content">{eachmsg.message}</p>
                       <p className="time">{eachmsg.time}</p>
                     </div>
