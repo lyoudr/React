@@ -5,101 +5,115 @@ import sendsvg from '../../assets/svg/send.svg';
 import { isNavOpen } from '../nav/Nav';
 import '../../assets/sass/chat/chatroom.scss';
 
-const ChatRoom = (props) => {
-  const messageRef = React.createRef();
+class ChatRoom extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      message : [],
+      oriClass : '',
+      contacts : [],
+      isContactsOpen : '',
+      socket : new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080/${Cookie.get('userId')}`, 'echo-protocol')
+    }
+    this.messageRef = React.createRef();
+  }
 
-  const [message, setMessage] = useState([]);
-  const [oriClass, setClass] = useState('');
-  const [socket, setSocket] = useState(new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080`, 'echo-protocol'));
-  const [contacts, setContacts] = useState([]);
-  const [isContactsOpen, setopenContacts] = useState('');
-
-  useEffect(() => {
+  componentDidMount(){
     // Hide Chat Info
     document.getElementsByClassName('chatarea')[0].style.display = "none";
     
     // Subscribe to nav open status determine to show contacts info
     isNavOpen.subscribe(isOpen => {
-      console.log('isOpen is =>', isOpen);
-      setopenContacts(isOpen)
+      this.setState({isContactsOpen: isOpen});
     });
     
     // Fetch contacts
-    props.dispatch(fetchPostsIfNeeded('ann')).then(res => setContacts(res.postsByPersonId.ann.contacts));
-    if (document.getElementById(`message${message.length - 1}`)) {
+    this.props.dispatch(fetchPostsIfNeeded('ann')).then(res => 
+      this.setState({contacts: res.postsByPersonId.ann.contacts})
+    );
+
+    if (document.getElementById(`message${this.state.message.length - 1}`)) {
       setTimeout(() =>
-        document.getElementById(`message${message.length - 1}`).classList.add('show')
+        document.getElementById(`message${this.state.message.length - 1}`).classList.add('show')
       );
     }
+    
     // Connection open
-    socket.onopen = () => {
+    this.state.socket.onopen = () => {
       console.log('connect on websocket');
       return () => {
-        socket.close();
+        this.state.socket.close();
         console.log('close websocket!');
       }
     }
     // Error occured
-    socket.onerror = (error) => {
+    this.state.socket.onerror = (error) => {
       console.log(`Web Socket error => ${error}`);
     }
     // Listen for messages
-    socket.onmessage = (event) => {
+    this.state.socket.onmessage = (event) => {
       let receivedMsg = JSON.parse(event.data);
       let newtime = new Date().toUTCString();
       receivedMsg.time = newtime;
-      setMessage(oldmsg => [...oldmsg, receivedMsg]);
+      console.log('receivedMsg is =>', receivedMsg);
+      this.setState(prevState => ({
+        message: [...prevState.message, receivedMsg]
+      }));
     }
-    return () => {
-      document.getElementsByClassName('chatarea')[0].style.display = "block";
-    }
-  });
+  }
 
-  const sendMessage = () => {
-    socket.send(JSON.stringify({
+  componentWillUnmount(){
+    document.getElementsByClassName('chatarea')[0].style.display = "block";
+  }
+
+  sendMessage(){
+    this.state.socket.send(JSON.stringify({
       nameId: Cookie.get('userId'),
-      message: messageRef.current.value
+      message: this.messageRef.current.value,
+      person: 'John'
     }))
   }
-  return (
-    <main className="chatroom">
-      <section className="chat">
-        <aside className={`friend ${isContactsOpen}`}>
-          <a className="each_contact title">Contacts</a>
-          {contacts.map(contact => 
-            <a className="each_contact" key={contact}>{contact.name}</a>
-          )}
-        </aside>
-        <div className="container">
-          <div className="row">
-            <div className="col-12 chat_area">
-              <div className="message_area">
-                {message.map(((eachmsg, index) =>
-                  <div key={eachmsg} className={
-                    eachmsg.nameId === Cookie.get('userId') ?
-                      `message right ${oriClass}` :
-                      `message lef ${oriClass}`}
-                    id={`message${index}`}
-                  >
-                    <p className="name">{eachmsg.nameId}</p>
-                    <p className="content">{eachmsg.message}</p>
-                    <p className="time">{eachmsg.time}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="message_typing">
-                <input ref={messageRef}></input>
-                <a className="send" onClick={sendMessage}>
-                  <img src={sendsvg} />
-                </a>
+
+  render(){
+    return (
+      <main className="chatroom">
+        <section className="chat">
+          <aside className={`friend ${this.state.isContactsOpen}`}>
+            <a className="each_contact title">Contacts</a>
+            {this.state.contacts.map(contact => 
+              <a className="each_contact" key={contact}>{contact.name}</a>
+            )}
+          </aside>
+          <div className="container">
+            <div className="row">
+              <div className="col-12 chat_area">
+                <div className="message_area">
+                  {this.state.message.map(((eachmsg, index) =>
+                    <div key={eachmsg} className={
+                      eachmsg.nameId === Cookie.get('userId') ?
+                        `message right ${this.state.oriClass}` :
+                        `message lef ${this.state.oriClass}`}
+                      id={`message${index}`}
+                    >
+                      <p className="name">{eachmsg.nameId}</p>
+                      <p className="content">{eachmsg.message}</p>
+                      <p className="time">{eachmsg.time}</p>
+                    </div>
+                  ))}
+                </div>
+                <div className="message_typing">
+                  <input ref={this.messageRef}></input>
+                  <a className="send" onClick={this.sendMessage.bind(this)}>
+                    <img src={sendsvg} />
+                  </a>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </section>
-    </main>
-  )
-
+        </section>
+      </main>
+    )
+  }
 }
 
 export default ChatRoom;

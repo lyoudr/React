@@ -1,42 +1,26 @@
-/*Server WebSocket*/
-const WebSocketServer = require('websocket').server;
-var http = require('http');
- 
-var server = http.createServer(function(request, response) {
-    console.log((new Date()) + ' Received request for ' + request.url);
-    response.writeHead(404);
-    response.end();
-});
-server.listen(8080, function() {
-    console.log((new Date()) + ' Server is listening on port 8080');
-});
+const WebSocket = require('ws');
+const wss = new WebSocket.Server({port: 8080});
+let websocket_clients = {};
 
-var socket = new WebSocketServer({
-  httpServer: server,
-  autoAcceptConnections: false
-});
-let connectionlists = [];
-socket.on('request', function(request) {
-  console.log('request.origin is =>', request.origin);
-  var connection = request.accept('echo-protocol', request.origin);
-  connectionlists.push(connection);
-  //On message
-  connection.on('message', function(message) {
-    console.log('message is =>', message);
-    if (message.type === 'utf8') {
-      connectionlists.forEach((connection) => {
-        connection.sendUTF(message.utf8Data); 
-      });
-    } else if (message.type === 'binary') {
-      connection.sendBytes(message.binaryData);
-    }
-  });
-  
-  //On Close
-  connection.on('close', function(reasonCode, description) {
-    console.log((new Date()) + ' Peer ' + connection.remoteAddress + ' disconnected.');
+wss.on('connection', (ws, req, client) => {
+  console.log('req.url is =>', req.url);
+  console.log('client is =>', client);
+  const userID = req.url.substr(1);
+  websocket_clients[userID] = ws;
+
+  ws.on('open', () => {
+    console.log('connection time is =>', Date.now()); 
   });
 
+  ws.on('message', (msg) => {
+    let modified_msg = JSON.parse(msg);
+    websocket_clients[modified_msg.nameId].send(msg);
+    websocket_clients[modified_msg.person].send(msg);
+  });
+
+  ws.on('close', () => {
+    console.log('close websocket');
+  });
 });
 
 
