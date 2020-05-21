@@ -114,23 +114,32 @@ app.post('/persondata', (req, res) => {
   });
 });
 
+// 3. Query chat records
 app.get('/chat', (req, res) => {
-  console.log('req is =>', req.query.personId);
-  let friends = ['John', 'Judy', 'Mark'];
-  let query_message = [];
-  friends.forEach((friend, index) => {
-    mysql_con.query(`SELECT message, who_send, time FROM chatwith_${friend}`, (err, result) => {
-      let each_messages = {};
-      each_messages.name = friend;
-      each_messages['message'] = result;
-      console.log('each_message is =>', each_messages);
-      query_message.push(each_messages);
-      if(index === friends.length - 1){
-        console.log('query_message is =>', query_message);
-        res.json(query_message);
-        res.end();
+  const query_person = req.query.personId;
+  const query_info = `SELECT who_send, who_receive, message, time FROM chat_table WHERE who_send='${query_person}' OR who_receive = '${query_person}' ORDER BY time`;
+  let query_messages = [
+    {name: 'John', message: []}, 
+    {name: 'Judy', message: []}, 
+    {name: 'Mark', message: []}
+  ];
+  mysql_con.query(query_info, (err, result) => {
+    if (err) throw err;
+    result.forEach((message) => {
+      const arrang_message = (person) => {
+        if(person !== query_person ){
+          query_messages.forEach(item => {
+            if(item.name === person){
+              item.message.push(message);
+            }
+          });
+        }
       }
+      arrang_message(message.who_send);
+      arrang_message(message.who_receive);
     });
+    res.json(query_messages);
+    res.end();
   });
 });
 

@@ -10,11 +10,11 @@ class ChatRoom extends React.Component {
     super(props)
     this.state = {
       message : [],
-      oriClass : '',
       contacts : [],
+      selected_contact : null,
+      oriClass : '',
       isContactsOpen : '',
       socket : new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080/${Cookie.get('userId')}`, 'echo-protocol'),
-      selected_contact : null
     }
     this.messageRef = React.createRef();
     this.connectwebSocket = this.connectwebSocket.bind(this);
@@ -35,9 +35,9 @@ class ChatRoom extends React.Component {
         document.getElementById(`message${this.state.message.length - 1}`).classList.add('show')
       );
     }
-
+    // Fetch all contacts 
     this.fetchContacts();
-
+    // Connect to websocket
     this.connectwebSocket();
   }
 
@@ -47,13 +47,14 @@ class ChatRoom extends React.Component {
   
   fetchContacts(){
     // Fetch contacts
-    this.props.dispatch(fetchPostsIfNeeded('ann')).then(res => 
-      this.setState({contacts: res.postsByPersonId.ann.contacts}, () => 
-        this.setState({
-          message: this.state.contacts[0].message,
-          selected_contact: this.state.contacts[0].name
-        })
-    ));
+    this.props.dispatch(fetchPostsIfNeeded(Cookie.get('userId'))).then(res => {
+      const contacts = res.postsByPersonId[`${Cookie.get('userId')}`].contacts;
+      this.setState({
+        contacts : contacts,
+        message : contacts[0].message,
+        selected_contact : contacts[0].name
+      });
+    });
   }
 
   connectwebSocket(){
@@ -97,14 +98,15 @@ class ChatRoom extends React.Component {
   }
 
   render(){
-    console.log('this.state.message is =>', this.state.message);
     return (
       <main className="chatroom">
         <section className="chat">
           <aside className={`friend ${this.state.isContactsOpen}`}>
             <a className="each_contact title">Contacts</a>
             {this.state.contacts.map((contact, index) => 
-              <a onClick={this.selectContact.bind(this, contact.name, index)} className="each_contact" key={contact.name}>
+              <a className={`each_contact ${this.state.selected_contact === contact.name ? 'active': ''}`} 
+                 onClick={this.selectContact.bind(this, contact.name, index)}  
+                 key={contact.name}>
                 {contact.name}
               </a>
             )}

@@ -26,12 +26,11 @@ wss.on('connection', (ws, req, client) => {
     const json_msg = JSON.parse(msg);
     console.log('json_msg is =>', json_msg);
     // Save messages to database
-    const insert_info = `INSERT INTO chatwith_${json_msg.person} VALUES('${json_msg.who_send}', '${json_msg.person}', '${json_msg.message}', '${json_msg.time}', default, '${json_msg.who_send}')`;
+    const insert_info = `INSERT INTO chat_table VALUES(default, '${json_msg.who_send}', '${json_msg.person}', '${json_msg.message}', '${json_msg.time}')`;
     mysql_con.query(insert_info, (err, result) => {
       if(err) throw err;
       console.log('result is =>', result);
     });
-    console.log('websocket_clients is =>', websocket_clients);
     websocket_clients[json_msg.who_send].send(msg);
     if(websocket_clients[json_msg.person]){
       websocket_clients[json_msg.person].send(msg);
