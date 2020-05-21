@@ -118,26 +118,33 @@ app.post('/persondata', (req, res) => {
 app.get('/chat', (req, res) => {
   const query_person = req.query.personId;
   const query_info = `SELECT who_send, who_receive, message, time FROM chat_table WHERE who_send='${query_person}' OR who_receive = '${query_person}' ORDER BY time`;
-  let query_messages = [
-    {name: 'John', message: []}, 
-    {name: 'Judy', message: []}, 
-    {name: 'Mark', message: []}
-  ];
+  let query_messages = [];
   mysql_con.query(query_info, (err, result) => {
     if (err) throw err;
     result.forEach((message) => {
       const arrang_message = (person) => {
         if(person !== query_person ){
-          query_messages.forEach(item => {
-            if(item.name === person){
-              item.message.push(message);
+          let is_contact = query_messages.find(item => {
+            if(item){
+              if(item.name === person){
+                item.message.push(message);
+                return true;
+              };
+              return false;
             }
+            return false;
           });
+          if(!is_contact){
+            let new_contact = {name: person, message: []};
+            new_contact.message.push(message);
+            query_messages.push(new_contact);
+          } 
         }
       }
       arrang_message(message.who_send);
       arrang_message(message.who_receive);
     });
+    console.log('query_messages is =>', query_messages);
     res.json(query_messages);
     res.end();
   });
