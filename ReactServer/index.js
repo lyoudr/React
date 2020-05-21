@@ -117,7 +117,12 @@ app.post('/persondata', (req, res) => {
 // 3. Query chat records
 app.get('/chat', (req, res) => {
   const query_person = req.query.personId;
-  const query_info = `SELECT who_send, who_receive, message, time FROM chat_table WHERE who_send='${query_person}' OR who_receive = '${query_person}' ORDER BY time`;
+  const query_info = `
+    SELECT chat_table.who_send, chat_table.who_receive, chat_table.message, chat_table.time, userchat.userId, userchat.job, userchat.hobby, userchat.guide, userchat.gender, userchat.country 
+    FROM chat_table LEFT JOIN userchat
+    ON chat_table.who_send = userchat.userId
+    WHERE who_send='${query_person}' OR who_receive = '${query_person}' 
+    ORDER BY time`;
   let query_messages = [];
   mysql_con.query(query_info, (err, result) => {
     if (err) throw err;

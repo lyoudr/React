@@ -1,35 +1,37 @@
 import React, { useState, useEffect } from 'react';
-import {fetchPostsIfNeeded} from '../../redux/actions/index';
+import { fetchPostsIfNeeded } from '../../redux/actions/index';
 import Cookie from 'js-cookie';
 import sendsvg from '../../assets/svg/send.svg';
 import { isNavOpen } from '../nav/Nav';
+import default_img from '../../assets/images/cat_0.jpg';
 import '../../assets/sass/chat/chatroom.scss';
 
 class ChatRoom extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
-      message : [],
-      contacts : [],
-      selected_contact : null,
-      oriClass : '',
-      isContactsOpen : '',
-      socket : new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080/${Cookie.get('userId')}`, 'echo-protocol'),
+      message: [],
+      contacts: [],
+      selected_contact: null,
+      personInfo : null, 
+      oriClass: '',
+      isContactsOpen: '',
+      socket: new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080/${Cookie.get('userId')}`, 'echo-protocol'),
     }
     this.messageRef = React.createRef();
     this.connectwebSocket = this.connectwebSocket.bind(this);
     this.fetchContacts = this.fetchContacts.bind(this);
   }
 
-  componentDidMount(){
+  componentDidMount() {
     // Hide Chat Info
     document.getElementsByClassName('chatarea')[0].style.display = "none";
-    
+
     // Subscribe to nav open status determine to show contacts info
     isNavOpen.subscribe(isOpen => {
-      this.setState({isContactsOpen: isOpen});
+      this.setState({ isContactsOpen: isOpen });
     });
-    
+
     if (document.getElementById(`message${this.state.message.length - 1}`)) {
       setTimeout(() =>
         document.getElementById(`message${this.state.message.length - 1}`).classList.add('show')
@@ -41,23 +43,23 @@ class ChatRoom extends React.Component {
     this.connectwebSocket();
   }
 
-  componentWillUnmount(){
+  componentWillUnmount() {
     document.getElementsByClassName('chatarea')[0].style.display = "block";
   }
-  
-  fetchContacts(){
+
+  fetchContacts() {
     // Fetch contacts
     this.props.dispatch(fetchPostsIfNeeded(Cookie.get('userId'))).then(res => {
       const contacts = res.postsByPersonId[`${Cookie.get('userId')}`].contacts;
       this.setState({
-        contacts : contacts,
-        message : contacts[0].message,
-        selected_contact : contacts[0].name
+        contacts: contacts,
+        message: contacts[0].message,
+        selected_contact: contacts[0].name
       });
     });
   }
 
-  connectwebSocket(){
+  connectwebSocket() {
     // Connection open
     this.state.socket.onopen = () => {
       console.log('connect on websocket');
@@ -80,33 +82,39 @@ class ChatRoom extends React.Component {
     }
   }
 
-  sendMessage(){
+  sendMessage() {
     const currentTime = new Date();
     this.state.socket.send(JSON.stringify({
       who_send: Cookie.get('userId'),
       message: this.messageRef.current.value,
-      time: currentTime.toISOString().replace(/T/, ' ').replace(/\..+/,''),
+      time: currentTime.toISOString().replace(/T/, ' ').replace(/\..+/, ''),
       person: this.state.selected_contact
     }));
   }
-  
-  selectContact(name, index){
+
+  selectContact(name, index) {
     this.setState({
       message: this.state.contacts[index].message,
       selected_contact: name
     });
   }
 
-  render(){
+  showPeronalInfo(userInfo) {
+    console.log('userInfo is =>', userInfo);
+    this.setState({personInfo: userInfo});
+  }
+
+  render() {
+    const personInfo = this.state.personInfo;
     return (
       <main className="chatroom">
         <section className="chat">
           <aside className={`friend ${this.state.isContactsOpen}`}>
             <a className="each_contact title">Contacts</a>
-            {this.state.contacts.map((contact, index) => 
-              <a className={`each_contact ${this.state.selected_contact === contact.name ? 'active': ''}`} 
-                 onClick={this.selectContact.bind(this, contact.name, index)}  
-                 key={contact.name}>
+            {this.state.contacts.map((contact, index) =>
+              <a className={`each_contact ${this.state.selected_contact === contact.name ? 'active' : ''}`}
+                onClick={this.selectContact.bind(this, contact.name, index)}
+                key={contact.name}>
                 {contact.name}
               </a>
             )}
@@ -116,17 +124,38 @@ class ChatRoom extends React.Component {
               <div className="col-12 chat_area">
                 <div className="message_area">
                   {this.state.message.map(((eachmsg, index) =>
-                    <div key={`${eachmsg}_${index}`} className={
-                      eachmsg.who_send === Cookie.get('userId') ?
-                        `message right ${this.state.oriClass}` :
-                        `message lef ${this.state.oriClass}`}
-                      id={`message${index}`}
-                    >
-                      <p className="name">{eachmsg.who_send}</p>
-                      <p className="content">{eachmsg.message}</p>
-                      <p className="time">{eachmsg.time}</p>
+                    <div className="each_message">
+                      {eachmsg.who_send !== Cookie.get('userId') && <img className="user_img left" src={default_img} onClick={this.showPeronalInfo.bind(this, eachmsg)} />}
+                      <div key={`${eachmsg}_${index}`} className={
+                        eachmsg.who_send === Cookie.get('userId') ?
+                          `message right ${this.state.oriClass}` :
+                          `message lef ${this.state.oriClass}`}
+                        id={`message${index}`}
+                      >
+                        <p className="name">{eachmsg.who_send}</p>
+                        <p className="content">{eachmsg.message}</p>
+                        <p className="time">{eachmsg.time}</p>
+                      </div>
+                      {eachmsg.who_send === Cookie.get('userId') && <img className="user_img right" src={default_img} onClick={this.showPeronalInfo.bind(this, eachmsg)} />}
                     </div>
                   ))}
+                  {personInfo && (
+                    <>
+                      <div className="dimScreen_userinfo"></div>
+                      <div className="userinfo_modal">
+                        <div className="userinfo_area">
+                          <img/>
+                          <a onClick={() => this.setState({personInfo : null})}>X</a>
+                          <p>{personInfo.who_send}</p>
+                          <p>{personInfo.job}</p>
+                          <p>{personInfo.country}</p>
+                          <p>{personInfo.hobby}</p>
+                          <p>{personInfo.guide}</p>
+                        </div>
+                      </div>
+                    </>
+                  )}
+                  
                 </div>
                 <div className="message_typing">
                   <input ref={this.messageRef}></input>

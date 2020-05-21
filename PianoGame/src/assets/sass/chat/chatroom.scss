@@ -41,32 +41,83 @@
             &::-webkit-scrollbar{
                 display: none;
             }
-            .message{
-                &.right{
-                    margin-left: auto;
+            .each_message{
+                display:flex;
+                align-items: flex-start;
+                .user_img{
+                    width: 50px;
+                    border-radius: 50%;
+                    margin-top: 15px;
+                    margin-right: 20px;
+                    margin-left: unset;
+                    cursor: pointer;
+                    &.right{
+                        margin-left: 20px;
+                        margin-right: unset;
+                    }
                 }
-                &.show{
-                    margin-top: 0;
+                .message{
+                    &.right{
+                        margin-left: auto;
+                    }
+                    &.show{
+                        margin-top: 0;
+                    }
+                    transition: margin-top 300ms ease-in-out;
+                    margin-top: 10px;
+                    margin-bottom: 1rem;
+                    box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
+                    border-radius: 5px;
+                    width: fit-content;
+                    padding: 10px;
+                    .name{
+                        font-size: 14px;
+                        font-weight: 500;
+                        line-height: 3;
+                    }
+                    .content{
+                        font-size: 15px;
+                        line-height: 1.5;
+                    }
+                    .time{
+                        font-size: 12px;
+                        text-align: right;
+                    }
                 }
-                transition: margin-top 300ms ease-in-out;
-                margin-top: 10px;
-                margin-bottom: 1rem;
-                box-shadow: 1px 1px 1px 1px rgba(0, 0, 0, 0.2);
-                border-radius: 5px;
-                width: fit-content;
-                padding: 10px;
-                .name{
-                    font-size: 14px;
-                    font-weight: 500;
-                    line-height: 3;
+            }
+            .dimScreen_userinfo{
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                background-color: #000;
+                z-index: 1001;
+                opacity: 0.7;
+            }
+            .userinfo_modal{
+                width: 100%;
+                height: 100%;
+                position: fixed;
+                top: 0;
+                left: 0;
+                align-items: center;
+                justify-content: center;
+                display: flex;
+                z-index: 1002;
+            }
+            .userinfo_area{
+                width: 50%;
+                height: 50%;
+                background-color: #e0e0e0;
+                padding: 20px;
+                z-index: 1002;
+                >p{
+                    text-align: center;
                 }
-                .content{
-                    font-size: 15px;
-                    line-height: 1.5;
-                }
-                .time{
-                    font-size: 12px;
-                    text-align: right;
+                @media screen and (max-width: 600px) {
+                    width: 80%;
+                    height: 80%;
                 }
             }
         }
