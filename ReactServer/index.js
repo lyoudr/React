@@ -197,6 +197,34 @@ app.post('/shop_price', (req, res) => {
     res.end();
   });
 });
+// 3. Save user shop items to DB
+app.post('/checkout', (req, res) => {
+  const who_buy = req.body.who_buy;
+  const shop_item = req.body.shop_item;
+  shop_item.forEach((item ,index) => {
+    const query_con = `
+      INSERT INTO shopitems (who_buy, itemname, color, size) 
+      VALUES('${who_buy}', '${item.itemname}', '${item.color}', '${item.size}')`;
+    mysql_con.query(query_con, function (err, result) {
+      if(err) throw err;
+      if(index === (shop_item.length - 1)){
+        if(result){
+          res.json({status: 'ok', issavetoDB : 'yes'});
+          res.end();
+        }
+      }
+    });
+  });
+});
+// 4. Get user shop items from DB
+app.get('/shop_items', (req, res) => {
+  const user = req.query.user;
+  const query_con = `SELECT who_buy, itemname, color, size, COUNT(id) AS numbers FROM shopitems WHERE who_buy = '${user}' GROUP BY itemname, who_buy, color, size`;
+  mysql_con.query(query_con, (err, result) => {
+    res.json(result);
+    res.end();
+  });
+});
 
 app.listen(8085, () => {
   console.log('server listen on port 3000!');

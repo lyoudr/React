@@ -1,4 +1,7 @@
 import React, { useState, useEffect } from 'react';
+import Cookies from 'js-cookie';
+import { HttpRequest } from '../../../services/http-service/httpService';
+import close from '../../../assets/icon/close.svg';
 import "../../../assets/sass/shoplist/shoplist.scss";
 
 const CartCollections = (props) => {
@@ -23,6 +26,18 @@ const CartCollections = (props) => {
     props.showSopDetailaction(id);
     props.history.goBack();
   }
+  function checkOut() {
+    let cartcollection = {};
+    cartcollection.who_buy = Cookies.get('userId');
+    cartcollection.shop_item = props.cartcollection;
+    HttpRequest.checkOut(`${process.env.REACT_APP_HOSTURL}/checkout`, cartcollection)
+      .then(res => {
+        console.log('res is =>', res);
+        if(res.issavetoDB === 'yes' && res.status === 'ok'){
+          props.history.push('/shop-items');
+        }
+      });
+  }
   return (
     <section className="shop_cart">
       <div className="container">
@@ -43,7 +58,9 @@ const CartCollections = (props) => {
                     </div>
                     <div>
                       <p>{cart.detail.price}</p>
-                      <p onClick={() => deleteItem(cart.id)}> X </p>
+                      <p onClick={() => deleteItem(cart.id)}> 
+                        <img className="close_btn" src={close}/> 
+                      </p>
                     </div>
                   </div>
                 )
@@ -52,7 +69,7 @@ const CartCollections = (props) => {
             <div>
               <div>
                 <p>Total: {totalcount}</p>
-                <button>CheckOut</button>
+                <button onClick={() => checkOut()}>CheckOut</button>
               </div>
             </div>
           </div>

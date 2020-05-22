@@ -63,5 +63,33 @@ export const HttpRequest = {
     .then(res => {
       return res.json();
     })
+  },
+  // Check Out
+  checkOut:(url, selected_items) =>{
+    console.log('selected_item is =>', selected_items);
+    return fetch(url, {
+      headers : {
+        'content-type' : 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify(selected_items)
+    })
+    .then(res => {
+      return res.json();
+    })
+  },
+  // Get Shop Items
+  getShopItems: (url, user) => {
+    const params = {user : user};
+    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+    return fetch(url, {
+      headers : {
+        'content-type' : 'application/json'
+      },
+      method : 'GET',
+    })
+    .then(res => {
+      return res.json();
+    })
   }
 } 

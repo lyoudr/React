@@ -14,6 +14,7 @@ const PianoGame = lazy(() => import('./content/piano-game/PianoGame'));
 const PrintOut = lazy(() => import('./content/print-out/Printout'));
 const Courses = lazy(() => import('./content/courses/Course'));
 const ShopList = lazy(() => import('./content/shop-list/shoplist'));
+const ShopItems = lazy(() => import('./content/shop-list/comp/ShopItems'));
 const SearchRestaurant = lazy(() => import('./content/search-restaurant/search_restaurant'));
 
 class SecretRoute extends React.Component {
@@ -65,6 +66,7 @@ class App extends React.Component {
           <SecretRoute path="/printout" component={PrintOut} />
           <SecretRoute path="/courses" component={Courses} />
           <SecretRoute path="/shoplist" component={ShopList} />
+          <SecretRoute path="/shop-items" component={ShopItems}/>
           <SecretRoute path="/search-restaurant" component={SearchRestaurant} />
         </Switch>
       </ErrorBoundary>

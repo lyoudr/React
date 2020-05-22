@@ -209,6 +209,7 @@
                                        padding: 2px 24px;
                                        background: rgb(96, 172, 96);
                                        color: #ffffff;
+                                       margin-top: 30px;
                                    }
                                }
                            }
@@ -237,6 +238,10 @@
                                     >p{
                                         &:nth-child(2){
                                             margin-left: 20px;
+                                        }
+                                        .close_btn{
+                                            width: 15px;
+                                            cursor: pointer;
                                         }
                                     }
                                 }
