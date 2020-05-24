@@ -12,10 +12,10 @@ const tokenHandler = require('./token');
 /* User MiddleWares */
 // Static files
 app.use(express.static(publicPath));
-// parse application/json
+// parse application/json and limit its size
 app.use(bodyParser.json());
-// parse urlencoded
-app.use(bodyParser.urlencoded());
+// 
+//app.use(bodyParser.raw());
 // CORS
 app.use(cors());
 // CheckToken 
@@ -60,9 +60,7 @@ app.post('/loginpage', tokenHandler.generateToken.login);
 
 // getDishes
 app.post('/food', (req, res) => {
-  console.log('req.body is =>', req.body);
   let returneddishes = countfood.countDishes(req.body);
-  console.log('returneddishes is =>', returneddishes);
   res.json({ 'status': '200', 'message': 'ok', 'dishes': returneddishes });
   res.end();
 });
@@ -70,10 +68,11 @@ app.post('/food', (req, res) => {
 /* Chat */
 // 1. Post personal image to backend
 app.post('/uploadimage/:userId', (req, res) => {
-  console.log('uploadimg req.header is =>', req.headers);
-  console.log('uploadimg req.body is =>', req.body);
+  console.log('req.originalUrl is =>', req.originalUrl);
+  console.log('req.body is =>', req.body);
   const form = new formidable.IncomingForm();
   form.parse(req, (err, fields, files) => {
+    console.log('fields is =>', fields);
     const oldpath = files.photo.path;
     const newpath = '/home/ann/Code/React/Photos/' + files.photo.name;
     // Save position information to DB
@@ -163,7 +162,6 @@ app.get('/chat', (req, res) => {
       arrang_message(message.who_send);
       arrang_message(message.who_receive);
     });
-    console.log('query_messages is =>', query_messages);
     res.json(query_messages);
     res.end();
   });
@@ -171,7 +169,6 @@ app.get('/chat', (req, res) => {
 
 //4. Get User Images
 app.get('/user_image/:user' ,(req, res) => {
-  console.log('req.params is =>', req.params);
   const user = mysql.escape(req.params.user);
   const query_photo = `SELECT * FROM userphotos WHERE userId = ${user}`;
   mysql_con.query(query_photo, (err, result) => {

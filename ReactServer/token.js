@@ -3,7 +3,6 @@ const config = require('./config');
 /*1. Generate Token */
 class HandlerGenerator {
   login(req, res) {
-    console.log('req.body is =>', req.body);
     const username = req.body.userId;
     const password = req.body.password;
     // For the given user name fetch user from DB
@@ -36,13 +35,10 @@ const generateToken = new HandlerGenerator();
 
 /*2. Verify Token*/
 const checkToken = (req, res, next) => {
-  console.log('req.originalUrl is =>', req.originalUrl);
   if(req.originalUrl === '/loginpage'){
     next('route');
-  }
-  console.log('req.headers is =>', req.headers);
+  } 
   let token = req.headers['x-access-token'] || req.headers['authorization']; // Express headers are auto converted to lowercase
-
   if (token) {
     if (token.startsWith('Bearer ')) {
       // Remove Bearer from string

@@ -24,8 +24,11 @@ export const HttpRequest = {
   uploadImg: function (url, data) {
     return fetch(`${url}/${data.userId}`, {
       method: 'POST',
-      headers: this.request_headers,
-      body: data.formData,
+      headers:  {
+        'Authorization': Cookie.get('access_token'),
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: data.formData
     })
       .then(res => {
         return res.json();
