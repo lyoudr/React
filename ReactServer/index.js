@@ -7,6 +7,19 @@ const formidable = require('formidable');
 const fs = require('fs');
 const bodyParser = require('body-parser');
 const publicPath = path.join(__dirname, '../PianoGame/build');
+const tokenHandler = require('./token');
+
+/* User MiddleWares */
+// Static files
+app.use(express.static(publicPath));
+// parse application/json
+app.use(bodyParser.json());
+// parse urlencoded
+app.use(bodyParser.urlencoded());
+// CORS
+app.use(cors());
+// CheckToken 
+app.use(tokenHandler.checkToken);
 
 /* Mysql DataBase */
 const mysql = require('mysql');
@@ -22,13 +35,6 @@ const mysql_con = mysql.createConnection({
 const countfood = require('./foodset');
 // 2. Graph(Bellman-Ford)
 const countpath = require('./pathgraph');
-
-// Static files
-app.use(express.static(publicPath));
-// parse application/json
-app.use(bodyParser.json());
-// CORS
-app.use(cors());
 
 
 app.get('/', (req, res) => {
@@ -50,18 +56,7 @@ In case the issue is still fuzzy, here’s another example. Say you are really p
 
 /*Login*/
 // 1. User Login
-app.post('/loginpage', (req, res) => {
-  console.log('login info is =>', req.body);
-  console.log('login req is =>', req.protocol + '://' + req.get('host') + req.originalUrl);
-  const userInfo = req.body;
-  res.json({
-    'status': '200',
-    'response': 'ok',
-    'userId': userInfo.userId
-  });
-  res.end();
-});
-
+app.post('/loginpage', tokenHandler.generateToken.login);
 
 // getDishes
 app.post('/food', (req, res) => {
@@ -74,15 +69,26 @@ app.post('/food', (req, res) => {
 
 /* Chat */
 // 1. Post personal image to backend
-app.post('/uploadimage', (req, res) => {
-  let form = new formidable.IncomingForm();
+app.post('/uploadimage/:userId', (req, res) => {
+  console.log('uploadimg req.header is =>', req.headers);
+  console.log('uploadimg req.body is =>', req.body);
+  const form = new formidable.IncomingForm();
   form.parse(req, (err, fields, files) => {
-    var oldpath = files.photo.path;
-    var newpath = 'C:\Users\ann.ko\Desktop\pictures' + files.photo.name;
-    fs.rename(oldpath, newpath, (err) => {
-      if (err) throw err;
-      res.json({ 'status': '200', 'message': 'ok' });
-      res.end();
+    const oldpath = files.photo.path;
+    const newpath = '/home/ann/Code/React/Photos/' + files.photo.name;
+    // Save position information to DB
+    const user = `${req.params.userId}`;
+    const insert_info = `UPDATE userphotos SET position = ? WHERE userId = ?`;
+    mysql_con.query(insert_info, [newpath , user], (err, result) => {
+      if(err) throw err;
+      if(result){
+        // Save photo to disk
+        fs.rename(oldpath, newpath, (err) => {
+          if (err) throw err;
+          res.json({ 'status': '200', 'message': 'ok' });
+          res.end();
+        });
+      }
     });
   });
 });
@@ -90,10 +96,18 @@ app.post('/uploadimage', (req, res) => {
 // 2. Save personal data to Mysql DataBase
 app.post('/persondata', (req, res) => {
   const userInfo = req.body;
-  mysql_con.query(`SELECT * FROM userchat WHERE userId='${userInfo.userId}'`, function (err, result) {
+  const userId = mysql.escape(userInfo.userId);
+  const name = mysql.escape(userInfo.name);
+  const job = mysql.escape(userInfo.job);
+  const hobby = mysql.escape(userInfo.hobby);
+  const guide = mysql.escape(userInfo.guide);
+  const gender = mysql.escape(userInfo.gender);
+  const country = mysql.escape(userInfo.country);
+  const sql = `SELECT * FROM userchat WHERE userId=${userId}`;
+  mysql_con.query(sql, function (err, result) {
     if (err) throw err;
     if(!result.length){
-      const insert_info = `INSERT INTO userchat VALUES ('${userInfo.userId}', '${userInfo.name}', '${userInfo.job}', '${userInfo.hobby}', '${userInfo.guide}', '${userInfo.gender}', '${userInfo.country}', default)`;
+      const insert_info = `INSERT INTO userchat VALUES (${userId}, ${name}, ${job}, ${hobby}, ${guide}, ${gender}, ${country}, default)`;
       mysql_con.query(insert_info, (err, result) => {
         if (err) throw err;
         if(result.affectedRows === 1){
@@ -102,7 +116,7 @@ app.post('/persondata', (req, res) => {
         }
       });
     } else {
-      const update_info = `UPDATE userchat SET name='${userInfo.name}', job='${userInfo.job}', hobby='${userInfo.hobby}', guide='${userInfo.guide}', gender='${userInfo.gender}', country='${userInfo.country}' WHERE userId='${userInfo.userId}'`
+      const update_info = `UPDATE userchat SET name = ${name}, job = ${job}, hobby = ${hobby}, guide = ${guide}, gender = ${gender}, country = ${country} WHERE userId=${userId}`
       mysql_con.query(update_info, (err, result) => {
         if(err) throw err;
         if(result.affectedRows === 1){
@@ -116,15 +130,15 @@ app.post('/persondata', (req, res) => {
 
 // 3. Query chat records
 app.get('/chat', (req, res) => {
-  const query_person = req.query.personId;
+  const query_person = `${req.query.personId}`;
   const query_info = `
     SELECT chat_table.who_send, chat_table.who_receive, chat_table.message, chat_table.time, userchat.userId, userchat.job, userchat.hobby, userchat.guide, userchat.gender, userchat.country 
     FROM chat_table LEFT JOIN userchat
     ON chat_table.who_send = userchat.userId
-    WHERE who_send='${query_person}' OR who_receive = '${query_person}' 
+    WHERE who_send = ? OR who_receive = ? 
     ORDER BY time`;
   let query_messages = [];
-  mysql_con.query(query_info, (err, result) => {
+  mysql_con.query(query_info, [query_person, query_person], (err, result) => {
     if (err) throw err;
     result.forEach((message) => {
       const arrang_message = (person) => {
@@ -155,6 +169,22 @@ app.get('/chat', (req, res) => {
   });
 });
 
+//4. Get User Images
+app.get('/user_image/:user' ,(req, res) => {
+  console.log('req.params is =>', req.params);
+  const user = mysql.escape(req.params.user);
+  const query_photo = `SELECT * FROM userphotos WHERE userId = ${user}`;
+  mysql_con.query(query_photo, (err, result) => {
+    if(err) throw err;
+    if(result){
+      const position = result[0].position;
+      const img = fs.readFileSync(position);
+      res.writeHead(200, {'Content-Type': 'image/gif' });
+      res.end(img, 'binary');
+    }
+  });
+});
+
 /* Courses */
 // 1. Post path to count shortest path
 app.post('/shortestpath', (req, res) => {
@@ -169,10 +199,9 @@ app.post('/shortestpath', (req, res) => {
 /* ShopList */
 // 1. Get shop list
 app.post('/shoplists', (req, res) => {
-  const searchText = req.body.searchText;
-  mysql_con.query(`SELECT * FROM shoplist WHERE itemname LIKE '%${searchText}%'`, function (err, results) {
+  const searchText = `%${req.body.searchText}%`;
+  mysql_con.query(`SELECT * FROM shoplist WHERE itemname LIKE ? `,[searchText], function (err, results) {
     if (err) throw err;
-    console.log('results is =>', results);
     const modified_result = results.map(result => {
       result.isDetail = Boolean(result.isDetail);
       result.detail = JSON.parse(result.detail);
@@ -183,8 +212,8 @@ app.post('/shoplists', (req, res) => {
 });
 // 2. Get shop items according to Price
 app.post('/shop_price', (req, res) => {
-  const min_price = Number(req.body.price.slice(0, 3));
-  const max_price = Number(req.body.price.slice(6, 10));
+  const min_price = mysql.escape(Number(req.body.price.slice(0, 3)));
+  const max_price = mysql.escape(Number(req.body.price.slice(6, 10)));
   const query_con = `SELECT * FROM shoplist WHERE price BETWEEN ${min_price} AND ${max_price} ORDER BY price`;
   mysql_con.query(query_con, function (err, results) {
     if (err) throw err;
@@ -199,13 +228,13 @@ app.post('/shop_price', (req, res) => {
 });
 // 3. Save user shop items to DB
 app.post('/checkout', (req, res) => {
-  const who_buy = req.body.who_buy;
+  const who_buy = mysql.escape(req.body.who_buy);
   const shop_item = req.body.shop_item;
   shop_item.forEach((item ,index) => {
     const query_con = `
       INSERT INTO shopitems (who_buy, itemname, color, size) 
-      VALUES('${who_buy}', '${item.itemname}', '${item.color}', '${item.size}')`;
-    mysql_con.query(query_con, function (err, result) {
+      VALUES(${who_buy}, ? , ? , ? )`;
+    mysql_con.query(query_con, [item.itemname, item.color, item.size], function (err, result) {
       if(err) throw err;
       if(index === (shop_item.length - 1)){
         if(result){
@@ -218,8 +247,8 @@ app.post('/checkout', (req, res) => {
 });
 // 4. Get user shop items from DB
 app.get('/shop_items', (req, res) => {
-  const user = req.query.user;
-  const query_con = `SELECT who_buy, itemname, color, size, COUNT(id) AS numbers FROM shopitems WHERE who_buy = '${user}' GROUP BY itemname, who_buy, color, size`;
+  const user = mysql.escape(req.query.user);
+  const query_con = `SELECT who_buy, itemname, color, size, COUNT(id) AS numbers FROM shopitems WHERE who_buy = ${user} GROUP BY itemname, who_buy, color, size`;
   mysql_con.query(query_con, (err, result) => {
     res.json(result);
     res.end();
@@ -230,5 +259,8 @@ app.listen(8085, () => {
   console.log('server listen on port 3000!');
 });
 
+/* Router practice 
+const router = require('./router');
+app.use('/router', router);*/
 
 

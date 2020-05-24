@@ -22,7 +22,9 @@ const PersonalPicture = ({ setImg }) => {
   const uploadImg = () => {
     // append image to <img/>
     let Img = uploadRef.current.files[0];
+    console.log('Img is =>', Img);
     let ImgURL = URL.createObjectURL(Img);
+    console.log('ImgURL is =>', ImgURL);
     setImgUrl(ImgURL);
     setImg(Img);
   }
@@ -157,8 +159,6 @@ class Chat extends React.Component {
   handleSubmit() {
     const personalInfo = this.personalInfoRef.current.state.form;
     personalInfo.userId = Cookie.get('userId');
-    console.log('personalInfo is =>', personalInfo);
-    console.log('Cookie.get("userId") is =>', Cookie.get('userId'));
     this.setState({
       personalinfo: personalInfo,
     }, () => {
@@ -166,10 +166,13 @@ class Chat extends React.Component {
       this.postData(this.state.personalinfo, 'savePersonal', '/persondata');
     });
   }
-  postData(data, type, url) {
+  postData(data, type, url) {;
     let formData = new FormData();
     formData.append('photo', data);
-    HttpRequest[`${type}`](`${process.env.REACT_APP_HOSTURL}${url}`, type === 'uploadImg' ? formData : data)
+    let images_info = {};
+    images_info.formData = formData;
+    images_info.userId = Cookie.get('userId');
+    HttpRequest[`${type}`](`${process.env.REACT_APP_HOSTURL}${url}`, type === 'uploadImg' ? images_info : data)
       .then(data => {
         this.props.history.push('/chat/chatroom');
       });

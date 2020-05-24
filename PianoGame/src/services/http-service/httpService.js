@@ -1,14 +1,19 @@
+import Cookie from 'js-cookie';
+
 export const HttpRequest = {
+  request_headers: {
+    'Content-Type': 'application/json',
+    'Authorization': Cookie.get('access_token'),
+    'Access-Control-Allow-Origin': '*'
+  },
   // Get dishes from backend
-  requesDishes: (url, data) => {
+  requesDishes: function (url, data) {
     console.log('called fetch!');
     return fetch(url, {
       method: 'POST',
       mode: 'cors',
       credentials: 'same-origin',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: this.request_headers,
       body: JSON.stringify(data),
     })
       .then(res => {
@@ -16,21 +21,20 @@ export const HttpRequest = {
       })
   },
   //Upload User Image to backend
-  uploadImg: (url, data) => {
-    return fetch(url, {
+  uploadImg: function (url, data) {
+    return fetch(`${url}/${data.userId}`, {
       method: 'POST',
-      body: data
+      headers: this.request_headers,
+      body: data.formData,
     })
       .then(res => {
         return res.json();
       })
   },
   //Save personal data to backend
-  savePersonal: (url, data) => {
+  savePersonal: function (url, data) {
     return fetch(url, {
-      headers: {
-        'content-type': 'application/json'
-      },
+      headers: this.request_headers,
       method: 'POST',
       body: JSON.stringify(data)
     })
@@ -38,58 +42,80 @@ export const HttpRequest = {
         return res.json();
       })
   },
+  // Fetch user and friend images
+  fetchImage: function (url, person) {
+    return fetch(`${url}${person}`, {
+      headers: this.request_headers,
+      method: 'GET',
+    })
+      .then(res => {
+        const reader = res.body.getReader();
+        return new ReadableStream({
+          start(controller) {
+            const pump = () => {
+              return reader.read().then(({ done, value }) => {
+                // When no more data needs to be consumed, close the stream
+                if (done) {
+                  controller.close();
+                  return;
+                }
+                // Enqueue the next data chunk into our target stream
+                controller.enqueue(value);
+                return pump();
+              });
+            }
+            return pump();
+          }
+        })
+      })
+      .then(stream => new Response(stream))
+      .then(response => response.blob())
+      .then(blob => URL.createObjectURL(blob))
+  },
   // Count shortest path (Using params in Fetch)
-  shortestPath: (url, data) => {
+  shortestPath: function (url, data) {
     return fetch(url, {
-      headers: {
-        'content-type': 'application/json'
-      },
+      headers: this.request_headers,
       method: 'POST',
       body: data
     })
-    .then(res => {
-      return res.json();
-    });
+      .then(res => {
+        return res.json();
+      });
   },
   // Select shop list items according to price range
-  choosePrice: (url, price_range) => {
+  choosePrice: function (url, price_range) {
     return fetch(url, {
-      headers : {
-        'content-type' : 'application/json'
-      },
+      headers: this.request_headers,
       method: 'POST',
-      body: JSON.stringify({price : price_range})
+      body: JSON.stringify({ price: price_range })
     })
-    .then(res => {
-      return res.json();
-    })
+      .then(res => {
+        return res.json();
+      })
   },
   // Check Out
-  checkOut:(url, selected_items) =>{
+  checkOut: function (url, selected_items) {
     console.log('selected_item is =>', selected_items);
     return fetch(url, {
-      headers : {
-        'content-type' : 'application/json'
-      },
+      headers: this.request_headers,
       method: 'POST',
       body: JSON.stringify(selected_items)
     })
-    .then(res => {
-      return res.json();
-    })
+      .then(res => {
+        return res.json();
+      })
   },
   // Get Shop Items
-  getShopItems: (url, user) => {
-    const params = {user : user};
+  getShopItems: function (url, user) {
+    const params = { user: user };
     Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
     return fetch(url, {
-      headers : {
-        'content-type' : 'application/json'
-      },
-      method : 'GET',
+      headers: this.request_headers,
+      method: 'GET',
     })
-    .then(res => {
-      return res.json();
-    })
+      .then(res => {
+        return res.json();
+      })
   }
 } 

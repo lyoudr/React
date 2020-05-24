@@ -1,4 +1,5 @@
-let nextTodoId = 0;
+import Cookie from 'js-cookie';
+
 /* Courses Notes */
 export const showSubject = name => ({
   type: 'SHOW_SUBJECT',
@@ -82,7 +83,8 @@ export function fetchPosts(searchText){
     const reqBody = {
       method: 'POST',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': Cookie.get('access_token')
       },
       body: JSON.stringify({searchText: searchText})
     }
@@ -132,7 +134,6 @@ function requestContacts(personId) {
 }
 // Receive contacts
 function receiveContacts(personId, json){
-  console.log('json is =>', json);
   return{
     type : 'RECEIVE_CONTACTS',
     personId,
@@ -147,10 +148,15 @@ function fetchContactsPosts(personId){
       const url = new URL(`${process.env.REACT_APP_HOSTURL}/chat`);
       const params = {personId : personId};
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
-      return fetch(url)
+      return fetch(url, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': Cookie.get('access_token')
+        },
+      })
         .then(res => res.json())
         .then(json => {
-          console.log('json is =>', json);
           dispatch(receiveContacts(personId, json));
           return Promise.resolve(getState());
         })

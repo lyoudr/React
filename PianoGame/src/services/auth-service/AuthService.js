@@ -16,6 +16,7 @@ const AuthService = {
         return res.json();
       })
       .then((data) => {
+        Cookie.set('access_token', data.token);
         Cookie.set('userId', data.userId);
       })
       .then(() => {

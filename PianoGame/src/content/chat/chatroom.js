@@ -5,6 +5,7 @@ import sendsvg from '../../assets/svg/send.svg';
 import { isNavOpen } from '../nav/Nav';
 import default_img from '../../assets/images/cat_0.jpg';
 import '../../assets/sass/chat/chatroom.scss';
+import { HttpRequest } from '../../services/http-service/httpService';
 
 class ChatRoom extends React.Component {
   constructor(props) {
@@ -12,15 +13,18 @@ class ChatRoom extends React.Component {
     this.state = {
       message: [],
       contacts: [],
-      selected_contact: null,
-      personInfo : null, 
-      oriClass: '',
-      isContactsOpen: '',
+      selected_contact: null, // selected friend to chat with
+      person_info : null, 
+      user_img : null,
+      friend_img: null,
+      ori_class: '',
+      is_contacts_open: '',
       socket: new WebSocket(`${process.env.REACT_APP_WEBSOCKET}:8080/${Cookie.get('userId')}`, 'echo-protocol'),
     }
     this.messageRef = React.createRef();
     this.connectwebSocket = this.connectwebSocket.bind(this);
     this.fetchContacts = this.fetchContacts.bind(this);
+    this.fetchImage = this.fetchImage.bind(this);
   }
 
   componentDidMount() {
@@ -29,7 +33,7 @@ class ChatRoom extends React.Component {
 
     // Subscribe to nav open status determine to show contacts info
     isNavOpen.subscribe(isOpen => {
-      this.setState({ isContactsOpen: isOpen });
+      this.setState({ is_contacts_open: isOpen });
     });
 
     if (document.getElementById(`message${this.state.message.length - 1}`)) {
@@ -47,6 +51,7 @@ class ChatRoom extends React.Component {
     document.getElementsByClassName('chatarea')[0].style.display = "block";
   }
 
+  // Fetch friends
   fetchContacts() {
     // Fetch contacts
     this.props.dispatch(fetchPostsIfNeeded(Cookie.get('userId'))).then(res => {
@@ -55,10 +60,22 @@ class ChatRoom extends React.Component {
         contacts: contacts,
         message: contacts[0].message,
         selected_contact: contacts[0].name
+      }, 
+      () => {
+        this.fetchImage(Cookie.get('userId'), 'user_img');
+        this.fetchImage(this.state.selected_contact,'friend_img');
       });
     });
   }
 
+  // Fetch friend and self images
+  fetchImage(user, state){
+    // Get self image or friend image
+    HttpRequest.fetchImage(`${process.env.REACT_APP_HOSTURL}/user_image/`, user)
+      .then(url => this.setState({[state]: url}));
+  }
+
+  // Connect to WebSocket
   connectwebSocket() {
     // Connection open
     this.state.socket.onopen = () => {
@@ -82,6 +99,7 @@ class ChatRoom extends React.Component {
     }
   }
 
+  // Send messages via websocket
   sendMessage() {
     const currentTime = new Date();
     this.state.socket.send(JSON.stringify({
@@ -92,24 +110,26 @@ class ChatRoom extends React.Component {
     }));
   }
 
+  // choose friend to chat
   selectContact(name, index) {
     this.setState({
       message: this.state.contacts[index].message,
       selected_contact: name
-    });
+    }, () => this.fetchImage(this.state.selected_contact, 'friend_img'));
   }
 
+  // click on photo to show details about person
   showPeronalInfo(userInfo) {
     console.log('userInfo is =>', userInfo);
-    this.setState({personInfo: userInfo});
+    this.setState({person_info: userInfo});
   }
 
   render() {
-    const personInfo = this.state.personInfo;
+    const person_info = this.state.person_info;
     return (
       <main className="chatroom">
         <section className="chat">
-          <aside className={`friend ${this.state.isContactsOpen}`}>
+          <aside className={`friend ${this.state.is_contacts_open}`}>
             <a className="each_contact title">Contacts</a>
             {this.state.contacts.map((contact, index) =>
               <a className={`each_contact ${this.state.selected_contact === contact.name ? 'active' : ''}`}
@@ -124,33 +144,33 @@ class ChatRoom extends React.Component {
               <div className="col-12 chat_area">
                 <div className="message_area">
                   {this.state.message.map(((eachmsg, index) =>
-                    <div className="each_message">
-                      {eachmsg.who_send !== Cookie.get('userId') && <img className="user_img left" src={default_img} onClick={this.showPeronalInfo.bind(this, eachmsg)} />}
+                    <div key={`message_${index}`} className="each_message">
+                      {eachmsg.who_send !== Cookie.get('userId') && <img className="friend_img left" src={this.state.friend_img} onClick={this.showPeronalInfo.bind(this, eachmsg)} />}
                       <div key={`${eachmsg}_${index}`} className={
                         eachmsg.who_send === Cookie.get('userId') ?
-                          `message right ${this.state.oriClass}` :
-                          `message lef ${this.state.oriClass}`}
+                          `message right ${this.state.ori_class}` :
+                          `message lef ${this.state.ori_class}`}
                         id={`message${index}`}
                       >
                         <p className="name">{eachmsg.who_send}</p>
                         <p className="content">{eachmsg.message}</p>
                         <p className="time">{eachmsg.time}</p>
                       </div>
-                      {eachmsg.who_send === Cookie.get('userId') && <img className="user_img right" src={default_img} onClick={this.showPeronalInfo.bind(this, eachmsg)} />}
+                      {eachmsg.who_send === Cookie.get('userId') && <img className="user_img right" src={this.state.user_img} onClick={this.showPeronalInfo.bind(this, eachmsg)} />}
                     </div>
                   ))}
-                  {personInfo && (
+                  {person_info && (
                     <>
                       <div className="dimScreen_userinfo"></div>
                       <div className="userinfo_modal">
                         <div className="userinfo_area">
                           <img/>
-                          <a onClick={() => this.setState({personInfo : null})}>X</a>
-                          <p>{personInfo.who_send}</p>
-                          <p>{personInfo.job}</p>
-                          <p>{personInfo.country}</p>
-                          <p>{personInfo.hobby}</p>
-                          <p>{personInfo.guide}</p>
+                          <a onClick={() => this.setState({person_info : null})}>X</a>
+                          <p>{person_info.who_send}</p>
+                          <p>{person_info.job}</p>
+                          <p>{person_info.country}</p>
+                          <p>{person_info.hobby}</p>
+                          <p>{person_info.guide}</p>
                         </div>
                       </div>
                     </>

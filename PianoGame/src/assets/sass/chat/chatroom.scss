@@ -44,7 +44,7 @@
             .each_message{
                 display:flex;
                 align-items: flex-start;
-                .user_img{
+                .user_img, .friend_img{
                     width: 50px;
                     border-radius: 50%;
                     margin-top: 15px;
