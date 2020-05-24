@@ -6,8 +6,8 @@ const path = require('path');
 const formidable = require('formidable');
 const fs = require('fs');
 const bodyParser = require('body-parser');
-const publicPath = path.join(__dirname, '../PianoGame/build');
-const tokenHandler = require('./token');
+const publicPath = path.join(__dirname, '../../PianoGame/build');
+const tokenHandler = require('../middlewares/token');
 
 /* User MiddleWares */
 // Static files
@@ -32,9 +32,9 @@ const mysql_con = mysql.createConnection({
 
 /* Alogrithm */
 // 1. Set
-const countfood = require('./foodset');
+const countfood = require('../algorithms/foodset');
 // 2. Graph(Bellman-Ford)
-const countpath = require('./pathgraph');
+const countpath = require('../algorithms/pathgraph');
 
 
 app.get('/', (req, res) => {

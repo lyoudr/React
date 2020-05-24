@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const config = require('./config');
+const config = require('../config/config');
 /*1. Generate Token */
 class HandlerGenerator {
   login(req, res) {
