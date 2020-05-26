@@ -22,7 +22,7 @@ class HandlerGenerator {
           userId : username
         });
       } else {
-        res.send(401).json({
+        res.status(401).json({
           success: false,
           message: 'Authentication failed! Please check the request'
         });
@@ -57,8 +57,7 @@ const checkToken = (req, res, next) => {
     });
   } else {
     console.log('unotherize');
-    res.writeHead(401);
-    res.end('Unotherize');
+    res.status(401).send('Unotherize');
   }
 };
 

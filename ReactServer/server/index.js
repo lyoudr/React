@@ -8,14 +8,15 @@ const fs = require('fs');
 const bodyParser = require('body-parser');
 const publicPath = path.join(__dirname, '../../PianoGame/build');
 const tokenHandler = require('../middlewares/token');
+const error_handler = require('../middlewares/error-handle');
 
 /* User MiddleWares */
 // Static files
 app.use(express.static(publicPath));
-// parse application/json and limit its size
+// Parse application/json and limit its size
 app.use(bodyParser.json());
-// 
-//app.use(bodyParser.raw());
+// Error handling
+app.use(error_handler);
 // CORS
 app.use(cors());
 // CheckToken 
@@ -29,6 +30,11 @@ const mysql_con = mysql.createConnection({
   password: "Awdxa48624",
   database: "mydb"
 });
+
+/* Set Proxies */
+app.set('trust proxy', (ip) => {
+  console.log('ip is =>', ip);
+});//
 
 /* Alogrithm */
 // 1. Set
@@ -253,7 +259,7 @@ app.get('/shop_items', (req, res) => {
 });
 
 app.listen(8085, () => {
-  console.log('server listen on port 3000!');
+  console.log('server listen on port 8085!');
 });
 
 /* Router practice 
