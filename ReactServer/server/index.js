@@ -38,7 +38,7 @@ const countfood = require('../algorithms/foodset');
 const countpath = require('../algorithms/pathgraph');
 
 
-app.get('/*', (req, res) => {
+app.get('/login', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
 
@@ -131,6 +131,7 @@ app.post('/persondata', (req, res) => {
 // 3. Query chat records
 app.get('/chat', (req, res) => {
   const query_person = `${req.query.personId}`;
+  console.log('query_person is =>', query_person);
   const query_info = `
     SELECT chat_table.who_send, chat_table.who_receive, chat_table.message, chat_table.time, userchat.userId, userchat.job, userchat.hobby, userchat.guide, userchat.gender, userchat.country 
     FROM chat_table LEFT JOIN userchat
@@ -139,6 +140,7 @@ app.get('/chat', (req, res) => {
     ORDER BY time`;
   let query_messages = [];
   mysql_con.query(query_info, [query_person, query_person], (err, result) => {
+    console.log('chat result is =>', result);
     if (err) throw err;
     result.forEach((message) => {
       const arrang_message = (person) => {
@@ -183,6 +185,21 @@ app.get('/user_image/:user' ,(req, res) => {
   });
 });
 
+//5. Delete message
+app.delete('/delete_msg', (req, res) => {
+  const del = req.body;
+  const delete_info = `DELETE FROM chat_table WHERE who_send = ? AND who_receive = ? AND message = ?`;
+  mysql_con.query(delete_info, [del.who_send, del.who_receive, del.message], (err, result) => {
+    if (err) throw err;
+    if (result) {
+      if(result.affectedRows){
+        res.json({status: 'ok', isDeleted: 'yes'});
+        res.end();
+      }
+    }
+  });
+});
+
 /* Courses */
 // 1. Post path to count shortest path
 app.post('/shortestpath', (req, res) => {
@@ -217,7 +234,7 @@ app.post('/shop_price', (req, res) => {
     if (err) throw err;
     const modified_result = results.map(result => {
       result.isDetail = Boolean(result.isDetail);
-      result.detail = Boolean(result.detail);
+      result.detail = JSON.parse(result.detail);
       return result;
     });
     res.json(modified_result);

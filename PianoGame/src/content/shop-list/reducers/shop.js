@@ -6,7 +6,7 @@ import coat from '../../../assets/images/coat.jpg';
 
 const InitialState = [
   {
-    id : 'item1',
+    id : 'jack',
     imgsrc : jacket,
     itemname: 'jack',
     isDetail : false,
@@ -17,7 +17,7 @@ const InitialState = [
     }
   },
   {
-    id : 'item2',
+    id : 'neck',
     imgsrc : necklace,
     itemname: 'neck',
     isDetail : false,
@@ -28,7 +28,7 @@ const InitialState = [
     }
   },
   {
-    id : 'item3',
+    id : 'sweater',
     imgsrc : sweater,
     itemname: 'sweater',
     isDetail : false,
@@ -39,7 +39,7 @@ const InitialState = [
     }
   },
   {
-    id : 'item4',
+    id : 'shoes',
     imgsrc : shoes,
     itemname: 'shoes',
     isDetail : false,
@@ -50,7 +50,7 @@ const InitialState = [
     }
   },
   {
-    id : 'item5',
+    id : 'coat',
     imgsrc : coat,
     itemname: 'coat',
     isDetail : false,
@@ -76,6 +76,9 @@ export const shoplist = (state = InitialState, action) => {
       ) 
     case 'NEW_SHOPDETAIL':
       return action.shoplists;
+    case 'SHOW_ALLITEM':
+      console.log('action is =>', action);
+      return InitialState;
     default:
       return InitialState;
   }

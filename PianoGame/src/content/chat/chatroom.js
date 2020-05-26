@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import { fetchPostsIfNeeded } from '../../redux/actions/index';
+import { HttpRequest } from '../../services/http-service/httpService';
+import { isNavOpen } from '../nav/Nav';
 import Cookie from 'js-cookie';
 import sendsvg from '../../assets/svg/send.svg';
-import { isNavOpen } from '../nav/Nav';
+import trash_can from '../../assets/icon/trash.svg';
 import default_img from '../../assets/images/cat_0.jpg';
 import '../../assets/sass/chat/chatroom.scss';
-import { HttpRequest } from '../../services/http-service/httpService';
+
 
 class ChatRoom extends React.Component {
   constructor(props) {
@@ -120,8 +122,26 @@ class ChatRoom extends React.Component {
 
   // click on photo to show details about person
   showPeronalInfo(userInfo) {
-    console.log('userInfo is =>', userInfo);
     this.setState({person_info: userInfo});
+  }
+
+  // delete message
+  deleteMessage(info, index){
+    const delete_info = {
+      who_send: info.who_send, 
+      who_receive: info.who_receive, 
+      message: info.message, 
+      time: info.time
+    };
+    HttpRequest.deleteMessage(`${process.env.REACT_APP_HOSTURL}/delete_msg`, delete_info)
+      .then(res => {
+        if(res.status === 'ok' && res.isDeleted === 'yes'){
+          this.setState(state => {
+            state.message[index]['isDeleted'] = true;
+            return state;
+          })
+        }
+      });
   }
 
   render() {
@@ -144,7 +164,7 @@ class ChatRoom extends React.Component {
               <div className="col-12 chat_area">
                 <div className="message_area">
                   {this.state.message.map(((eachmsg, index) =>
-                    <div key={`message_${index}`} className="each_message">
+                    <div key={`message_${index}`} className={`each_message ${eachmsg.isDeleted ? 'hide': ''}`}>
                       {eachmsg.who_send !== Cookie.get('userId') && <img className="friend_img left" src={this.state.friend_img} onClick={this.showPeronalInfo.bind(this, eachmsg)} />}
                       <div key={`${eachmsg}_${index}`} className={
                         eachmsg.who_send === Cookie.get('userId') ?
@@ -155,6 +175,9 @@ class ChatRoom extends React.Component {
                         <p className="name">{eachmsg.who_send}</p>
                         <p className="content">{eachmsg.message}</p>
                         <p className="time">{eachmsg.time}</p>
+                        <a className="delete" onClick={this.deleteMessage.bind(this, eachmsg, index)}>
+                          <img src={trash_can}/>
+                        </a>
                       </div>
                       {eachmsg.who_send === Cookie.get('userId') && <img className="user_img right" src={this.state.user_img} onClick={this.showPeronalInfo.bind(this, eachmsg)} />}
                     </div>

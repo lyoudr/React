@@ -43,6 +43,10 @@ export const showShopDetail = id => ({
   id
 });
 
+export const showAllItem = () => ({
+  type : 'SHOW_ALLITEM',
+});
+
 export const addToCart = (id, itemname, detail, color, size) => ({
   type: 'ADD_TOCART',
   itemname,

@@ -1,7 +1,7 @@
 import React, { lazy } from 'react';
 import { Route, Link, Switch } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { fetchPosts } from '../../redux/actions/index';
+import { newShopDetail, fetchPosts, showAllItem } from '../../redux/actions/index';
 import ShopDetials from './containers/ShopDetail';
 import {HttpRequest} from '../../services/http-service/httpService';
 import '../../assets/sass/shoplist/shoplist.scss';
@@ -13,12 +13,14 @@ class ShopList extends React.PureComponent {
   constructor(props) {
     super(props)
     this.state = {
-      price_range : ['100 ~ 500', '500 ~ 1000', '1000 ~ 1500']
+      price_range : ['100 ~ 500', '500 ~ 1000', '1000 ~ 1500'],
+      selected_price : '100 ~ 500'
     }
     this.searchRef = React.createRef();
     this.compRef = React.createRef();
     this.searchItem = this.searchItem.bind(this);
     this.choosePrice = this.choosePrice.bind(this);
+    this.detectInput = this.detectInput.bind(this);
   }
   /* Avoid Reconciliation => Optimizing Performance */
   // shouldComponentUpdate(nextProps, nextState){
@@ -37,21 +39,27 @@ class ShopList extends React.PureComponent {
   async searchItem() {
     const searchText = this.searchRef.current.value;
     // post search text to server to get results
-    this.props.dispatch(fetchPosts(searchText));
+    this.props.fetchPosts(searchText);
   }
   choosePrice(price_range){
+    this.setState({selected_price: price_range});
     HttpRequest.choosePrice(`${process.env.REACT_APP_HOSTURL}/shop_price`, price_range)
-      .then(data => console.log('data is =>', data));
+      .then(data => this.props.newShopDetail(data));
+  }
+  detectInput(e){
+    if(e.target.value === ''){
+      this.props.showAllItem();
+    }
   }
   render() {
     return (
       <div ref={this.compRef} className="shoplist main">
         <section className="shopselect">
           <div className="container">
-            <div className="row justify-content-center">
+            <div className="row justify-content-center search">
               <div className="col-10 col-md-8">
                 <div>
-                  <input type="text" ref={this.searchRef} />
+                  <input type="text" ref={this.searchRef} onChange={this.detectInput.bind(this)}/>
                   <button onClick={this.searchItem}>Search</button>
                   <button>
                     <div>{this.props.cart.length}</div>
@@ -60,16 +68,42 @@ class ShopList extends React.PureComponent {
                 </div>
               </div>
             </div>
-            <div className="row justify-content-center">
-              <div className="col-7 col-md-8">
-              {this.state.price_range.map(price => 
-                <a key={price} onClick={this.choosePrice.bind(this, price)}>{price}</a>)}
-              </div>
-              <div className="col-3 col-md-8">
-                <a>ASC</a>
-                <a>DESC</a>
-              </div>
-            </div>
+            <nav>
+              <ul>
+                <li className="sub-menu-parent" tab-index="0">
+                  <a href="#">Item1</a>
+                  <ul className="sub-menu">
+                    <li><a href="#">Sub Item 1</a></li>
+                    <li><a href="#">Sub Item 2</a></li>
+                    <li><a href="#">Sub Item 3</a></li>
+                    <li><a href="#">Sub Item 4</a></li>
+                  </ul>
+                </li>
+                <li className="sub-menu-parent" tab-index="0">
+                  <a href="#">Item2</a>
+                  <ul className="sub-menu">
+                    <li><a href="#">Sub Item 1</a></li>
+                    <li><a href="#">Sub Item 2</a></li>
+                    <li><a href="#">Sub Item 3</a></li>
+                    <li><a href="#">Sub Item 4</a></li>
+                    <li><a href="#">Sub Item 5</a></li>
+                    <li><a href="#">Sub Item 6</a></li>
+                  </ul>
+                </li>
+                <li className="sub-menu-parent" tab-index="0">
+                  <a href="#">Price</a>
+                  <ul className="sub-menu">
+                  {this.state.price_range.map(price => 
+                    <li key={price}>
+                      <a className={`price ${this.state.selected_price === price ? 'active': ''}`} 
+                        onClick={this.choosePrice.bind(this, price)}>
+                          {price}
+                      </a>
+                    </li>)}
+                  </ul>
+                </li>
+              </ul>
+            </nav>
           </div>
         </section>
         <section className="shopdetails">
@@ -94,6 +128,13 @@ const mapStateToProps = state => {
   })
 };
 
+const mapDispatchToProps = dispatch => ({
+  newShopDetail : (shoplists) => dispatch(newShopDetail(shoplists)),
+  fetchPosts : (searchText) => dispatch(fetchPosts(searchText)),
+  showAllItem : () => dispatch(showAllItem())
+});
+
 export default connect(
-  mapStateToProps
+  mapStateToProps,
+  mapDispatchToProps
 )(ShopList);

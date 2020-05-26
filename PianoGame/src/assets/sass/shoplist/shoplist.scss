@@ -1,255 +1,315 @@
 .shoplist{
-    section{
-        padding: 1.5rem 0;
-        &.shopselect{
-            >.container{
-                >.row{
-                    >div{
-                        >div{
-                            display: flex;
-                            >input{
-                                margin-left: auto;
-                                padding: 5px;
-                                background: #cecbcb;
-                                border: none;
-                                width: 40%;
-                            }
-                            >button{
-                                border: none;
-                                padding: 5px 15px;
-                                border-radius: 5px;
-                                background-image: linear-gradient(to bottom, #cccccc, #515151);
-                                color: #ffffff;
-                                font-family: monospace;
-                                font-size: 14px;
-                                margin-left: 10px;
-                                >a{
-                                    color: #ffffff;
-                                }
-                                >div{
-                                    border-radius: 50%;
-                                    background: rgb(216, 140, 140);
-                                    color: #ffffff;
-                                    height: 25px;
-                                    width: 25px;
-                                    border: none;
+  section{
+    padding: 1.5rem 0;
+    &.shopselect{
+      >.container{
+        .search{
+          >div{
+              >div{
+                  display: flex;
+                  >input{
+                      margin-left: auto;
+                      padding: 5px;
+                      background: #cecbcb;
+                      border: none;
+                      width: 40%;
+                  }
+                  >button{
+                      border: none;
+                      padding: 5px 15px;
+                      border-radius: 5px;
+                      background-image: linear-gradient(to bottom, #cccccc, #515151);
+                      color: #ffffff;
+                      font-family: monospace;
+                      font-size: 14px;
+                      margin-left: 10px;
+                      >a{
+                          color: #ffffff;
+                      }
+                      >div{
+                          border-radius: 50%;
+                          background: rgb(216, 140, 140);
+                          color: #ffffff;
+                          height: 25px;
+                          width: 25px;
+                          border: none;
 
-                                }
-                            }
+                      }
+                  }
 
-                        }
-                    }
-                }
-            }
+              }
+          }
         }
-        &.shopdetails{
-            >.container{
-                >.row{
-                    >div{
-                        &.select{
-                            &::-webkit-scrollbar{
-                                display: none;
-                            }
-                            overflow: auto;
-                            max-height: 150vh;
-                            >div{
-                                cursor: pointer;
-                                >img{
-                                    width: 100%;
-                                    box-shadow: 2px 3px 10px 1px rgb(156, 152, 152);
-                                }
-                                >p{
-                                    font-family: monospace;
-                                    font-size: 13px;
-                                    font-weight: 500;
-                                    margin-top: 1rem;
-                                }
-                            }
+        .sub-menu-parent { 
+          position: relative; 
+        }
+        .sub-menu { 
+          visibility: hidden; /* hides sub-menu */
+          opacity: 0;
+          position: absolute;
+          top: 100%;
+          left: 0;
+          width: 100%;
+          transform: translateY(-2em);
+          z-index: -1;
+          transition: all 0.3s ease-in-out 0s, visibility 0s linear 0.3s, z-index 0s linear 0.01s;
+        }
+        nav {
+          padding: 1.5rem 0.5rem;
+          a { 
+            cursor: pointer;
+            color: rgb(139, 136, 136); 
+            display: block; 
+            padding: 0.5em 1em; 
+            text-decoration: none; 
+            font-size: 16px;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            &:hover, &.active{
+              background-color: #6b6b6b;
+              color: #fff;
+            }
+          }
+          ul, li{
+            list-style-type: none; 
+            padding: 0; 
+            margin: 0;
+          }
+          >ul{
+            display: flex;
+            justify-content: center;
+            border-bottom: 1px solid #EEE;
+            text-align: center;
+            >li{
+              width:25%;
+              border-left: solid 1px #aaa;
+              &:first-child{
+                border-left: none;
+              }
+            }
+          }
+          .sub-menu-parent:focus .sub-menu,
+          .sub-menu-parent:focus-within .sub-menu,
+          .sub-menu-parent:hover .sub-menu {
+            visibility: visible; /* shows sub-menu */
+            opacity: 1;
+            z-index: 1;
+            transform: translateY(0%);
+            transition-delay: 0s, 0s, 0.3s; /* this removes the transition delay so the menu will be visible while the other styles transition */
+          }
+          .sub-menu {
+            background: #DDD;
+          }
+        }
+      }
+    }
+    &.shopdetails{
+        >.container{
+            >.row{
+                >div{
+                    &.select{
+                        &::-webkit-scrollbar{
+                            display: none;
                         }
-                        &.display{
-                          >div{
-                            padding: 0 2rem;
-                            @media screen and (max-width: 600px){
-                                padding: 0 0.3rem;
-                            }
+                        overflow: auto;
+                        max-height: 150vh;
+                        >div{
+                            cursor: pointer;
                             >img{
-                            width: 100%;
-                            margin-top: 100px;
-                            opacity: 0;
-                            transition: all 2s .25s ease;
-                            &.is-visible{
-                                margin-top: 0;
-                                opacity: 1;
-                            }
+                                width: 100%;
+                                box-shadow: 2px 3px 10px 1px rgb(156, 152, 152);
                             }
                             >p{
-                            &:nth-child(2){
-                                font-size: 18px;
-                                font-weight: 700;
-                            }
-                            &:nth-child(3), &:nth-child(4){
                                 font-family: monospace;
                                 font-size: 13px;
                                 font-weight: 500;
+                                margin-top: 1rem;
                             }
-                            &:nth-child(4){
-                                color: #555;
-                                margin-top: 30px;
-                                padding-top: 30px;
-                                border-top: 0.5px solid rgb(185, 180, 180);
-                            }
-                            }
-                            >div{
-                                &.color{
-                                    align-items: center;
-                                    display: flex;
-                                    margin-top: 8%;
-                                    >span{
-                                        font-family: monospace;
-                                        font-size: 13px;
-                                        width: 20%;
-                                    }
-                                    >div{
-                                        width: 10%;
-                                        @media screen and (max-width: 600px){
-                                            width: 20%;
-                                        }
-                                        height: 5vh;
-                                        margin-left: 4%;
-                                        box-shadow: 2px 1px 4px 0px rgb(138, 138, 138);
-                                        cursor: pointer;
-                                        &:nth-child(2){
-                                            background: pink;
-                                        }
-                                        &:nth-child(3){
-                                            background: rgb(161, 175, 155);
-                                        }
-                                        &:nth-child(4){
-                                            background: rgb(155, 190, 211);
-                                        }
-                                        &:nth-child(5){
-                                            background: rgb(207, 118, 133);
-                                        }
-                                        &.active {
-                                            border: 1px solid rgb(116, 114, 114);
-                                        }
-                                        >span{
-                                            display: none;
-                                        }
-                                    }
-                                }
-                                &.size{
-                                    align-items: center;
-                                    display: flex;
-                                    margin-top: 8%;
-                                    >span{
-                                        font-family: monospace;
-                                        font-size: 13px;
-                                        width: 20%;
-                                    }
-                                    >div{
-                                        text-align: center;
-                                        cursor: pointer;
-                                        width: 10%;
-                                        @media screen and (max-width: 600px){
-                                            width: 20%;
-                                        }
-                                        height: 5vh;
-                                        margin-left: 4%;
-                                        border: 0.5px solid rgb(173, 171, 171);
-                                        background: #ffffff;
-                                        &.active{
-                                            background: #555;
-                                            color: #ffffff;
-                                        }
-                                    }
-                                }
-                                &.addtocart{
-                                    text-align: right;
-                                    padding: 2rem 0 0 0;
-                                    >button{
-                                        border: none;
-                                        font-family: monospace;
-                                        font-size: 15px;
-                                        color: #ffffff;
-                                        background: gray;
-                                        padding: 3px 15px;
-                                    }
-                                }
-                            }
-                          }  
                         }
                     }
-                }
-            }
-        }
-        &.shop_cart{
-            >.container{
-                >.row{
-                    justify-content: center;
-                    >div{
-                        >div{
-                           display: flex;
-                           align-items: center;
-                           padding: 15px 0;
-                           &:not(:nth-last-child(1)){
-                                border-bottom: 0.5px solid rgb(150, 148, 148);
-                           }
-                           &:nth-last-child(1){
-                               >div{
-                                    margin-left: auto;
-                                    text-align: right;
-                                   >p{
-                                    font-family: monospace;
-                                    font-size: 17px;
-                                   }
-                                   >button{
-                                       border: none;
-                                       border-radius: 21px;
-                                       padding: 2px 24px;
-                                       background: rgb(96, 172, 96);
-                                       color: #ffffff;
-                                       margin-top: 30px;
-                                   }
-                               }
-                           }
-                           >div{
-                                &:nth-child(1){
-                                    width: 40%;
-                                    >img{
-                                        width: 100%;
-                                        cursor: pointer;
-                                    }
-                                }
-                                &:nth-child(2){
-                                    padding: 7px;
-                                    >p{
-                                        &:nth-child(1){
-                                            font-size: 17px;
-                                            font-weight: 800;
-                                        }
-                                        font-family: monospace;
-                                        font-size: 14px;
-                                    }
-                                }
-                                &:nth-child(3){
-                                    margin-left: auto;
-                                    display: flex;
-                                    >p{
-                                        &:nth-child(2){
-                                            margin-left: 20px;
-                                        }
-                                        .close_btn{
-                                            width: 15px;
-                                            cursor: pointer;
-                                        }
-                                    }
-                                }
-                           } 
+                    &.display{
+                      >div{
+                        padding: 0 2rem;
+                        @media screen and (max-width: 600px){
+                            padding: 0 0.3rem;
                         }
+                        >img{
+                        width: 100%;
+                        margin-top: 100px;
+                        opacity: 0;
+                        transition: all 2s .25s ease;
+                        &.is-visible{
+                            margin-top: 0;
+                            opacity: 1;
+                        }
+                        }
+                        >p{
+                        &:nth-child(2){
+                            font-size: 18px;
+                            font-weight: 700;
+                        }
+                        &:nth-child(3), &:nth-child(4){
+                            font-family: monospace;
+                            font-size: 13px;
+                            font-weight: 500;
+                        }
+                        &:nth-child(4){
+                            color: #555;
+                            margin-top: 30px;
+                            padding-top: 30px;
+                            border-top: 0.5px solid rgb(185, 180, 180);
+                        }
+                        }
+                        >div{
+                            &.color{
+                                align-items: center;
+                                display: flex;
+                                margin-top: 8%;
+                                >span{
+                                    font-family: monospace;
+                                    font-size: 13px;
+                                    width: 20%;
+                                }
+                                >div{
+                                    width: 10%;
+                                    @media screen and (max-width: 600px){
+                                        width: 20%;
+                                    }
+                                    height: 5vh;
+                                    margin-left: 4%;
+                                    box-shadow: 2px 1px 4px 0px rgb(138, 138, 138);
+                                    cursor: pointer;
+                                    &:nth-child(2){
+                                        background: pink;
+                                    }
+                                    &:nth-child(3){
+                                        background: rgb(161, 175, 155);
+                                    }
+                                    &:nth-child(4){
+                                        background: rgb(155, 190, 211);
+                                    }
+                                    &:nth-child(5){
+                                        background: rgb(207, 118, 133);
+                                    }
+                                    &.active {
+                                        border: 1px solid rgb(116, 114, 114);
+                                    }
+                                    >span{
+                                        display: none;
+                                    }
+                                }
+                            }
+                            &.size{
+                                align-items: center;
+                                display: flex;
+                                margin-top: 8%;
+                                >span{
+                                    font-family: monospace;
+                                    font-size: 13px;
+                                    width: 20%;
+                                }
+                                >div{
+                                    text-align: center;
+                                    cursor: pointer;
+                                    width: 10%;
+                                    @media screen and (max-width: 600px){
+                                        width: 20%;
+                                    }
+                                    height: 5vh;
+                                    margin-left: 4%;
+                                    border: 0.5px solid rgb(173, 171, 171);
+                                    background: #ffffff;
+                                    &.active{
+                                        background: #555;
+                                        color: #ffffff;
+                                    }
+                                }
+                            }
+                            &.addtocart{
+                                text-align: right;
+                                padding: 2rem 0 0 0;
+                                >button{
+                                    border: none;
+                                    font-family: monospace;
+                                    font-size: 15px;
+                                    color: #ffffff;
+                                    background: gray;
+                                    padding: 3px 15px;
+                                }
+                            }
+                        }
+                      }  
                     }
                 }
             }
         }
     }
+    &.shop_cart{
+        >.container{
+            >.row{
+                justify-content: center;
+                >div{
+                    >div{
+                        display: flex;
+                        align-items: center;
+                        padding: 15px 0;
+                        &:not(:nth-last-child(1)){
+                            border-bottom: 0.5px solid rgb(150, 148, 148);
+                        }
+                        &:nth-last-child(1){
+                            >div{
+                                margin-left: auto;
+                                text-align: right;
+                                >p{
+                                font-family: monospace;
+                                font-size: 17px;
+                                }
+                                >button{
+                                    border: none;
+                                    border-radius: 21px;
+                                    padding: 2px 24px;
+                                    background: rgb(96, 172, 96);
+                                    color: #ffffff;
+                                    margin-top: 30px;
+                                }
+                            }
+                        }
+                        >div{
+                            &:nth-child(1){
+                                width: 40%;
+                                >img{
+                                    width: 100%;
+                                    cursor: pointer;
+                                }
+                            }
+                            &:nth-child(2){
+                                padding: 7px;
+                                >p{
+                                    &:nth-child(1){
+                                        font-size: 17px;
+                                        font-weight: 800;
+                                    }
+                                    font-family: monospace;
+                                    font-size: 14px;
+                                }
+                            }
+                            &:nth-child(3){
+                                margin-left: auto;
+                                display: flex;
+                                >p{
+                                    &:nth-child(2){
+                                        margin-left: 20px;
+                                    }
+                                    .close_btn{
+                                        width: 15px;
+                                        cursor: pointer;
+                                    }
+                                }
+                            }
+                        } 
+                    }
+                }
+            }
+        }
+    }
+  }
 }

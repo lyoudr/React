@@ -45,6 +45,17 @@ export const HttpRequest = {
         return res.json();
       })
   },
+  // Delete Msg
+  deleteMessage : function (url, data) {
+    return fetch(url, {
+      headers: this.request_headers,
+      method: 'DELETE',
+      body: JSON.stringify(data)
+    })
+      .then(res => {
+        return res.json();
+      })
+  },
   // Fetch user and friend images
   fetchImage: function (url, person) {
     return fetch(`${url}${person}`, {

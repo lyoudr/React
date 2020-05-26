@@ -44,6 +44,9 @@
             .each_message{
                 display:flex;
                 align-items: flex-start;
+                &.hide{
+                    display: none;
+                }
                 .user_img, .friend_img{
                     width: 50px;
                     border-radius: 50%;
@@ -82,6 +85,13 @@
                     .time{
                         font-size: 12px;
                         text-align: right;
+                    }
+                    .delete{
+                        float: right;
+                        cursor: pointer;
+                        >img{
+                            width: 15px;
+                        }
                     }
                 }
             }
