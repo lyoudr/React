@@ -20,7 +20,7 @@ app.use(error_handler);
 // CORS
 app.use(cors());
 // CheckToken 
-app.use(tokenHandler.checkToken);
+//app.use(tokenHandler.checkToken);
 
 /* Mysql DataBase */
 const mysql = require('mysql');
@@ -31,11 +31,6 @@ const mysql_con = mysql.createConnection({
   database: "mydb"
 });
 
-/* Set Proxies */
-app.set('trust proxy', (ip) => {
-  console.log('ip is =>', ip);
-});//
-
 /* Alogrithm */
 // 1. Set
 const countfood = require('../algorithms/foodset');
@@ -43,7 +38,7 @@ const countfood = require('../algorithms/foodset');
 const countpath = require('../algorithms/pathgraph');
 
 
-app.get('/', (req, res) => {
+app.get('/*', (req, res) => {
   res.sendFile(path.join(publicPath, 'index.html'));
 });
 
