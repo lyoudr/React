@@ -7,18 +7,17 @@ export const HttpRequest = {
     'Access-Control-Allow-Origin': '*'
   },
   // Get dishes from backend
-  requesDishes: function (url, data) {
+  requesDishes: async function (url, data) {
     console.log('called fetch!');
-    return fetch(url, {
+    const newdata = await fetch(url, {
       method: 'POST',
       mode: 'cors',
       credentials: 'same-origin',
       headers: this.request_headers,
       body: JSON.stringify(data),
     })
-      .then(res => {
-        return res.json();
-      })
+    .then(res => res.json());
+    return newdata;
   },
   //Upload User Image to backend
   uploadImg: function (url, data) {
@@ -47,6 +46,7 @@ export const HttpRequest = {
   },
   // Delete Msg
   deleteMessage : function (url, data) {
+    console.log('data is =>', data);
     return fetch(url, {
       headers: this.request_headers,
       method: 'DELETE',
@@ -104,9 +104,12 @@ export const HttpRequest = {
       method: 'POST',
       body: JSON.stringify({ price: price_range })
     })
-      .then(res => {
-        return res.json();
-      })
+    .then(res => {
+      return res.json();
+    })
+    .catch(err => {
+      console.log('err is =>', err);
+    })
   },
   // Check Out
   checkOut: function (url, selected_items) {

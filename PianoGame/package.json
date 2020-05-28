@@ -4,11 +4,13 @@
   "private": true,
   "dependencies": {
     "append-react-dom": "^1.0.1",
+    "axios": "^0.19.2",
     "bootstrap": "^4.3.1",
     "env-cmd": "^10.0.1",
     "google-maps-react": "^2.0.2",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.1",
     "js-cookie": "^2.2.1",
+    "node-fetch": "^2.6.0",
     "node-sass": "^4.14.1",
     "plotly.js": "^1.49.1",
     "popper.js": "^1.15.0",
@@ -58,7 +60,8 @@
   "devDependencies": {
     "babel-preset-flow": "^6.23.0",
     "eslint-plugin-react-hooks": "^4.0.1",
-    "flow-bin": "^0.104.0"
+    "flow-bin": "^0.104.0",
+    "react-test-renderer": "^16.13.1"
   },
   "plugins": [
     "react-hooks"

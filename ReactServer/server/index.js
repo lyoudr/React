@@ -188,6 +188,7 @@ app.get('/user_image/:user' ,(req, res) => {
 //5. Delete message
 app.delete('/delete_msg', (req, res) => {
   const del = req.body;
+  console.log('del is =>', del);
   const delete_info = `DELETE FROM chat_table WHERE who_send = ? AND who_receive = ? AND message = ?`;
   mysql_con.query(delete_info, [del.who_send, del.who_receive, del.message], (err, result) => {
     if (err) throw err;
@@ -232,13 +233,17 @@ app.post('/shop_price', (req, res) => {
   const query_con = `SELECT * FROM shoplist WHERE price BETWEEN ${min_price} AND ${max_price} ORDER BY price`;
   mysql_con.query(query_con, function (err, results) {
     if (err) throw err;
-    const modified_result = results.map(result => {
-      result.isDetail = Boolean(result.isDetail);
-      result.detail = JSON.parse(result.detail);
-      return result;
-    });
-    res.json(modified_result);
-    res.end();
+    if(results.length === 0){
+      res.status(400).json({err: 'wrong price range'});
+    } else {
+      const modified_result = results.map(result => {
+        result.isDetail = Boolean(result.isDetail);
+        result.detail = JSON.parse(result.detail);
+        return result;
+      });
+      res.json(modified_result);
+      res.end();
+    }
   });
 });
 // 3. Save user shop items to DB
@@ -278,4 +283,12 @@ app.listen(8085, () => {
 const router = require('./router');
 app.use('/router', router);*/
 
+app.get('/async_fetch', (req, res) => {
+  res.json({status: 'ok'});
+  res.end();
+});
 
+app.get('/test_users', (req, res) => {
+  res.json({name: 'Bob'});
+  res.end();
+});
