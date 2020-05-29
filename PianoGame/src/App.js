@@ -1,5 +1,5 @@
 import React, { lazy } from 'react';
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, Redirect, withRouter } from 'react-router-dom';
 import AuthService from './services/auth-service/AuthService';
 import ShowNav from './shared/components/ShowNav';
 import ErrorBoundary from './services/errorboundary-service/ErrorBoundary';
@@ -75,4 +75,4 @@ class App extends React.Component {
 }
 
 
-export default App
+export default App;

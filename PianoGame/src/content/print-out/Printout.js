@@ -69,7 +69,7 @@ class UpLoad extends React.Component {
             </div>
             <div className="form-group">
               <label htmlFor="exampleFormControlYoutube">Youtube Link</label>
-              <input ref={this.youtubeInput} type="text" className="form-control" />
+              <input alt="youtube_link" ref={this.youtubeInput} type="text" className="form-control" />
             </div>
             <div className="form-group">
               <label htmlFor="exampleFormControlTextarea1">Describe your pecies</label>
@@ -92,8 +92,6 @@ class LinkArea extends React.Component {
   }
   componentDidMount() {
     this.setState({ youtubesrc: "https://www.youtube.com/embed/tgbNymZ7vqY?playlist=tgbNymZ7vqY&loop=1" })
-  }
-  componentWillReceiveProps() {
     this.setState({ youtubesrc: this.props.youtubesrc });
   }
   render() {
@@ -167,11 +165,11 @@ class PrintOut extends React.Component {
     }));
   }
   searchList() {
-    this.textInput.current.focus();
+    const input = document.getElementById('input');
     setTimeout(() => {
-      if (`.${this.textInput.current.value}`) {
+      if (`.${input.value}`) {
         $('.piano').hide();
-        $(`.${this.textInput.current.value}`).show();
+        $(`.${input.value}`).show();
       } else {
         $('.piano').show();
       }
@@ -186,6 +184,7 @@ class PrintOut extends React.Component {
     this.setState({ youtubesrc: youtubesrc });
   }
   uploadImg(newpeices) {
+    console.log('newpeices is =>', newpeices);
     const newImages = this.state.images.slice();
     newImages.push(newpeices);
     this.setState({ images: newImages });
@@ -197,7 +196,7 @@ class PrintOut extends React.Component {
         <section className="pieces">
           <div className="container">
             <div className="row justify-content-center mb-5 pb-5">
-              <input onChange={this.searchList} ref={this.textInput} />
+              <input id="input" onChange={this.searchList} />
               <ThemeContext.Provider value={this.state.theme}>
                 <Toolbar onClick={() => { this.toggleTheme(); this.searchList() }} />
               </ThemeContext.Provider>
@@ -207,6 +206,7 @@ class PrintOut extends React.Component {
                 this.state.images.map((eachitem, index) => {
                   return (
                     <div key={eachitem.name}
+                      id={eachitem.name}
                       className={`col-md-4 text-center pb-5 piano ${eachitem.name} show-on-scroll`}
                       onClick={this.showLink.bind(this, eachitem.youtubesrc)}>
                       <img src={eachitem.src} />

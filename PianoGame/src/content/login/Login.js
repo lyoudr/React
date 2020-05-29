@@ -28,7 +28,6 @@ class Login extends React.Component {
   };
 
   render() {
-    const { from } = this.props.location.state || { from: { pathname: "/" } };
     const redirectToPreviousRoute = this.state.redirectToPreviousRoute;
     //3. 當 redirectToPreviousRoute 為 true，路由會導向 from (也就是 PianoGame) 的那頁
     if (redirectToPreviousRoute) { //redirectToPreviousRoute) {
@@ -49,15 +48,15 @@ class Login extends React.Component {
                 <div className="input-group-prepend">
                   <span className="input-group-text">Name</span>
                 </div>
-                <input ref={this.userIdRef} type="text" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                <input ref={this.userIdRef} type="text" className="form-control" id="name" aria-describedby="inputGroup-sizing-default" />
               </div>
               <div key="2" className="input-group mt-5">
                 <div className="input-group-prepend">
                   <span className="input-group-text">Password</span>
                 </div>
-                <input ref={this.passwordRef} type="password" className="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" />
+                <input ref={this.passwordRef} type="password" className="form-control" id="password" aria-describedby="inputGroup-sizing-default" />
               </div>
-              <button key="3" className="btn btn-secondary mt-5" onClick={this.login}>Log in</button>
+              <button key="3" className="btn btn-secondary mt-5" onClick={this.login} id="login_btn">Log in</button>
             </QueueAnim>
           </div>
         </div>

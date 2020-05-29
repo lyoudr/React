@@ -71,26 +71,28 @@ app.post('/food', (req, res) => {
 app.post('/uploadimage/:userId', (req, res) => {
   console.log('req.originalUrl is =>', req.originalUrl);
   console.log('req.body is =>', req.body);
-  const form = new formidable.IncomingForm();
-  form.parse(req, (err, fields, files) => {
-    console.log('fields is =>', fields);
-    const oldpath = files.photo.path;
-    const newpath = '/home/ann/Code/React/Photos/' + files.photo.name;
-    // Save position information to DB
-    const user = `${req.params.userId}`;
-    const insert_info = `UPDATE userphotos SET position = ? WHERE userId = ?`;
-    mysql_con.query(insert_info, [newpath , user], (err, result) => {
-      if(err) throw err;
-      if(result){
-        // Save photo to disk
-        fs.rename(oldpath, newpath, (err) => {
-          if (err) throw err;
-          res.json({ 'status': '200', 'message': 'ok' });
-          res.end();
-        });
-      }
-    });
-  });
+  // const form = new formidable.IncomingForm();
+  // form.parse(req, (err, fields, files) => {
+  //   console.log('fields is =>', fields);
+  //   const oldpath = files.photo.path;
+  //   const newpath = '/home/ann/Code/React/Photos/' + files.photo.name;
+  //   // Save position information to DB
+  //   const user = `${req.params.userId}`;
+  //   const insert_info = `UPDATE userphotos SET position = ? WHERE userId = ?`;
+  //   mysql_con.query(insert_info, [newpath , user], (err, result) => {
+  //     if(err) throw err;
+  //     if(result){
+  //       // Save photo to disk
+  //       fs.rename(oldpath, newpath, (err) => {
+  //         if (err) throw err;
+  //         res.json({ 'status': '200', 'message': 'ok' });
+  //         res.end();
+  //       });
+  //     }
+  //   });
+  // });
+  res.json({status: 'ok'});
+  res.end();
 });
 
 // 2. Save personal data to Mysql DataBase

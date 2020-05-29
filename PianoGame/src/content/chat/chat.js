@@ -2,7 +2,7 @@ import React, { useState, lazy } from 'react';
 import { ChatList } from './chatlist';
 import { HttpRequest } from '../../services/http-service/httpService';
 import '../../assets/sass/chat/chat.scss';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, BrowserRouter } from 'react-router-dom';
 import ChatRoom from './container/chatrommcontainer';
 import Cookie from 'js-cookie';
 import '../../assets/sass/global/global.scss';
@@ -30,10 +30,10 @@ const PersonalPicture = ({ setImg }) => {
   }
 
   return (
-    <div className="col-5 col-md-3 text-center picture" onClick={selectImg}>
+    <div id="upload_img" className="col-5 col-md-3 text-center picture" onClick={selectImg}>
       {imgurl ?
         (<img src={imgurl} alt="..." className="img-fluid" />) :
-        (<img src={chatlist[0].src} alt="..." className="img-fluid" />)
+        (<img id="personal_img" src={chatlist[0].src} alt="..." className="img-fluid" />)
       }
       <input onChange={uploadImg} ref={uploadRef} type="file" />
     </div>
@@ -76,18 +76,13 @@ class PersonalInfo extends React.Component {
         <div className="form-group row">
           <label className="col-sm-2 col-3 col-form-label text-center">Name</label>
           <div className="col-sm-9 col-9">
-            <input
-              className="form-control"
-              type="text"
-              name="name"
-              value={this.state.form.name}
-              onChange={this.handleInputChange} />
+            <input id = 'name' className="form-control" type="text" name="name" value={this.state.form.name} onChange={this.handleInputChange} />
           </div>
         </div>
         <div className="form-group row">
           <label className="col-sm-2 col-3 col-form-label text-center">Country</label>
           <div className="col-sm-9 col-9">
-            <select className="form-control" name="country" value={this.state.form.country} onChange={this.handleInputChange}>
+            <select id="select" className="form-control" name="country" value={this.state.form.country} onChange={this.handleInputChange}>
               <option value="USA">USA</option>
               <option value="Taiwan" defaultChecked>Taiwan</option>
               <option value="China">China</option>
@@ -99,11 +94,11 @@ class PersonalInfo extends React.Component {
           <label className="col-sm-2 col-3 col-form-label text-center">Gender</label>
           <div className="col-sm-9 col-9 gender_choice">
             <div>
-              <input type="checkbox" name="gender" checked={this.state.form.gender === 'girl'} value="girl" onChange={this.handleInputChange} />
+              <input id="girl" type="checkbox" name="gender" checked={this.state.form.gender === 'girl'} value="girl" onChange={this.handleInputChange} />
               <label className="sex">Girl</label>
             </div>
             <div>
-              <input type="checkbox" name="gender" checked={this.state.form.gender === 'boy'} value="boy" onChange={this.handleInputChange} />
+              <input id="boy" type="checkbox" name="gender" checked={this.state.form.gender === 'boy'} value="boy" onChange={this.handleInputChange} />
               <label className="sex">Boy</label>
             </div>
           </div>
@@ -111,19 +106,19 @@ class PersonalInfo extends React.Component {
         <div className="form-group row">
           <label className="col-sm-2 col-3 col-form-label text-center">Job</label>
           <div className="col-sm-9 col-9">
-            <input className="form-control" name="job" type="text" onChange={this.handleInputChange} />
+            <input id="job" className="form-control" name="job" type="text" onChange={this.handleInputChange} />
           </div>
         </div>
         <div className="form-group row">
           <label className="col-sm-2 col-3 col-form-label text-center">Hobby</label>
           <div className="col-sm-9 col-9">
-            <input className="form-control" name="hobby" type="text" onChange={this.handleInputChange} />
+            <input id="hobby" className="form-control" name="hobby" type="text" onChange={this.handleInputChange} />
           </div>
         </div>
         <div className="form-group row">
           <label className="col-sm-2 col-3 col-form-label text-center">Guide</label>
           <div className="col-sm-9 col-9">
-            <textarea className="form-control" name="guide" rows="5" onChange={this.handleInputChange} />
+            <textarea id="guide" className="form-control" name="guide" rows="5" onChange={this.handleInputChange} />
           </div>
         </div>
       </React.Fragment>
@@ -174,6 +169,7 @@ class Chat extends React.Component {
     images_info.userId = Cookie.get('userId');
     HttpRequest[`${type}`](`${process.env.REACT_APP_HOSTURL}${url}`, type === 'uploadImg' ? images_info : data)
       .then(data => {
+        console.log('this.props is =>', this.props);
         this.props.history.push('/chat/chatroom');
       });
   }
@@ -194,15 +190,16 @@ class Chat extends React.Component {
               </div>
             </div>
             <div className="row justify-content-center mt-3">
-              <button className="btn btn-outline-secondary align-self-center" onClick={this.handleSubmit}>
+              <button id="submit" className="btn btn-outline-secondary align-self-center" onClick={this.handleSubmit}>
                 Submit
               </button>
             </div>
           </div>
         </section>
-        <Switch>
-          <Route path='/chat/chatroom' component={ChatRoom} />
-        </Switch>
+        
+          <Switch>
+            <Route path='/chat/chatroom' component={ChatRoom} />
+          </Switch>
       </div>
     )
   }

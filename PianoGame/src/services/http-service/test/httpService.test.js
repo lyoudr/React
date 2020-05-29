@@ -48,3 +48,9 @@ it('choosePrice error', () => {
   const price_range = "500 ~ 100";
   return expect(HttpRequest.choosePrice(url, price_range)).resolves.toEqual({err: "wrong price range"});
 });
+
+// 5. Upload image
+// it('should UploadImg', () => {
+//   expect.assertions(1);
+//   const url = 'http://127.0.0.1:8085/'
+// });
