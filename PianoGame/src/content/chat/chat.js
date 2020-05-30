@@ -140,6 +140,7 @@ class Chat extends React.Component {
     this.setImg = this.setImg.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.postData = this.postData.bind(this);
+    this.switchChat = this.switchChat.bind(this);
   }
   componentDidUpdate() {
     if (this.props.fullComp === true) {
@@ -173,6 +174,9 @@ class Chat extends React.Component {
         this.props.history.push('/chat/chatroom');
       });
   }
+  switchChat(style){
+    document.getElementsByClassName('chatarea')[0].style.display = style;
+  }
   render() {
     return (
       <div ref={this.compRef} className="chat main">
@@ -196,10 +200,9 @@ class Chat extends React.Component {
             </div>
           </div>
         </section>
-        
-          <Switch>
-            <Route path='/chat/chatroom' component={ChatRoom} />
-          </Switch>
+        <Switch>
+          <Route path='/chat/chatroom' render= {() => <ChatRoom  switchChat={(style) => this.switchChat(style)}/>} />
+        </Switch>
       </div>
     )
   }

@@ -31,8 +31,7 @@ class ChatRoom extends React.Component {
 
   componentDidMount() {
     // Hide Chat Info
-    document.getElementsByClassName('chatarea')[0].style.display = "none";
-
+    this.props.switchChat('none');
     // Subscribe to nav open status determine to show contacts info
     isNavOpen.subscribe(isOpen => {
       this.setState({ is_contacts_open: isOpen });
@@ -50,7 +49,7 @@ class ChatRoom extends React.Component {
   }
 
   componentWillUnmount() {
-    document.getElementsByClassName('chatarea')[0].style.display = "block";
+    this.props.switchChat('block');
   }
 
   // Fetch friends

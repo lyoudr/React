@@ -1,7 +1,7 @@
 import { Route, Link, Switch } from 'react-router-dom';
 import React, { unstable_Profiler as Profiler, useEffect, useState } from 'react';
 import { BusinessContainer, EconomicsContainer } from './subject/subject/containers/subcontainer';
-import Technology from './subject/technology/technology';
+import {Technology} from './subject/technology/technology';
 import Animal from './subject/animal/containers/animalContainer';
 import bookmark from '../../assets/icon/icons8-bookmark.svg';
 import calendar from '../../assets/icon/icons8-calendar.svg';
@@ -21,7 +21,7 @@ const Courses = ({ match }) => {
     // console.log('interactions is =>', interactions);
   }
   return (
-    <Profiler id="course" onRender={estimatePerformance}>
+    // <Profiler id="course" onRender={estimatePerformance}>
       <div className="courses main">
         <nav>
           <Link to='/courses'>
@@ -48,7 +48,7 @@ const Courses = ({ match }) => {
           <Route path='/courses/animal' component={Animal} />
         </Switch>
       </div>
-    </Profiler>
+    // </Profiler>
   )
 };
 

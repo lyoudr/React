@@ -178,4 +178,4 @@ class Technology extends React.Component {
   }
 }
 
-export default Technology;
+export {Technology, Map};
