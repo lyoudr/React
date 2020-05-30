@@ -74,7 +74,7 @@ class Map extends React.Component {
         } else if (order == 2) {
           if (document.getElementById(`line${path[i + 1]}${path[i]}`) == null) {
             var text = document.createElement('div');
-            text.className = 'p-2 bd-highlight';
+            text.className = 'p-2 bd-highlight path_result';
             text.innerHTML = `${path[i]}`;
             showroute.current.appendChild(text);
             return;
@@ -82,7 +82,7 @@ class Map extends React.Component {
           document.getElementById(`line${path[i + 1]}${path[i]}`).style.stroke = 'red';
         }
         var text = document.createElement('div');
-        text.className = 'p-2 bd-highlight';
+        text.className = 'p-2 bd-highlight path_result';
         text.innerHTML = `${path[i]} =>`;
         showroute.current.appendChild(text);
       }
@@ -105,11 +105,11 @@ class Map extends React.Component {
             )}
           </div>
           <div className="btn_group">
-            <button onClick={this.analyzeRoute} type="button" className="btn btn-secondary">
+            <button id="analyze" onClick={this.analyzeRoute} type="button" className="btn btn-secondary">
               <span className="title">Analyze</span>
               <img className="icon" src={search}></img>
             </button>
-            <button onClick={this.resetRoute} type="button" className="btn btn-secondary">
+            <button id="reset" onClick={this.resetRoute} type="button" className="btn btn-secondary">
               <span className="title">Reset</span>
               <img className="icon" src={instagram}></img>
             </button>

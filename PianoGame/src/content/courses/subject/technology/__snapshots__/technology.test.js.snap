@@ -56,6 +56,7 @@ Array [
     >
       <button
         className="btn btn-secondary"
+        id="analyze"
         onClick={[Function]}
         type="button"
       >
@@ -71,6 +72,7 @@ Array [
       </button>
       <button
         className="btn btn-secondary"
+        id="reset"
         onClick={[Function]}
         type="button"
       >
@@ -414,6 +416,7 @@ Array [
     >
       <button
         className="btn btn-secondary"
+        id="analyze"
         onClick={[Function]}
         type="button"
       >
@@ -429,6 +432,7 @@ Array [
       </button>
       <button
         className="btn btn-secondary"
+        id="reset"
         onClick={[Function]}
         type="button"
       >
