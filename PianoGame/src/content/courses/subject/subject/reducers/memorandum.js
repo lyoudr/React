@@ -1,4 +1,4 @@
-const EachSubjectData = {
+export const EachSubjectData = {
   businessData: {
     "Statistic": [
       { 'title': 'I write JavaScript today', 'content': 'You might be thinking that we’d need a separate effect to perform the cleanup. But code for adding and removing a subscription is so tightly related that useEffect is designed to keep it together. If your effect returns a function, React will run it when it is time to clean up', 'date': '2019.12.03', id: 'Statistic_0', textNote: [] },

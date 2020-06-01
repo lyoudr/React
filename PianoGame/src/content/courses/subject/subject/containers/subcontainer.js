@@ -2,11 +2,11 @@ import { connect } from 'react-redux';
 import { showSubject, showDetail, addnewMemorandum, addNotetoText } from '../../../../../redux/actions';
 import { Business, Economics} from '../presentcomp/Subject';
 
-const mapStateToProps = state => ({
+export const mapStateToProps = state => ({
     memorandum: state.memorandum
 });
 
-const mapDispatchToProps = dispatch => ({
+export const mapDispatchToProps = dispatch => ({
     showSubject: name => {
         dispatch(showSubject(name));
     },

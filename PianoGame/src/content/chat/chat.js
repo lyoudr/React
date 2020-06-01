@@ -170,7 +170,6 @@ class Chat extends React.Component {
     images_info.userId = Cookie.get('userId');
     HttpRequest[`${type}`](`${process.env.REACT_APP_HOSTURL}${url}`, type === 'uploadImg' ? images_info : data)
       .then(data => {
-        console.log('this.props is =>', this.props);
         this.props.history.push('/chat/chatroom');
       });
   }

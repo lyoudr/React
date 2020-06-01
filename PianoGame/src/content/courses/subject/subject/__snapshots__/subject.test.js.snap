@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Subject test renders correctly 1`] = `
+Array [
+  <section
+    className="subject_list"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row"
+      >
+        <div
+          className="col-12"
+        >
+          <ul
+            className="subjects"
+          >
+            <li
+              className="subject_Statistic"
+              data-testid="subject_Statistic"
+              onClick={[Function]}
+            >
+              <span>
+                Statistic
+              </span>
+            </li>
+            <li
+              className="subject_Commercial"
+              data-testid="subject_Commercial"
+              onClick={[Function]}
+            >
+              <span>
+                Commercial
+              </span>
+            </li>
+            <li
+              className="subject_Stock"
+              data-testid="subject_Stock"
+              onClick={[Function]}
+            >
+              <span>
+                Stock
+              </span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>,
+  <section
+    className="subject_detail"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row justify-content-center"
+      >
+        <div
+          className="col-12 col-md-6 picture"
+        >
+          <img
+            alt="img"
+            className="inline-photo show-on-scroll"
+            data-testid="content_img"
+            src="subject_default.jpeg"
+          />
+        </div>
+        <div
+          className="col-12 col-md-6 describe"
+        >
+          <p
+            className="content"
+            data-testid="content"
+          />
+        </div>
+      </div>
+    </div>
+  </section>,
+  <section
+    className="subject_notes"
+  >
+    <div
+      className="container"
+    >
+      <div
+        className="row justify-content-center"
+      >
+        <div
+          className="col-6 list"
+        >
+          <div
+            data-testid="add_icon"
+            onClick={[Function]}
+          >
+            <i
+              className="material-icons"
+            >
+              add_circle_outline
+            </i>
+          </div>
+          <div />
+        </div>
+        <div
+          className="col-6 list_detail"
+        >
+          <div
+            className="hint"
+          >
+            <div
+              onClick={[Function]}
+            >
+              Add Note
+            </div>
+          </div>
+        </div>
+        <div
+          className="addnotetoText"
+        >
+          <textarea />
+          <div
+            className="submitnote"
+          >
+            <button
+              onClick={[Function]}
+            >
+              submit
+            </button>
+          </div>
+          <div
+            className="eachnote"
+          >
+            0
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>,
+]
+`;

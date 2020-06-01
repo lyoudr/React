@@ -354,7 +354,8 @@ Array [
       </g>
     </svg>
     <div
-      className="d-flex flex-row bd-highlight mb-3 justify-content-center"
+      className="d-flex flex-row bd-highlight mb-3 justify-content-center showarea"
+      id="showroute"
     />
   </div>,
 ]
@@ -714,7 +715,8 @@ Array [
       </g>
     </svg>
     <div
-      className="d-flex flex-row bd-highlight mb-3 justify-content-center"
+      className="d-flex flex-row bd-highlight mb-3 justify-content-center showarea"
+      id="showroute"
     />
   </div>,
 ]

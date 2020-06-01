@@ -153,13 +153,13 @@ class EachNotes extends React.Component {
       <div className="container">
         <div className="row justify-content-center">
           <div ref={this.makenoteRef_list} className="col-6 list">
-            <div onClick={this.isMemorandumFunc.bind(this, false)}>
-              <i class="material-icons">add_circle_outline</i>
+            <div data-testid="add_icon" onClick={this.isMemorandumFunc.bind(this, false)}>
+              <i className="material-icons">add_circle_outline</i>
             </div>
             <div>
               {notes && notes.map((note, index) =>
-                <div key={note} onClick={this.showmemorandumFunc.bind(this, `${name}_${index}`)}>
-                  <p>{note.title}</p>
+                <div key={note.id} onClick={this.showmemorandumFunc.bind(this, `${name}_${index}`)}>
+                  <p data-testid={note.id}>{note.title}</p>
                 </div>
               )}
             </div>
@@ -196,10 +196,10 @@ class EachNotes extends React.Component {
             </div>
             {this.state.showmemorandum === false &&
               <div className="addmemorandum">
-                <input ref={this.titleRef} />
-                <textarea rows="18" ref={this.noteRef}></textarea>
+                <input data-testid="memorandum_title" ref={this.titleRef} />
+                <textarea data-testid="memorandum_content" rows="18" ref={this.noteRef}></textarea>
                 <div>
-                  <button onClick={this.addnewMemorandum}>Submit</button>
+                  <button data-testid="memorandum_submit" onClick={this.addnewMemorandum}>Submit</button>
                 </div>
               </div>
             }
@@ -247,7 +247,7 @@ class EachSubject extends React.Component {
               <div className="col-12">
                 <ul className="subjects">
                   {this.state.data.map((eachitem) => (
-                    <li className="subject" onClick={() => this.chooseItem(eachitem)} key={eachitem.name}>
+                    <li data-testid={`subject_${eachitem.name}`} className={`subject_${eachitem.name}`} onClick={() => this.chooseItem(eachitem)} key={eachitem.name}>
                       <span>{eachitem.name}</span>
                     </li>
                   ))}
@@ -287,10 +287,10 @@ class SubjectDetail extends React.Component {
     return (
       <React.Fragment>
         <div className="col-12 col-md-6 picture">
-          <img src={subdetail.img? subdetail.img : defaultImg} alt='img' className='inline-photo show-on-scroll' />
+          <img data-testid="content_img" src={subdetail.img? subdetail.img : defaultImg} alt='img' className='inline-photo show-on-scroll' />
         </div>
         <div className="col-12 col-md-6 describe">
-          <p className="content">{subdetail.application}</p>
+          <p data-testid="content" className="content">{subdetail.application}</p>
         </div>
       </React.Fragment>
     )

@@ -152,7 +152,7 @@ class Map extends React.Component {
               <text x="340" y="145" dx="20">1.5</text>
             </g>
           </svg>
-          <div ref={this.showroute} className="d-flex flex-row bd-highlight mb-3 justify-content-center">
+          <div id="showroute" ref={this.showroute} className="d-flex flex-row bd-highlight mb-3 justify-content-center showarea">
           </div>
         </div>
       </React.Fragment>
